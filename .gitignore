@@ -1,0 +1,55 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+#/build/
+
+### VS Code ###
+.vscode/
+
+### maven ###
+.mvn
+mvnw
+mvnw.cmd
+
+###properties###
+/ppepper-launcher/src/main/resources/application-dev.properties
+/ppepper-launcher/src/main/resources/application-prd.properties
+
+### target ###
+/target/
+/eureka/target/
+/goods/target/
+/order/target/
+/zuul/target/
+
+###node_modules###
+/ppepper-admin/node_modules/
+/ppepper-app/node_modules/
+
+
+###logs###
+taoban.log

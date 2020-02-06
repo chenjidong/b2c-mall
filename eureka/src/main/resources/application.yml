@@ -1,0 +1,17 @@
+server:
+  port: 7000
+eureka:
+  client:
+    register-with-eureka: true #是否注册到Eureka服务中
+    fetch-registry: true #是否从Eureka服务中获取注册信息
+    service-url:  #Eureka客户端与服务端进行交互的地址
+     defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:7000/eureka/ #多台服务中心配置 用于访问 其他配置中心 defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:7001/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:7002/eureka/
+
+spring:
+  security:
+    user:
+      name: ppepper
+      password: 123456
+  application:
+    name: eureka-service
+

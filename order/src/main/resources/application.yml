@@ -1,0 +1,15 @@
+
+server:
+  port: 8100
+
+spring:
+  application:
+    name: order-service #指定服务名称
+eureka:
+  client:
+    register-with-eureka: true #是否注册到Eureka服务中
+    fetch-registry: true #是否从Eureka服务中获取注册信息
+    service-url:  #Eureka客户端与服务端进行交互的地址
+     defaultZone: http://ppepper:123456@127.0.0.1:7000/eureka/
+  instance:
+    prefer-ip-address: true #把ip地址注册到Eureka服务中
