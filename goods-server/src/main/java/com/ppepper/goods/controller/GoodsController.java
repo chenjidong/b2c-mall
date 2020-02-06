@@ -1,10 +1,11 @@
 package com.ppepper.goods.controller;
 
 
-import com.ppepper.goods.model.Goods;
+import com.ppepper.common.model.Page;
+import com.ppepper.common.dto.SpuDTO;
 import com.ppepper.goods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +20,19 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
-    @RequestMapping(value = "/{id}")
-    public Goods findGoodsById(@PathVariable("id") Long id) {
-        System.out.println("findGoodsById() id:"+id);
-        return goodsService.findGoodsById(id);
+    @RequestMapping(value = "/get")
+    public SpuDTO findGoodsById(@Param("id") Long id) {
+        System.out.println("findGoodsById() id:" + id);
+        return goodsService.getGoods(id);
+    }
+
+    @RequestMapping(value = "/list")
+    public Page<SpuDTO> findGoodsPage(@Param("pageNo") Integer pageNo,
+                                      @Param("pageSize") Integer pageSize,
+                                      @Param("categoryId") Long categoryId,
+                                      @Param("orderBy") String orderBy,
+                                      @Param("isAsc") Boolean isAsc,
+                                      @Param("title") String title) {
+        return goodsService.getGoodsPage(pageNo, pageSize, categoryId, orderBy, isAsc, title);
     }
 }
