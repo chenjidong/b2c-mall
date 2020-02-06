@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppepper.order.mapper.OrderMapper">
+
+
+    <select id="selectOrderPage" resultType="com.ppepper.common.dto.OrderDTO">
+        SELECT
+            id,
+            order_no AS orderNo,
+            `status`,
+            actual_price AS actualPrice,
+            gmt_create AS gmtCreate
+        FROM
+            b2c_order
+        WHERE
+            user_id = #{userId}
+            <if test="status != null and status != 0">
+                AND `status` = #{status}
+            </if>
+        ORDER BY id DESC
+            LIMIT #{offset}, #{limit}
+
+    </select>
+
+    <select id="countOrder" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            b2c_order
+        WHERE
+            user_id = #{userId}
+        <if test="status != null and status != 0">
+            AND `status` = #{status}
+        </if>
+    </select>
+
+    <select id="selectExpireOrderNos" resultType="java.lang.String">
+        SELECT
+           order_no
+        FROM
+            taoban_order
+        WHERE
+            `status` = #{status}
+            AND gmt_update &lt; #{time}
+    </select>
+
+
+</mapper>

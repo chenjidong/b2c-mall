@@ -1,10 +1,11 @@
-package com.ppepper.order.service;
+package com.ppepper.order.feign;
 
-import com.ppepper.order.model.GoodsDTO;
+import com.ppepper.common.dto.SpuDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Created with ChenJiDong
@@ -13,6 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "goods-service")
 public interface GoodsFeignClient {
 
-    @RequestMapping(value = "/goods/{id}", method = RequestMethod.GET)
-    public GoodsDTO findGoodsById(@PathVariable("id") Long id);
+    @RequestMapping(value = "/goods/get", method = RequestMethod.GET)
+    public SpuDTO get(@RequestParam("id") Long id);
 }

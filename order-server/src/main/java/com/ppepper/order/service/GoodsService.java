@@ -2,14 +2,12 @@ package com.ppepper.order.service;
 
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.ppepper.order.model.GoodsDTO;
+import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.order.feign.GoodsFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 /**
  * Created with ChenJiDong
@@ -29,7 +27,7 @@ public class GoodsService {
 
 
     @HystrixCommand(fallbackMethod = "findGoodsByIdServiceOffline")//服务不可用时  hystrix 自动调用指定函数返回
-    public GoodsDTO findGoodsById(Long id) {
+    public SpuDTO get(Long id) {
         //eureka 调度
 //        String service = "goods-service";
 //        String url = "http://" + service + "/goods/" + id;
@@ -43,11 +41,11 @@ public class GoodsService {
 
 
 //        return restTemplate.getForObject(url, GoodsDTO.class);
-
-        return goodsFeignClient.findGoodsById(id);
+        SpuDTO spuDTO = goodsFeignClient.get(id);
+        return spuDTO;
     }
 
-    public GoodsDTO findGoodsByIdServiceOffline(Long id) {
-        return new GoodsDTO(id, "查询商品信息出错", "", "", 0.0F);
+    public SpuDTO findGoodsByIdServiceOffline(Long id) {
+       return null;
     }
 }
