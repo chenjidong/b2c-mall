@@ -1,7 +1,8 @@
 package com.ppepper.common.enums;
 
 /**
- * Created by rize on 2019/7/2.
+ * Created with ChenJiDong
+ * Created By 2020-02-05
  */
 public enum SpuStatusType {
     STOCK(0, "库存中"),

@@ -1,4 +1,4 @@
-package com.ppepper.goods.config.redis;
+package com.ppepper.common.config.redis;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Value;

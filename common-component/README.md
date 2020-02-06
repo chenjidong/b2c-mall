@@ -1,8 +1,13 @@
-# Getting Started
+# 公共组件
 
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.1.12.RELEASE/maven-plugin/)
+### 目录说明
+* component 第三方缓存封装 如redis
+* config 数据库配置
+* domain 数据库实体基类
+* dto 数据传输类 与 domain 实体类对等
+* enums 所有数据实体枚举
+* exception 自定义包裹异常
+* mapper 封装 mybatis mapper 基类
+* model mybatis 分页封装
+* service 服务基类
 

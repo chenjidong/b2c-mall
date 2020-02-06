@@ -9,7 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by rize on 2019/7/2.
+ * Created with ChenJiDong
+ * Created By 2020-02-05
  */
 public interface SkuMapper extends BaseMapper<SkuDO> {
 
