@@ -3,7 +3,8 @@
 ### 基于springcloud 架构设计 
 For further reference, please consider the following sections:
 
-* *-server 结尾项目可直接运行
+* **-server 结尾项目可直接运行
+* **-component 结尾属于依赖组件
 
 ### 开发环境
 * idea 2018+
