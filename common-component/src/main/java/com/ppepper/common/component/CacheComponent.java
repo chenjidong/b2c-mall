@@ -56,7 +56,7 @@ public class CacheComponent {
     }
 
     public Map<String,String> getHashAll(String key) {
-        if (!stringRedisTemplate.hasKey(key)) {
+        if (stringRedisTemplate == null || !stringRedisTemplate.hasKey(key)) {
             return null;
         }
         return (Map)stringRedisTemplate.opsForHash().entries(key);

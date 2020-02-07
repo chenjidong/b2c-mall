@@ -1,6 +1,7 @@
 package com.ppepper.common.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * Created with ChenJiDong
  * Created By 2020-02-05
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class OrderDTO extends SuperDTO {
 

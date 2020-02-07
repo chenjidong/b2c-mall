@@ -1,26 +1,17 @@
-package com.ppepper.order.service;
+package com.ppepper.common.feign;
 
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ppepper.common.dto.SpuDTO;
-import com.ppepper.order.feign.GoodsFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Created with ChenJiDong
  * Created By 2020-02-05
  */
 @Service
-public class GoodsService {
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private DiscoveryClient discoveryClient;//手动指定调用 服务
+public class GoodsFeignService {
 
     @Autowired
     private GoodsFeignClient goodsFeignClient;
@@ -46,6 +37,6 @@ public class GoodsService {
     }
 
     public SpuDTO findGoodsByIdServiceOffline(Long id) {
-       return null;
+        return null;
     }
 }

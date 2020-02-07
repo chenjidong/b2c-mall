@@ -7,6 +7,7 @@
 * dto 数据传输类 与 domain 实体类对等
 * enums 所有数据实体枚举
 * exception 自定义包裹异常
+* feign 所有服务外部接口声明和实现
 * mapper 封装 mybatis mapper 基类
 * model mybatis 分页封装
 * service 服务基类

@@ -5,4 +5,3 @@
 * domain 数据库实体类
 * mapper mybatis 映射
 * service 数据库访问中间件
-* feign 访问外部服务接口

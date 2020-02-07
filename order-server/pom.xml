@@ -43,22 +43,6 @@
             </exclusions>
         </dependency>
 
-        <!--熔断机制-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-            <version>1.4.1.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.netflix.hystrix</groupId>
-            <artifactId>hystrix-javanica</artifactId>
-        </dependency>
-
-        <!--接口拼接-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
 
         <!--增加负载均衡-->
 <!--        <dependency>

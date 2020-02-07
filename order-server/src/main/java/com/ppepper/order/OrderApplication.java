@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
-@EnableFeignClients //feign 注解调用 其他服务
 @EnableHystrix //启动熔断机制
 @EnableDiscoveryClient //eureka 观察client 端用于调用 eureka service
 @MapperScan(value = {"com.ppepper.order.mapper"}) //mybatis 只扫描指定包名 避免冲突

@@ -70,6 +70,25 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+
+        <!--熔断机制 外部接口超时回调处理-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+            <version>1.4.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-javanica</artifactId>
+            <version>1.5.18</version>
+        </dependency>
+
+        <!--外部接口调用-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.5.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>

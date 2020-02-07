@@ -3,6 +3,7 @@ package com.ppepper.order.service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.ppepper.common.dto.OrderDTO;
 import com.ppepper.common.dto.OrderSkuDTO;
+import com.ppepper.common.feign.GoodsFeignService;
 import com.ppepper.common.model.Page;
 import com.ppepper.common.service.BaseServiceImpl;
 import com.ppepper.order.domain.OrderDO;
@@ -29,7 +30,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
     private OrderSkuMapper orderSkuMapper;
 
     @Autowired
-    private GoodsService goodsService;
+    private GoodsFeignService goodsFeignService;
 
 
     @Override
@@ -44,7 +45,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
             OrderSkuDTO orderSkuDTO = new OrderSkuDTO();
             BeanUtils.copyProperties(orderSkuDO, orderSkuDTO);
 
-            orderSkuDTO.setSpuDTO(goodsService.get(orderSkuDTO.getSpuId()));
+            orderSkuDTO.setSpuDTO(goodsFeignService.get(orderSkuDTO.getSpuId()));
             orderSkuDTOList.add(orderSkuDTO);
         }
         orderDTO.setSkuList(orderSkuDTOList);

@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.ppepper.common.domain.SuperDO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created with ChenJiDong
  * Created By 2020-02-05
  * 商品sku
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("b2c_sku")
 public class SkuDO extends SuperDO {

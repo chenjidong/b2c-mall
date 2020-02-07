@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.ppepper.common.domain.SuperDO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * Created with ChenJiDong
  * Created By 2020-02-05
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("b2c_order")
 public class OrderDO extends SuperDO {
