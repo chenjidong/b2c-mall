@@ -6,14 +6,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.ppepper.common.Const;
 import com.ppepper.common.component.CacheComponent;
-import com.ppepper.common.dto.SkuDTO;
+import com.ppepper.common.dto.SpuSkuDTO;
 import com.ppepper.common.dto.SpuDTO;
 import com.ppepper.common.enums.SpuStatusType;
 import com.ppepper.common.model.Page;
 import com.ppepper.common.service.BaseServiceImpl;
-import com.ppepper.goods.domain.SkuDO;
+import com.ppepper.goods.domain.SpuSkuDO;
 import com.ppepper.goods.domain.SpuDO;
-import com.ppepper.goods.mapper.SkuMapper;
+import com.ppepper.goods.mapper.SpuSkuMapper;
 import com.ppepper.goods.mapper.SpuMapper;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
@@ -40,7 +40,7 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
     private CacheComponent cacheComponent;
 
     @Autowired
-    private SkuMapper skuMapper;
+    private SpuSkuMapper spuSkuMapper;
 
     private static final Column[] baseColumns = {
             Column.create().column("id"),
@@ -114,25 +114,25 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
         SpuDTO spuDTO = new SpuDTO();
         BeanUtils.copyProperties(spuDO, spuDTO);
 
-        List<SkuDO> skuDOList = skuMapper.selectList(
-                new EntityWrapper<SkuDO>()
+        List<SpuSkuDO> spuSkuDOList = spuSkuMapper.selectList(
+                new EntityWrapper<SpuSkuDO>()
                         .eq("spu_id", spuId));
 
-        List<SkuDTO> skuDTOList = new ArrayList<>();
-        if (skuDOList != null && !skuDOList.isEmpty()) {
-            for (SkuDO skuDO : skuDOList) {
-                SkuDTO skuDTO = new SkuDTO();
-                BeanUtils.copyProperties(skuDO, skuDTO);
-                skuDTOList.add(skuDTO);
+        List<SpuSkuDTO> spuSkuDTOList = new ArrayList<>();
+        if (spuSkuDOList != null && !spuSkuDOList.isEmpty()) {
+            for (SpuSkuDO spuSkuDO : spuSkuDOList) {
+                SpuSkuDTO spuSkuDTO = new SpuSkuDTO();
+                BeanUtils.copyProperties(spuSkuDO, spuSkuDTO);
+                spuSkuDTOList.add(spuSkuDTO);
             }
-            spuDTO.setSkuList(skuDTOList);
+            spuDTO.setSkuList(spuSkuDTOList);
         }
 
         String salesStr = cacheComponent.getHashRaw(CA_SPU_SALES_HASH, "S" + spuId);
         if (!StringUtils.isEmpty(salesStr)) {
             spuDTO.setSales(new Integer(salesStr));
         }
-        int sum = skuDOList.stream().mapToInt(item -> item.getStock()).sum();
+        int sum = spuSkuDOList.stream().mapToInt(item -> item.getStock()).sum();
         spuDTO.setStock(sum);
 
         return spuDTO;

@@ -2,8 +2,10 @@ package com.ppepper.common.feign;
 
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.ppepper.common.dto.SpuAppraiseDTO;
 import com.ppepper.common.dto.SpuCategoryDTO;
 import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.common.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +53,21 @@ public class GoodsFeignService {
         return goodsFeignClient.getCategoryList();
     }
 
+    @HystrixCommand(fallbackMethod = "spuAppraiseDTOServiceOffline")
+    public SpuAppraiseDTO getAppraise(Long id) {
+        return goodsFeignClient.getAppraise(id);
+    }
+
+    @HystrixCommand(fallbackMethod = "selectSpuAllAppraiseServiceOffline")
+    public Page<SpuAppraiseDTO> selectSpuAllAppraise(Long spuId, Integer offset, Integer size) {
+        return goodsFeignClient.selectSpuAllAppraise(spuId, offset, size);
+    }
+
+    @HystrixCommand(fallbackMethod = "selectUserAllAppraiseServiceOffline")
+    public Page<SpuAppraiseDTO> selectUserAllAppraise(Long userId, Integer offset, Integer size) {
+        return goodsFeignClient.selectUserAllAppraise(userId, offset, size);
+    }
+
     public SpuDTO spuDTOServiceOffline(Long id) {
         return new SpuDTO();
     }
@@ -63,5 +80,16 @@ public class GoodsFeignService {
         return new ArrayList<>();
     }
 
+    public SpuAppraiseDTO spuAppraiseDTOServiceOffline(Long id) {
+        return new SpuAppraiseDTO();
+    }
+
+    public Page<SpuAppraiseDTO> selectUserAllAppraiseServiceOffline(Long userId, Integer offset, Integer size) {
+        return new Page<SpuAppraiseDTO>();
+    }
+
+    public Page<SpuAppraiseDTO> selectSpuAllAppraiseServiceOffline(Long spuId, Integer offset, Integer size) {
+        return new Page<SpuAppraiseDTO>();
+    }
 
 }

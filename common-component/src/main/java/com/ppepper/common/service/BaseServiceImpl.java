@@ -1,5 +1,7 @@
 package com.ppepper.common.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
  * Created By 2020-02-06
  */
 public class BaseServiceImpl {
+    private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
 
     protected <T> T copyProperties(Object source, Class clazz) {
@@ -18,7 +21,7 @@ public class BaseServiceImpl {
             BeanUtils.copyProperties(source, target);
             return target;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(clazz.getSimpleName() + "：转换失败");
         }
         return null;
     }

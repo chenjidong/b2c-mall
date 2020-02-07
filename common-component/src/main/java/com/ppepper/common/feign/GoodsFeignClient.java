@@ -1,7 +1,9 @@
 package com.ppepper.common.feign;
 
+import com.ppepper.common.dto.SpuAppraiseDTO;
 import com.ppepper.common.dto.SpuCategoryDTO;
 import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.common.model.Page;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,5 +28,14 @@ public interface GoodsFeignClient {
 
     @RequestMapping(value = "/goods/category/list", method = RequestMethod.GET)
     public List<SpuCategoryDTO> getCategoryList();
+
+    @RequestMapping(value = "/goods/appraise/get", method = RequestMethod.GET)
+    public SpuAppraiseDTO getAppraise(@RequestParam("id") Long id);
+
+    @RequestMapping(value = "/goods/appraise/selectUserAllAppraise", method = RequestMethod.GET)
+    public Page<SpuAppraiseDTO> selectUserAllAppraise(@RequestParam("userId") Long userId, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size);
+
+    @RequestMapping(value = "/goods/appraise/selectSpuAllAppraise", method = RequestMethod.GET)
+    public Page<SpuAppraiseDTO> selectSpuAllAppraise(@RequestParam("spuId") Long spuId, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size);
 
 }

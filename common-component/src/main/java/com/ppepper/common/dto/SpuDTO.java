@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 public class SpuDTO extends SuperDTO {
 
-    private List<SkuDTO> skuList;
+    private List<SpuSkuDTO> skuList;
 
     private Integer originalPrice;
 
