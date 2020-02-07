@@ -1,6 +1,8 @@
 server:
   port: 7000
 eureka:
+  server:
+    enable-self-preservation: false # 默认true 测试时关闭自我保护机制，保证不可用服务及时踢出
   client:
     register-with-eureka: true #是否注册到Eureka服务中
     fetch-registry: true #是否从Eureka服务中获取注册信息

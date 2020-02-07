@@ -24,4 +24,6 @@ eureka:
      defaultZone: http://ppepper:123456@127.0.0.1:7000/eureka/
   instance:
     prefer-ip-address: true #把ip地址注册到Eureka服务中
+    lease-renewal-interval-in-seconds: 1  #默认30s 每间隔1s，向服务端发送一次心跳，证明自己依然”存活“ 测试用
+    lease-expiration-duration-in-seconds: 2 #默认90s 告诉服务端，如果我2s之内没有给你发心跳 则踢出 注册中心 测试用
 
