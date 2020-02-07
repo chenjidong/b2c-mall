@@ -2,9 +2,13 @@ package com.ppepper.common.feign;
 
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.ppepper.common.dto.SpuCategoryDTO;
 import com.ppepper.common.dto.SpuDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with ChenJiDong
@@ -17,7 +21,7 @@ public class GoodsFeignService {
     private GoodsFeignClient goodsFeignClient;
 
 
-    @HystrixCommand(fallbackMethod = "findGoodsByIdServiceOffline")//服务不可用时  hystrix 自动调用指定函数返回
+    @HystrixCommand(fallbackMethod = "spuDTOServiceOffline")//服务不可用时  hystrix 自动调用指定函数返回
     public SpuDTO get(Long id) {
         //eureka 调度
 //        String service = "goods-service";
@@ -36,7 +40,28 @@ public class GoodsFeignService {
         return spuDTO;
     }
 
-    public SpuDTO findGoodsByIdServiceOffline(Long id) {
-        return null;
+
+    @HystrixCommand(fallbackMethod = "spuCategoryDTOServiceOffline")
+    public SpuCategoryDTO getCategory(Long id) {
+        return goodsFeignClient.getCategory(id);
     }
+
+    @HystrixCommand(fallbackMethod = "spuCategorysDTOServiceOffline")
+    public List<SpuCategoryDTO> getCategoryList() {
+        return goodsFeignClient.getCategoryList();
+    }
+
+    public SpuDTO spuDTOServiceOffline(Long id) {
+        return new SpuDTO();
+    }
+
+    public SpuCategoryDTO spuCategoryDTOServiceOffline(Long id) {
+        return new SpuCategoryDTO();
+    }
+
+    public List<SpuCategoryDTO> spuCategorysDTOServiceOffline() {
+        return new ArrayList<>();
+    }
+
+
 }

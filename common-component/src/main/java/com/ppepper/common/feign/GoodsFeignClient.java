@@ -1,10 +1,13 @@
 package com.ppepper.common.feign;
 
+import com.ppepper.common.dto.SpuCategoryDTO;
 import com.ppepper.common.dto.SpuDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 
 /**
@@ -17,4 +20,11 @@ public interface GoodsFeignClient {
 
     @RequestMapping(value = "/goods/get", method = RequestMethod.GET)
     public SpuDTO get(@RequestParam("id") Long id);
+
+    @RequestMapping(value = "/goods/category/get", method = RequestMethod.GET)
+    public SpuCategoryDTO getCategory(@RequestParam("id") Long id);
+
+    @RequestMapping(value = "/goods/category/list", method = RequestMethod.GET)
+    public List<SpuCategoryDTO> getCategoryList();
+
 }
