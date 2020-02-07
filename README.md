@@ -15,17 +15,22 @@ For further reference, please consider the following sections:
 * springboot
 * springcloud 组件（eureka,zuul,hystrix,openfeign,ribbon）
 
+### 运行错误说明
+* 1.common jar引入失败 详情看 common-component README.md 进行操作
+* 2. redis connect failed  检查redis 是否安装或已启动、密码配置
+
 ### 打包测试
 * mvn clean package/install
 * linux  nohup java -jar **-server.jar (可选：--server.port=8080) & 
 * window cmd shell ./**-server.jar
 
 ### 微服务
-* eureka-server 服务控制中心
-* goods-server  商品服务
-* order-server  订单服务
-* sso-server    登录服务
-* zuul-server   网关服务
+* eureka-server    服务控制中心
+* goods-server     商品服务
+* order-server     订单服务
+* sso-server       登录服务
+* zuul-server      网关服务
+* common-component 公共组件（集成数据库配置，redis配置 mybatis 分页配置 数据库实体类配置）
 
 ### 环境配置
 * 使用以下配置不能使用默认 idea maven 配置 需到setting 中更改默认maven 引用
