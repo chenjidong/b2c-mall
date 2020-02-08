@@ -18,7 +18,7 @@ For further reference, please consider the following sections:
 
 ### 框架
 * springboot
-* springcloud 组件（eureka,zuul,hystrix,openfeign,ribbon）
+* springcloud 组件（eureka(服务调度),zuul(网关),hystrix(熔断机制),openfeign(ribbon升级版),ribbon(负载均衡)）
 
 ### 运行错误说明
 * 1.common jar引入失败 详情看 common-component README.md 进行操作
@@ -30,11 +30,12 @@ For further reference, please consider the following sections:
 * window cmd shell ./**-server.jar
 
 ### 微服务
-* eureka-server    服务控制中心
-* goods-server     商品服务
-* order-server     订单服务
-* sso-server       登录服务
-* zuul-server      网关服务
+* eureka-server    服务控制中心      端口：7000
+* goods-server     商品服务          端口：8000
+* order-server     订单服务          端口：8100
+* sso-server       登录服务          端口：8200
+* zuul-server      网关服务          端口：9000
+* coupon-server    优惠券服务        端口：8300
 * common-component 公共组件（集成数据库配置，redis配置 mybatis 分页配置 数据库实体类配置）
 
 ### 环境配置

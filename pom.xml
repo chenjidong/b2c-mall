@@ -40,6 +40,7 @@
         <module>order-server</module>
         <module>sso-server</module>
         <module>zuul-server</module>
+        <module>coupon-server</module>
         <module>common-component</module>
     </modules>
 
