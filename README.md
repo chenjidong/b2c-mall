@@ -11,6 +11,11 @@ For further reference, please consider the following sections:
 * maven 3.5.0+
 * java8+
 
+### 端口返回设计
+* 7000+  eureka 中心 config 配置中心
+* 8000+ **业务服务
+* 9000+ zuul 网关
+
 ### 框架
 * springboot
 * springcloud 组件（eureka,zuul,hystrix,openfeign,ribbon）
