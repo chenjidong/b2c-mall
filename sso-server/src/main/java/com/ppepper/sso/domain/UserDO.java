@@ -11,18 +11,15 @@ import java.util.Date;
 /**
  * Created with ChenJiDong
  * Created By 2020-02-07
+ * 会员 或第三方用户 信息 可以有多个
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("b2c_user")
 public class UserDO extends SuperDO {
 
-    private String phone;
-
-    private String password;
-
-    @TableField("login_type")
-    private Integer loginType;
+    @TableField("account_id")
+    private Long accountId;
 
     @TableField("open_id")
     private String openId;
@@ -38,12 +35,9 @@ public class UserDO extends SuperDO {
 
     private Integer gender;
 
-    @TableField("gmt_last_login")
-    private Date gmtLastLogin;
-
-    @TableField("last_login_ip")
-    private String lastLoginIp;
-
-    private Integer status;
+    /**
+     * 用户来源 类型  例：QQ  WECHAT  ALI
+     */
+    private String platform;
 
 }

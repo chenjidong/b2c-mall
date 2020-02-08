@@ -13,9 +13,7 @@ import java.util.Date;
 @Data
 public class UserDTO extends SuperDTO {
 
-    private String phone;
-
-    private Integer loginType;
+    private Long accountId;
 
     private String openId;
 
@@ -29,11 +27,5 @@ public class UserDTO extends SuperDTO {
 
     private Integer gender;
 
-    private Date gmtLastLogin;
-
-    private String lastLoginIp;
-
-    private Integer status;
-
-    private String accessToken;
+    private String platform;
 }
