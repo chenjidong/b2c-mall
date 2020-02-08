@@ -66,4 +66,6 @@ public class OrderDTO extends SuperDTO {
 
     private List<OrderSkuDTO> skuList;
 
+    private Long accountId;
+
 }

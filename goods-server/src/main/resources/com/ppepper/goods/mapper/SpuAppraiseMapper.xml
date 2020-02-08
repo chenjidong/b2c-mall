@@ -10,7 +10,7 @@
             a.gmt_update as gmtUpdate,
             a.content as content,
             a.score as score,
-            a.user_id as userId,
+            a.account_id as accountId,
             a.order_id as orderId,
             a.spu_id as spuId,
             a.sku_id as skuId,
@@ -23,7 +23,7 @@
         where
             a.spu_id = sp.id
             and a.sku_id = sk.id
-            and a.user_id = #{userId}
+            and a.account_id = #{accountId}
         order by a.id desc
             limit #{offset},#{size}
     </select>
@@ -35,7 +35,7 @@
             a.gmt_update as gmtUpdate,
             a.content as content,
             a.score as score,
-            a.user_id as userId,
+            a.account_id as accountId,
             a.order_id as orderId,
             a.spu_id as spuId,
             a.sku_id as skuId,
@@ -60,7 +60,7 @@
             a.gmt_update as gmtUpdate,
             a.content as content,
             a.score as score,
-            a.user_id as userId,
+            a.account_id as accountId,
             a.order_id as orderId,
             a.spu_id as spuId,
             a.sku_id as skuId,
@@ -83,7 +83,7 @@
         a.gmt_update as gmtUpdate,
         a.content as content,
         a.score as score,
-        a.user_id as userId,
+        a.account_id as accountId,
         a.order_id as orderId,
         a.spu_id as spuId,
         a.sku_id as skuId,

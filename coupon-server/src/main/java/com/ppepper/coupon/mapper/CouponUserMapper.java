@@ -15,6 +15,6 @@ public interface CouponUserMapper extends BaseMapper<CouponUserDO> {
 
     public List<CouponUserDTO> getUserCoupons(Long userId);
 
-    public CouponUserDTO getUserCouponById(@Param("userCouponId") Long userCouponId, @Param("userId") Long userId);
+    public CouponUserDTO getUserCouponById(@Param("userCouponId") Long userCouponId, @Param("accountId") Long accountId);
 
 }

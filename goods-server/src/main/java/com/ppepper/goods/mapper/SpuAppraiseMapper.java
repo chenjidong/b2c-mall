@@ -14,7 +14,7 @@ import java.util.List;
 public interface SpuAppraiseMapper extends BaseMapper<SpuAppraiseDO> {
 
     //根据用户id，分页获取所有评价
-    public List<SpuAppraiseDTO> selectUserAllAppraise(@Param("userId") Long userId, @Param("offset") Integer offset, @Param("size") Integer size);
+    public List<SpuAppraiseDTO> selectUserAllAppraise(@Param("accountId") Long accountId, @Param("offset") Integer offset, @Param("size") Integer size);
 
     //根据商品spu_id，分页获取所有评价
     public List<SpuAppraiseDTO> selectSpuAllAppraise(@Param("spuId") Long spuId, @Param("offset") Integer offset, @Param("size") Integer size);

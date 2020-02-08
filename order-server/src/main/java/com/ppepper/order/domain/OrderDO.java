@@ -86,5 +86,6 @@ public class OrderDO extends SuperDO {
     @TableField("gmt_confirm")
     private Date gmtConfirm;
 
-
+    @TableField("account_id")
+    private Long accountId;
 }

@@ -23,7 +23,7 @@ public class CouponUserDTO extends SuperDTO {
 
     private Integer discount;
 
-    private Long userId;
+    private Long accountId;
 
     private Long couponId;
 

@@ -12,5 +12,5 @@ public interface OrderService {
 
     public OrderDTO get(Long id);
 
-    public Page<OrderDTO> list(Integer pageNo, Integer pageSize, Integer status, Long userId);
+    public Page<OrderDTO> list(Integer pageNo, Integer pageSize, Integer status, Long accountId);
 }

@@ -22,8 +22,8 @@ public class SpuAppraiseDO extends SuperDO {
     private Long skuId;
     @TableField("order_id")
     private Long orderId;
-    @TableField("user_id")
-    private Long userId;
+    @TableField("account_id")
+    private Long accountId;
 
     //评论内容
     private String content;

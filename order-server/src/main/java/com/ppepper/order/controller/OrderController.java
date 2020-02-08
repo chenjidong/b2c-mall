@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/list")
-    public Page<OrderDTO> list(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize, @RequestParam("status") Integer status, @RequestParam("userId") Long userId) {
-        return orderService.list(pageNo, pageSize, status, userId);
+    public Page<OrderDTO> list(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize, @RequestParam("status") Integer status, @RequestParam("accountId") Long accountId) {
+        return orderService.list(pageNo, pageSize, status, accountId);
     }
 }

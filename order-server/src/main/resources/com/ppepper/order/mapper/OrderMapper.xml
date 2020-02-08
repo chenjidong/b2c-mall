@@ -13,7 +13,7 @@
         FROM
             b2c_order
         WHERE
-            user_id = #{userId}
+            account_id = #{accountId}
             <if test="status != null and status != 0">
                 AND `status` = #{status}
             </if>
@@ -28,7 +28,7 @@
         FROM
             b2c_order
         WHERE
-            user_id = #{userId}
+            account_id = #{accountId}
         <if test="status != null and status != 0">
             AND `status` = #{status}
         </if>

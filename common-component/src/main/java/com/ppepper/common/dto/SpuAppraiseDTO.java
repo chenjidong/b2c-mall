@@ -19,7 +19,7 @@ public class SpuAppraiseDTO extends SuperDTO {
 
     private List<String> imgList;
 
-    private Long userId;
+    private Long accountId;
 
     private String userNickName;
 

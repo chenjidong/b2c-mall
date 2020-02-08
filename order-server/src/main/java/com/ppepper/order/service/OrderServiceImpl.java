@@ -54,9 +54,9 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDTO> list(Integer pageNo, Integer pageSize, Integer status, Long userId) {
-        List<OrderDTO> orderDTOList = orderMapper.selectOrderPage(status, (pageNo - 1) * pageSize, pageSize, userId);
-        Long count = orderMapper.countOrder(status, (pageNo - 1) * pageSize, pageSize, userId);
+    public Page<OrderDTO> list(Integer pageNo, Integer pageSize, Integer status, Long accountId) {
+        List<OrderDTO> orderDTOList = orderMapper.selectOrderPage(status, (pageNo - 1) * pageSize, pageSize, accountId);
+        Long count = orderMapper.countOrder(status, (pageNo - 1) * pageSize, pageSize, accountId);
         //封装SKU
         orderDTOList.forEach(item -> {
             List<OrderSkuDO> orderSkuDOList = orderSkuMapper.selectList(new EntityWrapper<OrderSkuDO>().eq("order_id", item.getId()));

@@ -15,9 +15,9 @@ import java.util.List;
  */
 public interface OrderMapper extends BaseMapper<OrderDO> {
 
-    public List<OrderDTO> selectOrderPage(@Param("status") Integer status, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("userId") Long userId);
+    public List<OrderDTO> selectOrderPage(@Param("status") Integer status, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("accountId") Long accountId);
 
-    public Long countOrder(@Param("status") Integer status, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("userId") Long userId);
+    public Long countOrder(@Param("status") Integer status, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("accountId") Long accountId);
 
     public List<String> selectExpireOrderNos(@Param("status") Integer status, @Param("time") Date time);
 
