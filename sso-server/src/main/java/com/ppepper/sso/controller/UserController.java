@@ -1,5 +1,6 @@
 package com.ppepper.sso.controller;
 
+import com.ppepper.common.model.AjaxResult;
 import com.ppepper.sso.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/get")
-    public Object get(@RequestParam("id") Long id) {
-        return userService.get(id);
+    public AjaxResult get(@RequestParam("id") Long id) {
+        return AjaxResult.success(userService.get(id));
     }
 }

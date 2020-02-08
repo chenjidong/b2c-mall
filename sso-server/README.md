@@ -1,6 +1,8 @@
 # sso 单点登录/用户信息服务
 
 ### 目录说明
+* component spring security 验证拦截及处理
+* config spring security 配置
 * controller 接收请求对外访问
 * domain 数据库实体类
 * mapper mybatis 映射

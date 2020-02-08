@@ -1,11 +1,9 @@
-package com.ppepper.sso.component;
+package com.ppepper.common.component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -15,12 +13,13 @@ import java.util.Map;
 /**
  * Created with ChenJiDong
  * Created By 2020-02-08
+ * jwt 配合 security 封装 token 信息
  */
 @Data
 @Component
-public class JwtTokenUtil {
+public class JwtTokenComponent {
     private String secret = "secret";
-    private Long expiration = 604800L;
+    private Long expiration = 1000 * 60 * 60 * 24 * 7L;//7天
     private String header = "Authorization";
 
     /**
@@ -57,12 +56,12 @@ public class JwtTokenUtil {
     /**
      * 生成令牌
      *
-     * @param userDetails 用户
+     * @param subject 用户信息
      * @return 令牌
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String subject) {
         Map<String, Object> claims = new HashMap<>(2);
-        claims.put(Claims.SUBJECT, userDetails.getUsername());
+        claims.put(Claims.SUBJECT, subject);
         claims.put(Claims.ISSUED_AT, new Date());
         return generateToken(claims);
     }
@@ -121,13 +120,12 @@ public class JwtTokenUtil {
     /**
      * 验证令牌
      *
-     * @param token       令牌
-     * @param userDetails 用户
+     * @param token           令牌
+     * @param currentUsername 用户
      * @return 是否有效
      */
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        User user = (User) userDetails;
+    public Boolean validateToken(String token, String currentUsername) {
         String username = getUsernameFromToken(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        return (username.equals(currentUsername) && !isTokenExpired(token));
     }
 }

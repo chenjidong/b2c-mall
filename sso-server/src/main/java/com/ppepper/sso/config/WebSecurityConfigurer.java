@@ -1,9 +1,9 @@
 package com.ppepper.sso.config;
 
-import com.ppepper.sso.component.NoAuthorityAccessDeniedHandler;
-import com.ppepper.sso.component.NoAuthenticationEntryPoint;
 import com.ppepper.sso.component.CustomUserDetailsAuthenticationProvider;
 import com.ppepper.sso.component.JwtBeforeAuthenticationTokenFilter;
+import com.ppepper.sso.component.NoAuthenticationEntryPoint;
+import com.ppepper.sso.component.NoAuthorityAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * Created By 2020-02-08
  */
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) //开启注解拦截函数权限 @PreAuthorize("hasRole('role_user')")
+@EnableWebSecurity //启动 security 鉴权
+/**
+ * 开启注解拦截函数权限 @PreAuthorize("hasRole('role_user')")
+ * tips: 使用时 需要 额外捕捉 异常信息
+ */
+@EnableGlobalMethodSecurity(prePostEnabled = true) //
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -50,6 +54,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
+                .accessDeniedHandler(noAuthorityAccessDeniedHandler)
                 //身份访问异常
                 .authenticationEntryPoint(noAuthenticationEntryPoint)
                 //权限访问异常
