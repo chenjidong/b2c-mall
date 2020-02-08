@@ -16,6 +16,8 @@ spring:
     database: 1
     host: 127.0.0.1
     port: 6379
+  main:
+    allow-bean-definition-overriding: true # 当遇到同样的 bean 名称时 允许覆盖注册
 eureka:
   client:
     register-with-eureka: true #是否注册到Eureka服务中
