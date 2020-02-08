@@ -26,7 +26,7 @@ public class BaseServiceImpl {
         return null;
     }
 
-    protected <T> List<T> copyProperties(List<Object> sources, Class clazz) {
+    protected <T> List<T> copyListProperties(List<?> sources, Class clazz) {
         List<T> targets = new ArrayList<>();
         for (Object obj : sources) {
             targets.add(copyProperties(obj, clazz));

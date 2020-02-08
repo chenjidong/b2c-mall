@@ -10,6 +10,7 @@ For further reference, please consider the following sections:
 * idea 2018+
 * maven 3.5.0+
 * java8+
+* mysql 5.5+
 
 ### 端口返回设计
 * 7000+  eureka 中心 config 配置中心
@@ -37,6 +38,11 @@ For further reference, please consider the following sections:
 * zuul-server      网关服务          端口：9000
 * coupon-server    优惠券服务        端口：8300
 * common-component 公共组件（集成数据库配置，redis配置 mybatis 分页配置 数据库实体类配置）
+
+### 数据库
+* alibaba druid 连接
+* **DO(数据库实体模型)
+* **DTO(数据传输模型) 
 
 ### 环境配置
 * 使用以下配置不能使用默认 idea maven 配置 需到setting 中更改默认maven 引用
