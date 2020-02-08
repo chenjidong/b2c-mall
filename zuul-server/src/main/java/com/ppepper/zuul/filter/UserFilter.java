@@ -1,14 +1,18 @@
 package com.ppepper.zuul.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import com.ppepper.common.jwt.JwtTokenComponent;
+import com.ppepper.common.model.AjaxResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.HttpURLConnection;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with ChenJiDong
@@ -21,6 +25,10 @@ import java.net.HttpURLConnection;
  */
 @Component
 public class UserFilter extends ZuulFilter {
+
+    @Autowired
+    private JwtTokenComponent jwtTokenComponent;
+
     @Override
     public String filterType() {
         return FilterConstants.PRE_TYPE;
@@ -39,11 +47,11 @@ public class UserFilter extends ZuulFilter {
     @Override
     public Object run() throws ZuulException {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
-        String token = request.getParameter("token");
+        String token = request.getHeader(jwtTokenComponent.getHeader());//获取token
         if (StringUtils.isEmpty(token)) {
             RequestContext.getCurrentContext().setSendZuulResponse(false);//不进行路由转发
-            RequestContext.getCurrentContext().setResponseStatusCode(HttpURLConnection.HTTP_OK);
-            RequestContext.getCurrentContext().setResponseBody("{\"error\":\"invalid token\"}");
+            RequestContext.getCurrentContext().setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
+            RequestContext.getCurrentContext().setResponseBody(JSON.toJSONString(AjaxResult.error("No Authority!")));
         }
         return null;
     }

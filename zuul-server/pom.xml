@@ -41,6 +41,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--公共组件 未导入common-component module 时需要手动加入本地仓库 详情看 README.md-->
+        <dependency>
+            <groupId>com.ppepper</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

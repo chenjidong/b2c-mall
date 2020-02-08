@@ -1,4 +1,4 @@
-package com.ppepper.common.config.db;
+package com.ppepper.common.mybatis;
 
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.stat.StatFilter;

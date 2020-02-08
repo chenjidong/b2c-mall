@@ -1,4 +1,4 @@
-package com.ppepper.common.component;
+package com.ppepper.common.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

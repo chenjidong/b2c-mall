@@ -1,4 +1,4 @@
-package com.ppepper.common.component;
+package com.ppepper.common.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

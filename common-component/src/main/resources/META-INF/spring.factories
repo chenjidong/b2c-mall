@@ -1,2 +1,2 @@
 # 自定义自动启动类
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.ppepper.common.CommonConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.ppepper.common.feign.CommonConfig

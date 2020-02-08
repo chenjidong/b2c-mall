@@ -6,12 +6,12 @@ spring:
 
 eureka:
   client:
-    register-with-eureka: true #ÊÇ·ñ×¢²áµ½Eureka·şÎñÖĞ
-    fetch-registry: true #ÊÇ·ñ´ÓEureka·şÎñÖĞ»ñÈ¡×¢²áĞÅÏ¢
-    service-url: #Eureka¿Í»§¶ËÓë·şÎñ¶Ë½øĞĞ½»»¥µÄµØÖ·
+    register-with-eureka: true #æ˜¯å¦æ³¨å†Œåˆ°EurekaæœåŠ¡ä¸­
+    fetch-registry: true #æ˜¯å¦ä»EurekaæœåŠ¡ä¸­è·å–æ³¨å†Œä¿¡æ¯
+    service-url: #Eurekaå®¢æˆ·ç«¯ä¸æœåŠ¡ç«¯è¿›è¡Œäº¤äº’çš„åœ°å€
       defaultZone: http://ppepper:123456@127.0.0.1:7000/eureka/
   instance:
-    prefer-ip-address: true #°ÑipµØÖ·×¢²áµ½Eureka·şÎñÖĞ
+    prefer-ip-address: true #æŠŠipåœ°å€æ³¨å†Œåˆ°EurekaæœåŠ¡ä¸­
     ip-address: 127.0.0.1
 zuul:
   routes:

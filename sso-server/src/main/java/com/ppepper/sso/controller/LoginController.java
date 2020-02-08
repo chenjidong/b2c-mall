@@ -1,6 +1,6 @@
 package com.ppepper.sso.controller;
 
-import com.ppepper.common.component.JwtTokenComponent;
+import com.ppepper.common.jwt.JwtTokenComponent;
 import com.ppepper.common.controller.BaseController;
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;

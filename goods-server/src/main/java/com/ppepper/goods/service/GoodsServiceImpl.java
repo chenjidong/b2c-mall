@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.entity.Column;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.ppepper.common.Const;
-import com.ppepper.common.component.CacheComponent;
+import com.ppepper.common.redis.CacheComponent;
 import com.ppepper.common.dto.SpuSkuDTO;
 import com.ppepper.common.dto.SpuDTO;
 import com.ppepper.common.enums.SpuStatusType;

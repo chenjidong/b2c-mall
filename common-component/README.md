@@ -1,15 +1,17 @@
 # 公共组件 （非必须）
 
 ### 目录说明
-* component 第三方缓存封装 如redis
-* config 数据库配置
+* controller 基类
 * domain 数据库实体基类
 * dto 数据传输类 与 domain 实体类对等
 * enums 所有数据实体枚举
 * exception 自定义包裹异常
 * feign 所有服务外部接口声明和实现
+* jwt java web token 框架封装
 * mapper 封装 mybatis mapper 基类
-* model mybatis 分页封装
+* model 统一回调json
+* mybatis 分页封装
+* redis redis
 * service 服务基类
 
 ### 引用方式
