@@ -12,7 +12,7 @@
     <artifactId>account</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>account</name>
-    <description>Demo project for Spring Boot</description>
+    <description>account service project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -32,19 +32,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-            <exclusions>
-                <exclusion>
-                    <!--排除Eureka自带的数据格式转换，否则返回的结果会被转成XML格式的数据-->
-                    <groupId>com.fasterxml.jackson.dataformat</groupId>
-                    <artifactId>jackson-dataformat-xml</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -52,6 +39,19 @@
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>2.1.5.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <!--排除Eureka自带的数据格式转换，否则返回的结果会被转成XML格式的数据-->
+                    <groupId>com.fasterxml.jackson.dataformat</groupId>
+                    <artifactId>jackson-dataformat-xml</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -64,17 +64,6 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>

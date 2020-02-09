@@ -1,4 +1,4 @@
-package com.ppepper.zuul.controller;
+package com.ppepper.common.exception;
 
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -11,13 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created with ChenJiDong
  * Created By 2020-02-09
- * 覆盖 zuul controller 捕捉异常
+ * 统一处理springboot 异常返回
+ * tips： 或继承  {@link org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController}  处理  只能存在一个
  */
 @RestController
-public class ZuulErrorController implements ErrorController {
+public class ServiceErrorController implements ErrorController {
 
     @RequestMapping
     public AjaxResult error(HttpServletRequest request, HttpServletResponse response) {
+        Integer code = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+
         return AjaxResult.error("系统繁忙！请稍后重试！");
     }
 
