@@ -8,6 +8,10 @@ eureka:
     fetch-registry: true #是否从Eureka服务中获取注册信息
     service-url:  #Eureka客户端与服务端进行交互的地址
      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:7000/eureka/ #多台服务中心配置 用于访问 其他配置中心 defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:7001/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:7002/eureka/
+  instance:
+    prefer-ip-address: true #把ip地址注册到Eureka服务中
+    lease-renewal-interval-in-seconds: 1  #默认30s 每间隔1s，向服务端发送一次心跳，证明自己依然”存活“ 测试用
+    lease-expiration-duration-in-seconds: 2 #默认90s 告诉服务端，如果我2s之内没有给你发心跳 则踢出 注册中心 测试用
 
 spring:
   security:

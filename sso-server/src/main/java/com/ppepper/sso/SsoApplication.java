@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Created with ChenJiDong
  * Created By 2020-02-07
  */
+@EnableDiscoveryClient //eureka client
 @SpringBootApplication(exclude = {MybatisPlusAutoConfiguration.class, DataSourceAutoConfiguration.class, RedisAutoConfiguration.class, RedisReactiveAutoConfiguration.class})
 //排除数据库 和 redis配置
 @ComponentScan(basePackages = {"com.ppepper.sso", "com.ppepper.common.feign", "com.ppepper.common.jwt"},
