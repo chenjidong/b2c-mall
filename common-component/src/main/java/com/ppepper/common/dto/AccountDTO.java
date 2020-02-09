@@ -26,4 +26,8 @@ public class AccountDTO extends SuperDTO {
     private Date gmtLastLogin;
 
     private String lastLoginIp;
+
+    private String password;
+
+
 }

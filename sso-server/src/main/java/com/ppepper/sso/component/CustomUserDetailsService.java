@@ -1,8 +1,8 @@
 package com.ppepper.sso.component;
 
+import com.ppepper.common.dto.AccountDTO;
+import com.ppepper.common.feign.AccountFeignService;
 import com.ppepper.common.security.SecurityUtils;
-import com.ppepper.sso.domain.AccountDO;
-import com.ppepper.sso.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -25,19 +25,19 @@ import static com.ppepper.common.security.SecurityUtils.ROLE_USER;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private AccountFeignService accountFeignService;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         String phone = SecurityUtils.getRealUsername(s); //加密后的username 需要解密
-        AccountDO accountDO = new AccountDO();
-        accountDO.setPhone(phone);
-        accountDO = accountMapper.selectOne(accountDO);
-        if (accountDO == null)
+
+        // TODO: 2020-02-09 后续需处理 安全问题
+        AccountDTO accountDTO = accountFeignService.getByUsername(phone);
+        if (accountDTO == null)
             return null;
 
         List<GrantedAuthority> grantedAuth = AuthorityUtils.createAuthorityList(ROLE_USER);
-        String username = SecurityUtils.getUsername(accountDO.getPhone(), ROLE_USER);
-        return new User(username, accountDO.getPassword(), grantedAuth);
+        String username = SecurityUtils.getUsername(accountDTO.getPhone(), ROLE_USER);
+        return new User(username, accountDTO.getPassword(), grantedAuth);
     }
 }

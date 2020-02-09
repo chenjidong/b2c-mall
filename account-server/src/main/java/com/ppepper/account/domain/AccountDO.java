@@ -1,4 +1,4 @@
-package com.ppepper.sso.domain;
+package com.ppepper.account.domain;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;

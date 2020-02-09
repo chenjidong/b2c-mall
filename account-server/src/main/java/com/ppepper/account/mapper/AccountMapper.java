@@ -1,8 +1,8 @@
-package com.ppepper.sso.mapper;
+package com.ppepper.account.mapper;
 
 
+import com.ppepper.account.domain.AccountDO;
 import com.ppepper.common.mapper.BaseMapper;
-import com.ppepper.sso.domain.AccountDO;
 
 /**
  * Created with ChenJiDong

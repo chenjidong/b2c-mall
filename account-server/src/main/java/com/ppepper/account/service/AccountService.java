@@ -1,4 +1,4 @@
-package com.ppepper.sso.service;
+package com.ppepper.account.service;
 
 import com.ppepper.common.dto.AccountDTO;
 

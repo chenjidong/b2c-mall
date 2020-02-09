@@ -1,9 +1,8 @@
-package com.ppepper.sso.service;
+package com.ppepper.account.service;
 
 import com.ppepper.common.dto.UserDTO;
 import com.ppepper.common.service.BaseServiceImpl;
-import com.ppepper.sso.domain.UserDO;
-import com.ppepper.sso.mapper.UserMapper;
+import com.ppepper.account.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

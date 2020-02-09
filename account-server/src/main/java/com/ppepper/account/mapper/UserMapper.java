@@ -1,9 +1,10 @@
-package com.ppepper.sso.mapper;
+package com.ppepper.account.mapper;
 
 
+import com.ppepper.account.domain.UserDO;
 import com.ppepper.common.dto.UserDTO;
+
 import com.ppepper.common.mapper.BaseMapper;
-import com.ppepper.sso.domain.UserDO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

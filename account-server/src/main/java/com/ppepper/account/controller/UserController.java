@@ -1,7 +1,7 @@
-package com.ppepper.sso.controller;
+package com.ppepper.account.controller;
 
+import com.ppepper.account.service.UserService;
 import com.ppepper.common.model.AjaxResult;
-import com.ppepper.sso.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-07
  */
 @RestController
-@RequestMapping("/api/sso/user")
+@RequestMapping("/api/account/user")
 public class UserController {
 
     @Autowired

@@ -20,22 +20,22 @@ import java.util.List;
 @FeignClient(name = "goods-service")
 public interface GoodsFeignClient {
 
-    @RequestMapping(value = "/goods/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/goods/get", method = RequestMethod.GET)
     public SpuDTO get(@RequestParam("id") Long id);
 
-    @RequestMapping(value = "/goods/category/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/goods/category/get", method = RequestMethod.GET)
     public SpuCategoryDTO getCategory(@RequestParam("id") Long id);
 
-    @RequestMapping(value = "/goods/category/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/goods/category/list", method = RequestMethod.GET)
     public List<SpuCategoryDTO> getCategoryList();
 
-    @RequestMapping(value = "/goods/appraise/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/goods/appraise/get", method = RequestMethod.GET)
     public SpuAppraiseDTO getAppraise(@RequestParam("id") Long id);
 
-    @RequestMapping(value = "/goods/appraise/selectUserAllAppraise", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/goods/appraise/selectUserAllAppraise", method = RequestMethod.GET)
     public Page<SpuAppraiseDTO> selectUserAllAppraise(@RequestParam("userId") Long userId, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size);
 
-    @RequestMapping(value = "/goods/appraise/selectSpuAllAppraise", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/goods/appraise/selectSpuAllAppraise", method = RequestMethod.GET)
     public Page<SpuAppraiseDTO> selectSpuAllAppraise(@RequestParam("spuId") Long spuId, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size);
 
 }

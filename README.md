@@ -37,6 +37,7 @@ For further reference, please consider the following sections:
 * sso-server       登录服务          端口：8200
 * zuul-server      网关服务          端口：9000
 * coupon-server    优惠券服务        端口：8300
+* account-server   账户服务          端口：8400
 * common-component 公共组件（集成数据库配置，redis配置 mybatis 分页配置 数据库实体类配置）
 
 ### 数据库

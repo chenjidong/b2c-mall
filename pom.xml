@@ -41,6 +41,7 @@
         <module>sso-server</module>
         <module>zuul-server</module>
         <module>coupon-server</module>
+        <module>account-server</module>
         <module>common-component</module>
     </modules>
 
