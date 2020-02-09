@@ -37,21 +37,34 @@ public class SecurityUtils {
      * @return boolean
      */
     public static boolean shouldFilter(String uri, String subject) {
-        if (StringUtils.isEmpty(subject))
-            return true;
-
-        if (!StringUtils.isEmpty(uri)) {
-            try {
-                String role = getRole(subject);
+        if (StringUtils.isEmpty(subject)) {
+            for (String role : PERMISSION_PATTERN_MAP.keySet()) {
                 for (String pattern : PERMISSION_PATTERN_MAP.get(role)) {
-                    if (PathUtils.isMatch(pattern, uri))
+                    if (PathUtils.isMatch(pattern, uri)) {
                         return true;
+                    }
                 }
-            } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-                return true;//匹配失败 也要拦截 在run() 中返回401
             }
-
+            return false;
         }
+
+        try {
+            String role = getRole(subject);
+            for (String pattern : PERMISSION_PATTERN_MAP.get(role)) {
+                if (PathUtils.isMatch(pattern, uri))
+                    return true;
+            }
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            //有可能是假的token
+            for (String role : PERMISSION_PATTERN_MAP.keySet()) {
+                for (String pattern : PERMISSION_PATTERN_MAP.get(role)) {
+                    if (PathUtils.isMatch(pattern, uri)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 

@@ -53,7 +53,7 @@ public class UserFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
         String token = request.getHeader(jwtTokenComponent.getHeader());//获取token
-        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(jwtTokenComponent.getUsernameFromToken(token))) {
+        if (StringUtils.isEmpty(token) || jwtTokenComponent.isTokenExpired(token)) {
             RequestContext.getCurrentContext().setSendZuulResponse(false);//不进行路由转发
             RequestContext.getCurrentContext().setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
             RequestContext.getCurrentContext().setResponseBody(JSON.toJSONString(AjaxResult.error("No Authority!")));
