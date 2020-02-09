@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-08
  */
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api/sso/account")
 public class AccountController extends BaseController {
 
     @Autowired

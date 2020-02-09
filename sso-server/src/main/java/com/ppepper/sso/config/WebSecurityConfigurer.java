@@ -1,5 +1,6 @@
 package com.ppepper.sso.config;
 
+import com.ppepper.common.security.SecurityUtils;
 import com.ppepper.sso.component.CustomUserDetailsAuthenticationProvider;
 import com.ppepper.sso.component.JwtBeforeAuthenticationTokenFilter;
 import com.ppepper.sso.component.NoAuthenticationEntryPoint;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -41,15 +43,21 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //使用自己的前置拦截器
+        //使用自己的前置拦截器 拦截 用户名密码登录filter
         http.addFilterBefore(jwtBeforeAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
         // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = http.authorizeRequests();
+        for (String role : SecurityUtils.PERMISSION_PATTERN_MAP.keySet()) {
+            authorizeRequests.antMatchers(SecurityUtils.PERMISSION_PATTERN_MAP.get(role).toArray(new String[]{})).hasRole(role);
+        }
+
         // 请求进行拦截 验证 accessToken
-        http.authorizeRequests()
-                .antMatchers("/admin/**").authenticated()// 范围最广应在最下面
-                .antMatchers("/api/**").authenticated()// 范围最广应在最下面
+        authorizeRequests
+//                .antMatchers("/admin/**").authenticated()// 范围最广应在最下面
+//                .antMatchers("/api/**").authenticated()// 范围最广应在最下面
                 ///其他请求都可以访问
                 .anyRequest().permitAll()
                 .and()

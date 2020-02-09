@@ -56,6 +56,10 @@ public class BaseController {
         return AjaxResult.success(data);
     }
 
+    public AjaxResult success(String msg, Object data) {
+        return AjaxResult.success(msg, data);
+    }
+
     /**
      * 返回失败消息
      */

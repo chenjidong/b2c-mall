@@ -15,7 +15,7 @@ import java.util.List;
  * Created By 2020-02-07
  */
 @RestController
-@RequestMapping(value = "/goods/category")
+@RequestMapping(value = "/api/goods/category")
 public class GoodsCategoryController {
     @Autowired
     private GoodsCategoryService goodsCategoryService;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-08
  */
 @RestController
-@RequestMapping("/coupon")
+@RequestMapping("/api/coupon")
 public class CouponController {
 
     @Autowired

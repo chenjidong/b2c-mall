@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-07
  */
 @RestController
-@RequestMapping("/goods/appraise")
+@RequestMapping("/api/goods/appraise")
 public class GoodsAppraiseController {
 
     @Autowired

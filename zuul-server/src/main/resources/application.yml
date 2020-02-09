@@ -16,10 +16,19 @@ eureka:
 zuul:
   routes:
    goods-service:
-         path: /goods/**
+         path: /api/goods/**
          serviceId: goods-service
          strip-prefix: false
    order-service:
-         path: /order/**
+         path: /api/order/**
          serviceId: order-service
          strip-prefix: false
+   coupon-service:
+         path: /api/coupon/**
+         serviceId: coupon-service
+         strip-prefix: false
+   sso-service:
+         path: /api/sso/**
+         serviceId: sso-service
+         strip-prefix: false
+  sensitive-headers:  # 设置敏感参数 cookie,set-Cookie,authorization

@@ -1,5 +1,6 @@
 package com.ppepper.sso.component;
 
+import com.ppepper.common.security.SecurityUtils;
 import com.ppepper.sso.domain.AccountDO;
 import com.ppepper.sso.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.ppepper.common.security.SecurityUtils.ROLE_USER;
+
 /**
  * Created with ChenJiDong
  * Created By 2020-02-08
@@ -20,22 +23,21 @@ import java.util.List;
  */
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
-    public static final String ROLE_USER = "ROLE_USER";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Autowired
     private AccountMapper accountMapper;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        String phone = SecurityUtils.getRealUsername(s); //加密后的username 需要解密
         AccountDO accountDO = new AccountDO();
-        accountDO.setPhone(s);
+        accountDO.setPhone(phone);
         accountDO = accountMapper.selectOne(accountDO);
         if (accountDO == null)
             return null;
 
         List<GrantedAuthority> grantedAuth = AuthorityUtils.createAuthorityList(ROLE_USER);
-
-        return new User(accountDO.getPhone(), accountDO.getPassword(), grantedAuth);
+        String username = SecurityUtils.getUsername(accountDO.getPhone(), ROLE_USER);
+        return new User(username, accountDO.getPassword(), grantedAuth);
     }
 }
