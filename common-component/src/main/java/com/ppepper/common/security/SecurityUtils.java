@@ -24,6 +24,7 @@ public class SecurityUtils {
             add("/api/sso/user/**");
             add("/api/order/**");
             add("/api/coupon/**");
+            add("/api/notice/**");
         }});
         put(NO_PREFIX_ROLE_ADMIN, new ArrayList<String>() {{
             add("/admin/**");

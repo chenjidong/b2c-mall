@@ -32,7 +32,11 @@ zuul:
          path: /api/sso/**
          serviceId: sso-service
          strip-prefix: false
-   sso-service:
+   account-service:
          path: /api/account/**
          serviceId: account-service
+         strip-prefix: false
+   notice-service:
+         path: /api/notice/**
+         serviceId: notice-service
          strip-prefix: false

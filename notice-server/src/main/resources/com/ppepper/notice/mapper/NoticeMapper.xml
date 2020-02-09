@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppepper.notice.mapper.NoticeMapper">
+
+
+    <select id="selectNoticePage" resultType="com.ppepper.common.dto.NoticeDTO">
+        SELECT
+            id,
+            title,
+            image,
+            description,
+            gmt_create as gmtCreate,
+            gmt_update as gmtUpdate,
+            account_id as accountId,
+            read_count as readCount
+        FROM
+            b2c_notice
+        WHERE
+            1 = 1
+        ORDER BY id DESC
+            LIMIT #{offset}, #{limit}
+
+    </select>
+
+    <select id="countNotice" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            b2c_notice
+    </select>
+
+
+
+</mapper>

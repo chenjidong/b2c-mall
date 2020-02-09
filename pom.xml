@@ -42,6 +42,7 @@
         <module>zuul-server</module>
         <module>coupon-server</module>
         <module>account-server</module>
+        <module>notice-server</module>
         <module>common-component</module>
     </modules>
 
