@@ -1,9 +1,10 @@
 package com.ppepper.account.service;
 
-import com.ppepper.common.dto.AccountDTO;
-import com.ppepper.common.service.BaseServiceImpl;
 import com.ppepper.account.domain.AccountDO;
 import com.ppepper.account.mapper.AccountMapper;
+import com.ppepper.common.dto.AccountDTO;
+import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.service.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,11 @@ public class AccountServiceImpl extends BaseServiceImpl implements AccountServic
     private AccountMapper accountMapper;
 
     @Override
-    public AccountDTO getByPhone(String phone) {
+    public AjaxResult getByPhone(String phone) {
         AccountDO accountDO = new AccountDO();
         accountDO.setPhone(phone);
-        return copyProperties(accountMapper.selectOne(accountDO), AccountDTO.class);
+
+        AccountDTO accountDTO = copyProperties(accountMapper.selectOne(accountDO), AccountDTO.class);
+        return success(accountDTO);
     }
 }

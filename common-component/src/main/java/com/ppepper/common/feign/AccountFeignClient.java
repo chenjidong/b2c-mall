@@ -1,6 +1,6 @@
 package com.ppepper.common.feign;
 
-import com.ppepper.common.dto.AccountDTO;
+import com.ppepper.common.model.AjaxResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AccountFeignClient {
 
     @RequestMapping("/api/account/getByUsername")
-    public AccountDTO getByUsername(@RequestParam("phone") String phone);
+    public AjaxResult getByUsername(@RequestParam("phone") String phone);
 
 }

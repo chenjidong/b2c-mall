@@ -1,7 +1,6 @@
 package com.ppepper.sso.component;
 
-import com.ppepper.common.jwt.JwtTokenComponent;
-import com.ppepper.common.security.SecurityUtils;
+import com.ppepper.common.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,19 +26,17 @@ public class JwtBeforeAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtTokenComponent jwtTokenComponent;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String token = httpServletRequest.getHeader(jwtTokenComponent.getHeader());//获取token
+        String token = httpServletRequest.getHeader(JwtTokenUtils.HEADER);//获取token
         if (!StringUtils.isEmpty(token)) {//判断token是否为空
-            String username = jwtTokenComponent.getUsernameFromToken(token);//取出token的用户信息
+            String username = JwtTokenUtils.getUsernameFromToken(token);//取出token的用户信息
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {//判断Security的用户认证信息
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 if (userDetails != null) {
-                    if (jwtTokenComponent.validateToken(token, userDetails.getUsername())) {//把前端传递的Token信息与当前的Security的用户信息进行校验
+                    if (JwtTokenUtils.validateToken(token, userDetails.getUsername())) {//把前端传递的Token信息与当前的Security的用户信息进行校验
                         // 将用户信息存入 authentication，方便后续校验
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));

@@ -22,6 +22,8 @@ public class Const {
 
     public static final Integer CACHE_ONE_DAY = 60 * 60 * 24;
 
+    public static final Integer CACHE_ONE_HOUR = 60 * 60;
+
 
     public static final String USER_ACCESS_TOKEN = "ACCESSTOKEN";
 

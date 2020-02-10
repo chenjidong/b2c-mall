@@ -23,6 +23,14 @@ public interface GoodsFeignClient {
     @RequestMapping(value = "/api/goods/get", method = RequestMethod.GET)
     public SpuDTO get(@RequestParam("id") Long id);
 
+    @RequestMapping(value = "/api/goods/list", method = RequestMethod.GET)
+    public List<SpuDTO> list(@RequestParam("pageNo") Integer pageNo,
+                             @RequestParam("pageSize") Integer pageSize,
+                             @RequestParam("categoryId") Long categoryId,
+                             @RequestParam("orderBy") String orderBy,
+                             @RequestParam("isAsc") Boolean isAsc,
+                             @RequestParam("title") String title);
+
     @RequestMapping(value = "/api/goods/category/get", method = RequestMethod.GET)
     public SpuCategoryDTO getCategory(@RequestParam("id") Long id);
 

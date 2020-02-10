@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
-import com.ppepper.common.jwt.JwtTokenComponent;
+import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.security.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,9 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class UserFilter extends ZuulFilter {
 
-    @Autowired
-    private JwtTokenComponent jwtTokenComponent;
-
     @Override
     public String filterType() {
         return FilterConstants.PRE_TYPE;
@@ -45,15 +41,15 @@ public class UserFilter extends ZuulFilter {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
         String uri = request.getRequestURI();
-        String token = request.getHeader(jwtTokenComponent.getHeader());//获取token
-        return SecurityUtils.shouldFilter(uri, jwtTokenComponent.getUsernameFromToken(token));
+        String token = request.getHeader(JwtTokenUtils.HEADER);//获取token
+        return SecurityUtils.shouldFilter(uri, JwtTokenUtils.getUsernameFromToken(token));
     }
 
     @Override
     public Object run() throws ZuulException {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
-        String token = request.getHeader(jwtTokenComponent.getHeader());//获取token
-        if (StringUtils.isEmpty(token) || jwtTokenComponent.isTokenExpired(token)) {
+        String token = request.getHeader(JwtTokenUtils.HEADER);//获取token
+        if (StringUtils.isEmpty(token) || JwtTokenUtils.isTokenExpired(token)) {
             RequestContext.getCurrentContext().setSendZuulResponse(false);//不进行路由转发
             RequestContext.getCurrentContext().setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
             RequestContext.getCurrentContext().setResponseBody(JSON.toJSONString(AjaxResult.error("No Authority!")));

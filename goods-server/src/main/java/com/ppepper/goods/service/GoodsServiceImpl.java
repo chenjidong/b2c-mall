@@ -1,29 +1,27 @@
 package com.ppepper.goods.service;
 
 
-import com.baomidou.mybatisplus.entity.Column;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.ppepper.common.Const;
-import com.ppepper.common.redis.CacheComponent;
-import com.ppepper.common.dto.SpuSkuDTO;
 import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.common.dto.SpuSkuDTO;
 import com.ppepper.common.enums.SpuStatusType;
-import com.ppepper.common.model.Page;
+import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.redis.CacheComponent;
 import com.ppepper.common.service.BaseServiceImpl;
-import com.ppepper.goods.domain.SpuSkuDO;
 import com.ppepper.goods.domain.SpuDO;
-import com.ppepper.goods.mapper.SpuSkuMapper;
+import com.ppepper.goods.domain.SpuSkuDO;
 import com.ppepper.goods.mapper.SpuMapper;
+import com.ppepper.goods.mapper.SpuSkuMapper;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Logger;
 
 
 /**
@@ -32,7 +30,7 @@ import java.util.Map;
  */
 @Service
 public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
-
+    private static final Logger logger = Logger.getLogger(GoodsServiceImpl.class.getSimpleName());
     @Autowired
     private SpuMapper spuMapper;
 
@@ -42,99 +40,63 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
     @Autowired
     private SpuSkuMapper spuSkuMapper;
 
-    private static final Column[] baseColumns = {
-            Column.create().column("id"),
-            Column.create().column("original_price").as("originalPrice"),
-            Column.create().column("price"),
-            Column.create().column("vip_price").as("vipPrice"),
-            Column.create().column("title"),
-            Column.create().column("sales"),
-            Column.create().column("img"),
-            Column.create().column("description"),
-            Column.create().column("category_id").as("categoryId"),
-            Column.create().column("freight_template_id").as("freightTemplateId"),
-            Column.create().column("unit"),
-            Column.create().column("status")};
-
-    /**
-     * SPU 销量缓存
-     */
-    private static final String CA_SPU_SALES_HASH = "CA_SPU_SALES_HASH";
-
     @Override
-    public Page<SpuDTO> getGoodsPage(Integer pageNo, Integer pageSize, Long categoryId, String orderBy, Boolean isAsc, String title) {
-        Wrapper<SpuDO> wrapper = new EntityWrapper<SpuDO>();
-
-
-        if (!StringUtils.isEmpty(title)) {
-            wrapper.like("title", title);
-        } else {
+    public AjaxResult list(Integer pageNo, Integer pageSize, Long categoryId, String orderBy, Boolean isAsc, String title) {
+        if (StringUtils.isEmpty(title)) {
             //若关键字为空，尝试从缓存取列表
-            Page objFromCache = cacheComponent.getObj(CA_SPU_PAGE_PREFIX + categoryId + "_" + pageNo + "_" + pageSize + "_" + orderBy + "_" + isAsc, Page.class);
+            AjaxResult objFromCache = cacheComponent.getObj(CACHE_SPU_PAGE_PREFIX + categoryId + "_" + pageNo + "_" + pageSize + "_" + orderBy + "_" + isAsc, AjaxResult.class);
             if (objFromCache != null) {
+                logger.info("缓存读取");
                 return objFromCache;
             }
         }
+
+        Wrapper<SpuDO> wrapper = new EntityWrapper<>();
+        if (title != null)
+            wrapper.like("title", title);
 
         if (orderBy != null && isAsc != null) {
             wrapper.orderBy(orderBy, isAsc);
         }
 
         wrapper.eq("status", SpuStatusType.SELLING.getCode());
-        wrapper.setSqlSelect(baseColumns);
-        List<SpuDO> spuDOS = spuMapper.selectPage(new RowBounds((pageNo - 1) * pageSize, pageSize), wrapper);
-        //组装SPU
-        List<SpuDTO> spuDTOList = new ArrayList<>();
-        spuDOS.forEach(item -> {
-            SpuDTO spuDTO = new SpuDTO();
-            BeanUtils.copyProperties(item, spuDTO);
-            Map<String, String> hashAll = cacheComponent.getHashAll(CA_SPU_SALES_HASH);
-            if (hashAll != null) {
-                String salesStr = hashAll.get("S" + item.getId());
-                if (!StringUtils.isEmpty(salesStr)) {
-                    spuDTO.setSales(new Integer(salesStr));
-                }
-            }
-            spuDTOList.add(spuDTO);
-        });
 
-        Integer count = spuMapper.selectCount(wrapper);
-        Page<SpuDTO> page = new Page<>(spuDTOList, pageNo, pageSize, count);
-        if (StringUtils.isEmpty(title)) {
-            //若关键字为空，制作缓存
-            cacheComponent.putObj(CA_SPU_PAGE_PREFIX + categoryId + "_" + pageNo + "_" + pageSize + "_" + orderBy + "_" + isAsc, page, Const.CACHE_ONE_DAY);
+        List<SpuDO> spuDOS = spuMapper.selectPage(new RowBounds((pageNo - 1) * pageSize, pageSize), wrapper);
+        List<SpuDTO> spuDTOList = copyListProperties(spuDOS, SpuDTO.class);
+
+        AjaxResult ajaxResult = success(spuDTOList);
+        if (StringUtils.isEmpty(title)) {//非条件筛选，制作缓存
+            cacheComponent.putObj(CACHE_SPU_PAGE_PREFIX + categoryId + "_" + pageNo + "_" + pageSize + "_" + orderBy + "_" + isAsc, ajaxResult, Const.CACHE_ONE_DAY);
         }
-        return page;
+        return success(spuDTOList);
     }
 
     @Override
-    public SpuDTO getGoods(Long spuId) {
+    public AjaxResult get(Long spuId) {
 
         SpuDO spuDO = spuMapper.selectById(spuId);
-        SpuDTO spuDTO = new SpuDTO();
-        BeanUtils.copyProperties(spuDO, spuDTO);
+        if (spuDO == null)
+            return error("商品不存在");
+
+        SpuDTO spuDTO = copyProperties(spuDO, SpuDTO.class);
 
         List<SpuSkuDO> spuSkuDOList = spuSkuMapper.selectList(
                 new EntityWrapper<SpuSkuDO>()
                         .eq("spu_id", spuId));
 
-        List<SpuSkuDTO> spuSkuDTOList = new ArrayList<>();
         if (spuSkuDOList != null && !spuSkuDOList.isEmpty()) {
+            List<SpuSkuDTO> spuSkuDTOList = new ArrayList<>();
             for (SpuSkuDO spuSkuDO : spuSkuDOList) {
-                SpuSkuDTO spuSkuDTO = new SpuSkuDTO();
-                BeanUtils.copyProperties(spuSkuDO, spuSkuDTO);
+                SpuSkuDTO spuSkuDTO = copyProperties(spuSkuDO, SpuSkuDTO.class);
                 spuSkuDTOList.add(spuSkuDTO);
             }
             spuDTO.setSkuList(spuSkuDTOList);
+
+            int sum = spuSkuDOList.stream().mapToInt(item -> item.getStock()).sum();
+            spuDTO.setStock(sum);
         }
 
-        String salesStr = cacheComponent.getHashRaw(CA_SPU_SALES_HASH, "S" + spuId);
-        if (!StringUtils.isEmpty(salesStr)) {
-            spuDTO.setSales(new Integer(salesStr));
-        }
-        int sum = spuSkuDOList.stream().mapToInt(item -> item.getStock()).sum();
-        spuDTO.setStock(sum);
 
-        return spuDTO;
+        return success(spuDTO);
     }
 }

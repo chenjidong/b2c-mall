@@ -1,6 +1,6 @@
 package com.ppepper.account.service;
 
-import com.ppepper.common.dto.AccountDTO;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -8,5 +8,5 @@ import com.ppepper.common.dto.AccountDTO;
  */
 public interface AccountService {
 
-  public AccountDTO getByPhone(String phone);
+    public AjaxResult getByPhone(String phone);
 }

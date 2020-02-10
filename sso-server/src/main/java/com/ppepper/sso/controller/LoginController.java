@@ -1,7 +1,7 @@
 package com.ppepper.sso.controller;
 
 import com.ppepper.common.controller.BaseController;
-import com.ppepper.common.jwt.JwtTokenComponent;
+import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController extends BaseController {
 
     @Autowired
-    private JwtTokenComponent jwtTokenComponent;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @RequestMapping("/login")
@@ -33,7 +30,7 @@ public class LoginController extends BaseController {
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         User userDetails = (User) authentication.getPrincipal();
         if (userDetails != null) {
-            String token = jwtTokenComponent.generateToken(userDetails.getUsername());
+            String token = JwtTokenUtils.generateToken(userDetails.getUsername());
             return success("登录成功", token);
         }
         return error("账号或密码不正确！");

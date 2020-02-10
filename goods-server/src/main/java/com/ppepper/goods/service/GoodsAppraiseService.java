@@ -1,7 +1,6 @@
 package com.ppepper.goods.service;
 
-import com.ppepper.common.dto.SpuAppraiseDTO;
-import com.ppepper.common.model.Page;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -9,9 +8,12 @@ import com.ppepper.common.model.Page;
  */
 public interface GoodsAppraiseService {
 
-    public SpuAppraiseDTO selectOneById(Long appraiseId);
+    /**
+     * 分页缓存 前缀
+     */
+    String CACHE_SPU_APPRAISE_PAGE_PREFIX = "CACHE_SPU_APPRAISE_PAGE_";
 
-    public Page<SpuAppraiseDTO> selectUserAllAppraise(Long userId, Integer offset, Integer size);
+    public AjaxResult get(Long accountId, Long appraiseId);
 
-    public Page<SpuAppraiseDTO> selectSpuAllAppraise(Long spuId, Integer offset, Integer size);
+    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, String orderBy, Boolean isAsc, String keyword, Integer score);
 }

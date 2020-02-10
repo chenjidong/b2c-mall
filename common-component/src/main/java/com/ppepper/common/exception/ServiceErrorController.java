@@ -19,10 +19,17 @@ public class ServiceErrorController implements ErrorController {
 
     @RequestMapping
     public AjaxResult error(HttpServletRequest request, HttpServletResponse response) {
-        Integer code = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+        String message = "系统繁忙~";
 
-        return AjaxResult.error("系统繁忙！请稍后重试！");
+        try {
+            Integer code = (Integer) request.getAttribute("javax.servlet.error.status_code");
+            Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+            message = code + " " + exception.getMessage();
+        } catch (NullPointerException | ClassCastException e1) {
+
+        }
+
+        return AjaxResult.error(message);
     }
 
     @Override

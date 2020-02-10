@@ -1,8 +1,6 @@
 package com.ppepper.goods.service;
 
-import com.ppepper.common.dto.SpuCategoryDTO;
-
-import java.util.List;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -10,7 +8,12 @@ import java.util.List;
  */
 public interface GoodsCategoryService {
 
-    public SpuCategoryDTO get(Long id);
+    /**
+     * 分页缓存 前缀
+     */
+    String CACHE_SPU_CATEGORY_PAGE_PREFIX = "CACHE_SPU_CATEGORY_PAGE_";
 
-    public List<SpuCategoryDTO> list();
+    public AjaxResult get(Long id);
+
+    public AjaxResult list();
 }

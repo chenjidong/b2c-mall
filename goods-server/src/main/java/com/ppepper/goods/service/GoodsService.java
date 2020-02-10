@@ -1,8 +1,7 @@
 package com.ppepper.goods.service;
 
 
-import com.ppepper.common.model.Page;
-import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -11,12 +10,12 @@ import com.ppepper.common.dto.SpuDTO;
 public interface GoodsService {
 
     /**
-     * SPU 分页缓存
+     * SPU 分页缓存 前缀
      */
-    public static final String CA_SPU_PAGE_PREFIX = "CA_SPU_PAGE_";
+    String CACHE_SPU_PAGE_PREFIX = "CACHE_SPU_PAGE_";
 
 
-    public Page<SpuDTO> getGoodsPage(
+    public AjaxResult list(
             Integer pageNo,
             Integer pageSize,
             Long categoryId,
@@ -24,7 +23,7 @@ public interface GoodsService {
             Boolean isAsc,
             String title);
 
-    public SpuDTO getGoods(
+    public AjaxResult get(
             Long spuId);
 
 }
