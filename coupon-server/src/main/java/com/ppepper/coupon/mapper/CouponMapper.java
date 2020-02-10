@@ -13,7 +13,4 @@ import java.util.List;
  */
 public interface CouponMapper extends BaseMapper<CouponDO> {
 
-    public Integer decCoupon(Long couponId);
-
-    public List<CouponDTO> getActiveCoupons();
 }

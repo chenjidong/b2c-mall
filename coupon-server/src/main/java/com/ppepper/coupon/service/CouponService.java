@@ -1,6 +1,6 @@
 package com.ppepper.coupon.service;
 
-import com.ppepper.common.dto.CouponDTO;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -8,6 +8,8 @@ import com.ppepper.common.dto.CouponDTO;
  */
 public interface CouponService {
 
-    public CouponDTO get(
+    public AjaxResult get(
             Long id);
+
+    public AjaxResult list(Integer pageNo, Integer pageSize, Long categoryId, Integer status, Integer type, String orderBy, Boolean isAsc, String title);
 }

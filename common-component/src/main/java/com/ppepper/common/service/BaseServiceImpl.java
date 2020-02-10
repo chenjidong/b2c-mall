@@ -17,6 +17,8 @@ public class BaseServiceImpl {
 
 
     protected <T> T copyProperties(Object source, Class clazz) {
+        if (source == null)
+            return null;
         T target = null;
         try {
             target = (T) clazz.newInstance();
@@ -31,7 +33,9 @@ public class BaseServiceImpl {
     protected <T> List<T> copyListProperties(List<?> sources, Class clazz) {
         List<T> targets = new ArrayList<>();
         for (Object obj : sources) {
-            targets.add(copyProperties(obj, clazz));
+            T target = copyProperties(obj, clazz);
+            if (target != null)
+                targets.add(target);
         }
         return targets;
     }

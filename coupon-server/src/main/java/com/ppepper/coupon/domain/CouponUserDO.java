@@ -17,8 +17,8 @@ import java.util.Date;
 @TableName("b2c_coupon_user")
 public class CouponUserDO extends SuperDO {
 
-    @TableField("user_id")
-    private Long userId;
+    @TableField("account_id")
+    private Long accountId;
 
     @TableField("coupon_id")
     private Long couponId;
