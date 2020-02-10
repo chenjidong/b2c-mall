@@ -1,8 +1,7 @@
 package com.ppepper.order.service;
 
 
-import com.ppepper.common.dto.OrderDTO;
-import com.ppepper.common.model.Page;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -10,7 +9,7 @@ import com.ppepper.common.model.Page;
  */
 public interface OrderService {
 
-    public OrderDTO get(Long id);
+    public AjaxResult get(Long id, Long accountId);
 
-    public Page<OrderDTO> list(Integer pageNo, Integer pageSize, Integer status, Long accountId);
+    public AjaxResult list(Integer pageNo, Integer pageSize, Integer status, Long accountId, String orderBy, Boolean isAsc);
 }

@@ -19,7 +19,7 @@ import org.springframework.context.annotation.FilterType;
 @EnableDiscoveryClient //eureka client
 @SpringBootApplication(exclude = {MybatisPlusAutoConfiguration.class, DataSourceAutoConfiguration.class, RedisAutoConfiguration.class, RedisReactiveAutoConfiguration.class})
 //排除数据库 和 redis配置
-@ComponentScan(basePackages = {"com.ppepper.sso", "com.ppepper.common.feign", "com.ppepper.common.jwt", "com.ppepper.common.exception"},
+@ComponentScan(basePackages = {"com.ppepper.sso", "com.ppepper.common.feign", "com.ppepper.common.exception"},
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {MybatisPlusConfig.class, RedisAutoConfig.class}))
 public class SsoApplication {
 

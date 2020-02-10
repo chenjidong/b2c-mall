@@ -1,36 +1,26 @@
 package com.ppepper.common.feign;
 
-import com.alibaba.fastjson.JSON;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ppepper.common.dto.AccountDTO;
-import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * Created with ChenJiDong
  * Created By 2020-02-09
  */
 @Service
-public class AccountFeignService {
+public class AccountFeignService extends BaseFeignService {
 
     @Autowired
     private AccountFeignClient accountFeignClient;
 
-    @HystrixCommand(fallbackMethod = "getByUsernameServiceOffline")
+    @HystrixCommand(fallbackMethod = "serviceOffline")
     public AccountDTO getByUsername(String username) {
-        AjaxResult ajaxResult = accountFeignClient.getByUsername(username);
-        try {
-            if (ajaxResult.getCode() == AjaxResult.Type.SUCCESS.value()) {
-                String json = JSON.toJSONString(ajaxResult.get(AjaxResult.DATA_TAG));
-                AccountDTO accountDTO = JSON.parseObject(json, AccountDTO.class);
-                return accountDTO;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return null;
+        if (StringUtils.isEmpty(username))
+            return null;
+        return convert(accountFeignClient.getByUsername(username), AccountDTO.class);
     }
 
     public AccountDTO serviceOffline(String username) {

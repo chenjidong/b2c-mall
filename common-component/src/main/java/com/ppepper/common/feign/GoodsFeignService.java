@@ -2,28 +2,24 @@ package com.ppepper.common.feign;
 
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.ppepper.common.dto.SpuAppraiseDTO;
-import com.ppepper.common.dto.SpuCategoryDTO;
 import com.ppepper.common.dto.SpuDTO;
-import com.ppepper.common.model.Page;
+import com.ppepper.common.dto.SuperDTO;
+import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with ChenJiDong
  * Created By 2020-02-05
  */
 @Service
-public class GoodsFeignService {
+public class GoodsFeignService extends BaseFeignService {
 
     @Autowired
     private GoodsFeignClient goodsFeignClient;
 
 
-    @HystrixCommand(fallbackMethod = "spuDTOServiceOffline")//服务不可用时  hystrix 自动调用指定函数返回
+    @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
     public SpuDTO get(Long id) {
         //eureka 调度
 //        String service = "goods-service";
@@ -38,58 +34,12 @@ public class GoodsFeignService {
 
 
 //        return restTemplate.getForObject(url, GoodsDTO.class);
-        SpuDTO spuDTO = goodsFeignClient.get(id);
-        return spuDTO;
+
+        return convert(goodsFeignClient.get(id), SpuDTO.class);
     }
 
-
-    @HystrixCommand(fallbackMethod = "spuCategoryDTOServiceOffline")
-    public SpuCategoryDTO getCategory(Long id) {
-        return goodsFeignClient.getCategory(id);
-    }
-
-    @HystrixCommand(fallbackMethod = "spuCategorysDTOServiceOffline")
-    public List<SpuCategoryDTO> getCategoryList() {
-        return goodsFeignClient.getCategoryList();
-    }
-
-    @HystrixCommand(fallbackMethod = "spuAppraiseDTOServiceOffline")
-    public SpuAppraiseDTO getAppraise(Long id) {
-        return goodsFeignClient.getAppraise(id);
-    }
-
-    @HystrixCommand(fallbackMethod = "selectSpuAllAppraiseServiceOffline")
-    public Page<SpuAppraiseDTO> selectSpuAllAppraise(Long spuId, Integer offset, Integer size) {
-        return goodsFeignClient.selectSpuAllAppraise(spuId, offset, size);
-    }
-
-    @HystrixCommand(fallbackMethod = "selectUserAllAppraiseServiceOffline")
-    public Page<SpuAppraiseDTO> selectUserAllAppraise(Long userId, Integer offset, Integer size) {
-        return goodsFeignClient.selectUserAllAppraise(userId, offset, size);
-    }
-
-    public SpuDTO spuDTOServiceOffline(Long id) {
-        return new SpuDTO();
-    }
-
-    public SpuCategoryDTO spuCategoryDTOServiceOffline(Long id) {
-        return new SpuCategoryDTO();
-    }
-
-    public List<SpuCategoryDTO> spuCategorysDTOServiceOffline() {
-        return new ArrayList<>();
-    }
-
-    public SpuAppraiseDTO spuAppraiseDTOServiceOffline(Long id) {
-        return new SpuAppraiseDTO();
-    }
-
-    public Page<SpuAppraiseDTO> selectUserAllAppraiseServiceOffline(Long userId, Integer offset, Integer size) {
-        return new Page<SpuAppraiseDTO>();
-    }
-
-    public Page<SpuAppraiseDTO> selectSpuAllAppraiseServiceOffline(Long spuId, Integer offset, Integer size) {
-        return new Page<SpuAppraiseDTO>();
+    public SpuDTO serviceOffline(Long id) {
+        return null;
     }
 
 }
