@@ -1,8 +1,6 @@
 package com.ppepper.notice.service;
 
-import com.ppepper.common.dto.NoticeDTO;
-
-import java.util.List;
+import com.ppepper.common.model.AjaxResult;
 
 /**
  * Created with ChenJiDong
@@ -10,7 +8,9 @@ import java.util.List;
  */
 public interface NoticeService {
 
-    public List<NoticeDTO> selectNoticePage(Integer offset, Integer limit);
+    public AjaxResult get(
+            Long accountId,
+            Long id);
 
-    public Long countNotice();
+    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Long categoryId, Integer type, String orderBy, Boolean isAsc, String title);
 }
