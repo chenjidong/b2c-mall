@@ -93,6 +93,12 @@ public class BaseServiceImpl {
         return AjaxResult.success(msg, data);
     }
 
+    public AjaxResult toAjax(Object data) {
+        if (data == null)
+            return error();
+        return success("", data);
+    }
+
     /**
      * 返回失败消息
      */

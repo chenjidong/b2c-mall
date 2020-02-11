@@ -22,4 +22,14 @@ public interface AccountFeignClient {
     @RequestMapping("/api/account/getByUsername")
     public AjaxResult getByUsername(@RequestParam("phone") String phone);
 
+
+    /**
+     * 获取收藏详情
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/api/account/collect/get")
+    public AjaxResult getCollect(@RequestParam("id") Long id);
+
 }
