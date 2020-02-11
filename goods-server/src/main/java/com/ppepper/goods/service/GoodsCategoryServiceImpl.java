@@ -1,10 +1,8 @@
 package com.ppepper.goods.service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.ppepper.common.Const;
 import com.ppepper.common.dto.SpuCategoryDTO;
 import com.ppepper.common.model.AjaxResult;
-import com.ppepper.common.redis.CacheComponent;
 import com.ppepper.common.service.BaseServiceImpl;
 import com.ppepper.goods.domain.SpuCategoryDO;
 import com.ppepper.goods.mapper.SpuCategoryMapper;
@@ -26,10 +24,6 @@ public class GoodsCategoryServiceImpl extends BaseServiceImpl implements GoodsCa
     @Autowired
     private SpuCategoryMapper spuCategoryMapper;
 
-    @Autowired
-    private CacheComponent cacheComponent;
-
-
     @Override
     public AjaxResult get(Long id) {
         SpuCategoryDO spuCategoryDO = spuCategoryMapper.selectById(id);
@@ -39,12 +33,7 @@ public class GoodsCategoryServiceImpl extends BaseServiceImpl implements GoodsCa
 
     @Override
     public AjaxResult list() {
-        //若关键字为空，尝试从缓存取列表
-        AjaxResult objFromCache = cacheComponent.getObj(CACHE_SPU_CATEGORY_PAGE_PREFIX+"1_999", AjaxResult.class);
-        if (objFromCache != null) {
-            logger.info("缓存读取");
-            return objFromCache;
-        }
+
         List<SpuCategoryDO> categoryDOList = spuCategoryMapper.selectList(new EntityWrapper<>());
 
         List<SpuCategoryDTO> categoryDTOList = copyListProperties(categoryDOList, SpuCategoryDTO.class);
@@ -71,10 +60,6 @@ public class GoodsCategoryServiceImpl extends BaseServiceImpl implements GoodsCa
             });
         });
 
-        AjaxResult ajaxResult = success(categoryDTOList);
-
-        cacheComponent.putObj(CACHE_SPU_CATEGORY_PAGE_PREFIX+"1_999", ajaxResult, Const.CACHE_ONE_DAY);
-
-        return ajaxResult;
+        return success(categoryDTOList);
     }
 }

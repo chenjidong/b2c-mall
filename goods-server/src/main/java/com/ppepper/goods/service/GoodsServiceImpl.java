@@ -3,12 +3,10 @@ package com.ppepper.goods.service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.ppepper.common.Const;
 import com.ppepper.common.dto.SpuDTO;
 import com.ppepper.common.dto.SpuSkuDTO;
 import com.ppepper.common.enums.SpuStatusType;
 import com.ppepper.common.model.AjaxResult;
-import com.ppepper.common.redis.CacheComponent;
 import com.ppepper.common.service.BaseServiceImpl;
 import com.ppepper.goods.domain.SpuDO;
 import com.ppepper.goods.domain.SpuSkuDO;
@@ -17,7 +15,6 @@ import com.ppepper.goods.mapper.SpuSkuMapper;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,21 +32,11 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
     private SpuMapper spuMapper;
 
     @Autowired
-    private CacheComponent cacheComponent;
-
-    @Autowired
     private SpuSkuMapper spuSkuMapper;
 
     @Override
     public AjaxResult list(Integer pageNo, Integer pageSize, Long categoryId, String orderBy, Boolean isAsc, String title) {
-        if (StringUtils.isEmpty(title)) {
-            //若关键字为空，尝试从缓存取列表
-            AjaxResult objFromCache = cacheComponent.getObj(CACHE_SPU_PAGE_PREFIX + categoryId + "_" + pageNo + "_" + pageSize + "_" + orderBy + "_" + isAsc, AjaxResult.class);
-            if (objFromCache != null) {
-                logger.info("缓存读取");
-                return objFromCache;
-            }
-        }
+
 
         Wrapper<SpuDO> wrapper = new EntityWrapper<>();
         if (title != null)
@@ -64,10 +51,6 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
         List<SpuDO> spuDOS = spuMapper.selectPage(new RowBounds((pageNo - 1) * pageSize, pageSize), wrapper);
         List<SpuDTO> spuDTOList = copyListProperties(spuDOS, SpuDTO.class);
 
-        AjaxResult ajaxResult = success(spuDTOList);
-        if (StringUtils.isEmpty(title)) {//非条件筛选，制作缓存
-            cacheComponent.putObj(CACHE_SPU_PAGE_PREFIX + categoryId + "_" + pageNo + "_" + pageSize + "_" + orderBy + "_" + isAsc, ajaxResult, Const.CACHE_ONE_DAY);
-        }
         return success(spuDTOList);
     }
 
