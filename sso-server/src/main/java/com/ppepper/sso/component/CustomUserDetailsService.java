@@ -29,15 +29,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        String phone = JwtTokenUtils.getRealUsername(s); //加密后的username 需要解密
 
-        // TODO: 2020-02-09 后续需处理 安全问题
-        AccountDTO accountDTO = accountFeignService.getByUsername(phone);
+        AccountDTO accountDTO = accountFeignService.getByUsername(s);
         if (accountDTO == null)
             return null;
 
         List<GrantedAuthority> grantedAuth = AuthorityUtils.createAuthorityList(ROLE_USER);
-        String username = JwtTokenUtils.generateUsername(accountDTO.getPhone(), ROLE_USER);
+        String username = JwtTokenUtils.generateSubject(accountDTO.getPhone(), accountDTO.getId(), ROLE_USER);
         return new User(username, accountDTO.getPassword(), grantedAuth);
     }
 }

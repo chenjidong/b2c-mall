@@ -1,8 +1,6 @@
 package com.ppepper.order.controller;
 
 
-import com.ppepper.common.dto.AccountDTO;
-import com.ppepper.common.feign.AccountFeignService;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.order.service.OrderService;
@@ -22,15 +20,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private AccountFeignService accountFeignService;
-
     @RequestMapping(value = "/get")
     public AjaxResult get(@RequestParam("id") Long id) {
-        AccountDTO accountDTO = accountFeignService.getByUsername(JwtTokenUtils.getRealUsername());
-        Long accountId = accountDTO == null ? 0L : accountDTO.getId();
-
-        return orderService.get(id, accountId);
+        return orderService.get(id, JwtTokenUtils.getCurrentAccountIdByToken());
     }
 
     @RequestMapping(value = "/list")
@@ -39,9 +31,7 @@ public class OrderController {
                            @RequestParam("status") Integer status,
                            @RequestParam("orderBy") String orderBy,
                            @RequestParam("isAsc") Boolean isAsc) {
-        AccountDTO accountDTO = accountFeignService.getByUsername(JwtTokenUtils.getRealUsername());
-        Long accountId = accountDTO == null ? 0L : accountDTO.getId();
 
-        return orderService.list(pageNo, pageSize, status, accountId, orderBy, isAsc);
+        return orderService.list(pageNo, pageSize, status, JwtTokenUtils.getCurrentAccountIdByToken(), orderBy, isAsc);
     }
 }

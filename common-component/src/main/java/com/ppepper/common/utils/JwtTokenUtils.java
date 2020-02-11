@@ -1,11 +1,12 @@
 package com.ppepper.common.utils;
 
-import com.ppepper.common.security.SecurityUtils;
+import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.util.StringUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,20 +67,20 @@ public class JwtTokenUtils {
     }
 
     /**
-     * 从令牌中获取用户名
+     * 从令牌中获取 subject json 信息
      *
      * @param token 令牌
      * @return 用户名
      */
-    public static String getUsernameFromToken(String token) {
-        String username;
+    public static String decodeToken(String token) {
+        String subject;
         try {
             Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
+            subject = claims.getSubject();
         } catch (Exception e) {
-            username = null;
+            subject = null;
         }
-        return username;
+        return subject;
     }
 
     /**
@@ -120,84 +121,116 @@ public class JwtTokenUtils {
      * 验证令牌
      *
      * @param token           令牌
-     * @param currentUsername 用户
+     * @param currentUsername 处理后的 username {@link JwtTokenUtils#generateSubject(java.lang.String, java.lang.Long, java.lang.String...)}
      * @return 是否有效
      */
     public static Boolean validateToken(String token, String currentUsername) {
-        String username = getUsernameFromToken(token);
-        return (username.equals(currentUsername) && !isTokenExpired(token));
+        String username = decodeToken(token);
+        return (currentUsername.equals(username) && !isTokenExpired(token));
     }
 
-
     /**
-     * 获取不带前缀 ‘ROLE_’ 角色名称
+     * @param token 加密的token
      */
-    public static String getRole(String subject) {
-        String name;
+    public static JwtSubjectBean getSubjectByToken(String token) {
         try {
-            name = subject.split("\\.")[1].replace(SecurityUtils.PREFIX_ROLE, "").trim();
-        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            return JSON.parseObject(decodeToken(token), JwtSubjectBean.class);
+        } catch (Exception e) {
             return null;
         }
-
-        return name;
     }
 
     /**
-     * 获取真实username
-     *
-     * @param username jwt 解密后的subject
-     * @return
-     */
-    public static String getRealUsername(String username) {
-        String name;
-        try {
-            name = username.split("\\.")[0].trim();
-        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-            return null;
-        }
-        return name;
-    }
-
-    /**
-     * 获取当前请求的真实username ，第一个'.' 之前表示真实的 username
+     * 获取当前请求的真实username JwtSubjectBean
      *
      * @return null
      */
-    public static String getRealUsername() {
+    public static JwtSubjectBean getCurrentSubjectByToken() {
         try {
             String token = ServletUtils.getHeaderParameter(JwtTokenUtils.HEADER);
             if (!StringUtils.isEmpty(token) && !JwtTokenUtils.isTokenExpired(token)) {
-                String username = JwtTokenUtils.getUsernameFromToken(token);
-                return username.split("\\.")[0].trim();
+                return getSubjectByToken(token);
             }
-        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
             return null;
         }
         return null;
     }
 
     /**
-     * \
-     * 生成  jwt subject 字符串
+     * 获取当前 请求 token 中的accountId
      *
-     * @param username 真实username
-     * @param roles    角色数组
-     * @return '.' 表示角色  ',' 隔开
+     * @return 默认0  避免mybatis  空判断导致返回全部
      */
-    public static String generateUsername(String username, String... roles) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (roles.length == 0)
-            stringBuilder.append(roles[0]);
-        else {
-            for (int i = 0; i < roles.length; i++) {
-                stringBuilder.append(roles[i]);
-                if (i > (roles.length - 1)) {
-                    stringBuilder.append(",");
-                }
-            }
-        }
-        return username + "." + stringBuilder.toString();
+    public static Long getCurrentAccountIdByToken() {
+        JwtSubjectBean bean = getCurrentSubjectByToken();
+        if (bean != null)
+            return bean.getAccountId();
+
+        return 0L;
     }
 
+    /**
+     * 获取当前请求 token 中的 username
+     *
+     * @return sso 服务中 使用手机号
+     */
+    public static String getCurrentUsernameByToken() {
+        JwtSubjectBean bean = getCurrentSubjectByToken();
+        if (bean != null)
+            return bean.getUsername();
+
+        return null;
+    }
+
+    /**
+     * 生成  jwt subject 字符串
+     */
+    public static String generateSubject(String username, Long accountId, String... roles) {
+        return JSON.toJSONString(new JwtTokenUtils.JwtSubjectBean(username, accountId, roles));
+    }
+
+
+    /**
+     * 自定义 jwt subject 内容 方便解析
+     * todo 不要把密码放进去
+     */
+    public static class JwtSubjectBean implements Serializable {
+        private String username;//真实的 username 既 手机号
+        private Long accountId;
+        private String[] roles;
+
+        public JwtSubjectBean() {
+        }
+
+        public JwtSubjectBean(String username, Long accountId, String[] roles) {
+            this.username = username;
+            this.accountId = accountId;
+            this.roles = roles;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public Long getAccountId() {
+            return accountId;
+        }
+
+        public void setAccountId(Long accountId) {
+            this.accountId = accountId;
+        }
+
+        public String[] getRoles() {
+            return roles;
+        }
+
+        public void setRoles(String[] roles) {
+            this.roles = roles;
+        }
+    }
 }

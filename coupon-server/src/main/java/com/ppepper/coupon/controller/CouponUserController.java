@@ -1,7 +1,5 @@
 package com.ppepper.coupon.controller;
 
-import com.ppepper.common.dto.AccountDTO;
-import com.ppepper.common.feign.AccountFeignService;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.coupon.service.CouponUserService;
@@ -21,14 +19,9 @@ public class CouponUserController {
     @Autowired
     private CouponUserService couponUserService;
 
-    @Autowired
-    private AccountFeignService accountFeignService;
-
     @RequestMapping("/get")
     public AjaxResult get(@RequestParam("id") Long id) {
-        AccountDTO accountDTO = accountFeignService.getByUsername(JwtTokenUtils.getRealUsername());
-        Long accountId = accountDTO == null ? 0L : accountDTO.getId();
-        return couponUserService.get(accountId, id);
+        return couponUserService.get(JwtTokenUtils.getCurrentAccountIdByToken(), id);
     }
 
     @RequestMapping("/list")
@@ -40,8 +33,6 @@ public class CouponUserController {
                            @RequestParam("orderBy") String orderBy,
                            @RequestParam("isAsc") Boolean isAsc,
                            @RequestParam("title") String title) {
-        AccountDTO accountDTO = accountFeignService.getByUsername(JwtTokenUtils.getRealUsername());
-        Long accountId = accountDTO == null ? 0L : accountDTO.getId();
-        return couponUserService.list(accountId, pageNo, pageSize, categoryId, status, type, orderBy, isAsc, title);
+        return couponUserService.list(JwtTokenUtils.getCurrentAccountIdByToken(), pageNo, pageSize, categoryId, status, type, orderBy, isAsc, title);
     }
 }

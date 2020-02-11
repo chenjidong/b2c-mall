@@ -1,8 +1,6 @@
 package com.ppepper.notice.controller;
 
 import com.ppepper.common.controller.BaseController;
-import com.ppepper.common.dto.AccountDTO;
-import com.ppepper.common.feign.AccountFeignService;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.notice.service.NoticeService;
@@ -22,27 +20,21 @@ public class NoticeController extends BaseController {
     @Autowired
     private NoticeService noticeService;
 
-    @Autowired
-    private AccountFeignService accountFeignService;
-
 
     @RequestMapping("/user/get")
     public AjaxResult get(@RequestParam("id") Long id) {
-        AccountDTO accountDTO = accountFeignService.getByUsername(JwtTokenUtils.getRealUsername());
-        Long accountId = accountDTO == null ? 0L : accountDTO.getId();
-        return noticeService.get(accountId, id);
+
+        return noticeService.get(JwtTokenUtils.getCurrentAccountIdByToken(), id);
     }
 
     @RequestMapping("/user/list")
     public AjaxResult list(@RequestParam("pageNo") Integer pageNo,
                            @RequestParam("pageSize") Integer pageSize,
-                           @RequestParam("categoryId") Long categoryId,
                            @RequestParam("type") Integer type,
                            @RequestParam("orderBy") String orderBy,
                            @RequestParam("isAsc") Boolean isAsc,
                            @RequestParam("title") String title) {
-        AccountDTO accountDTO = accountFeignService.getByUsername(JwtTokenUtils.getRealUsername());
-        Long accountId = accountDTO == null ? 0L : accountDTO.getId();
-        return noticeService.list(accountId, pageNo, pageSize, categoryId, type, orderBy, isAsc, title);
+
+        return noticeService.list(JwtTokenUtils.getCurrentAccountIdByToken(), pageNo, pageSize, type, orderBy, isAsc, title);
     }
 }

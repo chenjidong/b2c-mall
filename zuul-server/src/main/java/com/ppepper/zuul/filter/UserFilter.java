@@ -42,7 +42,7 @@ public class UserFilter extends ZuulFilter {
         HttpServletRequest request = requestContext.getRequest();
         String uri = request.getRequestURI();
         String token = request.getHeader(JwtTokenUtils.HEADER);//获取token
-        return SecurityUtils.shouldFilter(uri, JwtTokenUtils.getUsernameFromToken(token));
+        return SecurityUtils.shouldFilter(uri, token);
     }
 
     @Override

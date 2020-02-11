@@ -2,7 +2,6 @@ package com.ppepper.common.security;
 
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.common.utils.PathUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,11 +36,13 @@ public class SecurityUtils {
     /**
      * 检查 zuul 是否需要权限拦截
      *
-     * @param uri 请求路径
-     * @return boolean
+     * @param uri   请求uri
+     * @param token
+     * @return
      */
-    public static boolean shouldFilter(String uri, String subject) {
-        if (StringUtils.isEmpty(subject)) {
+    public static boolean shouldFilter(String uri, String token) {
+        JwtTokenUtils.JwtSubjectBean bean = JwtTokenUtils.getSubjectByToken(token);
+        if (bean == null) {
             for (String role : PERMISSION_PATTERN_MAP.keySet()) {
                 for (String pattern : PERMISSION_PATTERN_MAP.get(role)) {
                     if (PathUtils.isMatch(pattern, uri)) {
@@ -53,7 +54,7 @@ public class SecurityUtils {
         }
 
         try {
-            String role = JwtTokenUtils.getRole(subject);
+            String role = getRole(bean.getRoles()[0]);
             for (String pattern : PERMISSION_PATTERN_MAP.get(role)) {
                 if (PathUtils.isMatch(pattern, uri))
                     return true;
@@ -70,5 +71,19 @@ public class SecurityUtils {
         }
 
         return false;
+    }
+
+
+    /**
+     * 获取不带前缀 ‘ROLE_’ 角色名称
+     */
+    public static String getRole(String role) {
+        String name;
+        try {
+            name = role.replace(SecurityUtils.PREFIX_ROLE, "").trim();
+        } catch (Exception e) {
+            return null;
+        }
+        return name;
     }
 }

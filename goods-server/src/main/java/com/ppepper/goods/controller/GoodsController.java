@@ -23,7 +23,7 @@ public class GoodsController extends BaseController {
 
     @RequestMapping(value = "/get")
     public AjaxResult findGoodsById(@RequestParam("id") Long id) {
-        String phone = JwtTokenUtils.getRealUsername();
+        String phone = JwtTokenUtils.getCurrentUsernameByToken();
         System.out.println("findGoodsById() id:" + id + " phone:" + phone);
         return goodsService.get(id);
     }

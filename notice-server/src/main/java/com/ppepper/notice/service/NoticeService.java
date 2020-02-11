@@ -12,5 +12,5 @@ public interface NoticeService {
             Long accountId,
             Long id);
 
-    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Long categoryId, Integer type, String orderBy, Boolean isAsc, String title);
+    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Integer type, String orderBy, Boolean isAsc, String title);
 }

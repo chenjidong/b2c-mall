@@ -29,24 +29,32 @@ public class JwtBeforeAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        parseToken(httpServletRequest);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
+
+    private void parseToken(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader(JwtTokenUtils.HEADER);//获取token
         if (!StringUtils.isEmpty(token)) {//判断token是否为空
-            String username = JwtTokenUtils.getUsernameFromToken(token);//取出token的用户信息
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {//判断Security的用户认证信息
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                if (userDetails != null) {
-                    if (JwtTokenUtils.validateToken(token, userDetails.getUsername())) {//把前端传递的Token信息与当前的Security的用户信息进行校验
-                        // 将用户信息存入 authentication，方便后续校验
-                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                        // 将 authentication 存入 ThreadLocal，方便后续获取用户信息
-                        // 验证正常,生成authentication
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
+            JwtTokenUtils.JwtSubjectBean bean = JwtTokenUtils.getSubjectByToken(token);
+
+            //判断Security的用户认证信息
+            if (bean != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(bean.getUsername());
+
+                //把前端传递的Token信息与当前的Security的用户信息进行校验
+                if (userDetails != null && JwtTokenUtils.validateToken(token, userDetails.getUsername())) {
+
+                    // 将用户信息存入 authentication，方便后续校验
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                    // 将 authentication 存入 ThreadLocal，方便后续获取用户信息
+                    // 验证正常,生成authentication
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+
             }
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

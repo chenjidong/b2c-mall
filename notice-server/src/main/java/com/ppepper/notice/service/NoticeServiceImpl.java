@@ -34,7 +34,7 @@ public class NoticeServiceImpl extends BaseServiceImpl implements NoticeService 
     }
 
     @Override
-    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Long categoryId, Integer type, String orderBy, Boolean isAsc, String title) {
+    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Integer type, String orderBy, Boolean isAsc, String title) {
         Wrapper<NoticeDO> wrapper = new EntityWrapper<>();
         if (StringUtils.isNotEmpty(title))
             wrapper.like("title", title);
@@ -43,8 +43,6 @@ public class NoticeServiceImpl extends BaseServiceImpl implements NoticeService 
         if (type != null)
             wrapper.eq("type", type);
 
-        if (categoryId != null)
-            wrapper.eq("category_id", categoryId);
         wrapper.eq("account_id", accountId);
         List<NoticeDO> couponDOList = noticeMapper.selectPage(new RowBounds((pageNo - 1) * pageSize, pageSize), wrapper);
         if (couponDOList != null && !couponDOList.isEmpty()) {
