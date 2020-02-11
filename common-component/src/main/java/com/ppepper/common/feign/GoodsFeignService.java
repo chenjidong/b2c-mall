@@ -43,6 +43,18 @@ public class GoodsFeignService extends BaseFeignService {
         return convertList(goodsFeignClient.getByIds(ids), SpuDTO.class);
     }
 
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public List<SpuDTO> getBySkuIds(Long[] ids) {
+        return convertList(goodsFeignClient.getBySkuIds(ids), SpuDTO.class);
+    }
+
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public SpuDTO getBySkuIds(Long id) {
+        List<SpuDTO> list = convertList(goodsFeignClient.getBySkuIds(new Long[]{id}), SpuDTO.class);
+        return list == null ? null : list.get(0);
+    }
+
+
     public SpuDTO serviceOffline(Long id) {
         return null;
     }

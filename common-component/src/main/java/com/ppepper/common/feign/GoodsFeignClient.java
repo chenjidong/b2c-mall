@@ -17,6 +17,7 @@ public interface GoodsFeignClient {
 
     /**
      * 商品详情
+     *
      * @param id 商品id
      * @return json
      */
@@ -24,6 +25,16 @@ public interface GoodsFeignClient {
     public AjaxResult get(@RequestParam("id") Long id);
 
     @RequestMapping(value = "/api/goods/getByIds", method = RequestMethod.GET)
-    public AjaxResult getByIds(@RequestParam("ids")Long[] ids);
+    public AjaxResult getByIds(@RequestParam("ids") Long[] ids);
+
+
+    /**
+     * spu 只包含 当前skuid 的
+     *
+     * @param skuIds
+     * @return
+     */
+    @RequestMapping(value = "/api/goods/getBySkuIds", method = RequestMethod.GET)
+    public AjaxResult getBySkuIds(@RequestParam("skuIds") Long[] skuIds);
 
 }

@@ -16,6 +16,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,6 +46,9 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
         if (orderBy != null && isAsc != null) {
             wrapper.orderBy(orderBy, isAsc);
         }
+
+        if (categoryId != null)
+            wrapper.eq("category_id", categoryId);
 
         wrapper.eq("status", SpuStatusType.SELLING.getCode());
 
@@ -106,5 +110,22 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
             return toAjax(spuDTOList);
         }
         return error("查询失败");
+    }
+
+    @Override
+    public AjaxResult getBySkuIds(Long[] skuIds) {
+        List<SpuDTO> spuDTOList = new ArrayList<>();
+        for (Long skuId : skuIds) {
+            SpuSkuDO spuSkuDO = spuSkuMapper.selectById(skuId);
+            if (spuSkuDO != null) {
+                SpuDO spuDO = spuMapper.selectById(spuSkuDO.getSpuId());
+                SpuDTO spuDTO = copyProperties(spuDO, SpuDTO.class);
+                spuDTO.setSkuList(new ArrayList<SpuSkuDTO>() {{
+                    add(copyProperties(spuSkuDO, SpuSkuDTO.class));
+                }});
+                spuDTOList.add(spuDTO);
+            }
+        }
+        return toAjax(spuDTOList);
     }
 }

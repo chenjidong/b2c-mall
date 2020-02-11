@@ -28,4 +28,6 @@ public interface GoodsService {
 
 
     public AjaxResult getByIds(Long[] ids);
+
+    public AjaxResult getBySkuIds(Long[] skuIds);
 }

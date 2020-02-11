@@ -28,6 +28,11 @@ public class GoodsController extends BaseController {
         return goodsService.get(id);
     }
 
+    @RequestMapping(value = "/getBySkuIds")
+    public AjaxResult getBySkuIds(@RequestParam("skuId") Long[] skuIds) {
+        return goodsService.getBySkuIds(skuIds);
+    }
+
     @RequestMapping(value = "/list")
     public AjaxResult list(@RequestParam("pageNo") Integer pageNo,
                            @RequestParam("pageSize") Integer pageSize,
