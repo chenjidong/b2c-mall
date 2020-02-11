@@ -13,4 +13,5 @@ public class CollectDTO extends SuperDTO {
 
     private Integer type;
 
+    private SpuDTO spuDTO;
 }

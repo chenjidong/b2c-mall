@@ -24,6 +24,11 @@ public class AccountServiceImpl extends BaseServiceImpl implements AccountServic
         accountDO.setPhone(phone);
 
         AccountDTO accountDTO = copyProperties(accountMapper.selectOne(accountDO), AccountDTO.class);
-        return success(accountDTO);
+        return toAjax(accountDTO);
+    }
+
+    @Override
+    public AjaxResult get(Long id) {
+        return toAjax(copyProperties(accountMapper.selectById(id), AccountDTO.class));
     }
 }

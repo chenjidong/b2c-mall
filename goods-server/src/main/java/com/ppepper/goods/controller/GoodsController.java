@@ -37,4 +37,9 @@ public class GoodsController extends BaseController {
                            @RequestParam("title") String title) {
         return goodsService.list(pageNo, pageSize, categoryId, orderBy, isAsc, title);
     }
+
+    @RequestMapping(value = "/getByIds")
+    public AjaxResult getByIds(@RequestParam("ids") Long[] ids) {
+        return goodsService.getByIds(ids);
+    }
 }

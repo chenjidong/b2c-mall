@@ -16,7 +16,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -51,7 +51,17 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
         List<SpuDO> spuDOS = spuMapper.selectPage(new RowBounds((pageNo - 1) * pageSize, pageSize), wrapper);
         List<SpuDTO> spuDTOList = copyListProperties(spuDOS, SpuDTO.class);
 
-        return success(spuDTOList);
+        spuDTOList.forEach(item -> {
+            item.setDetail(null);
+            List<SpuSkuDO> spuSkuDOList = spuSkuMapper.selectList(
+                    new EntityWrapper<SpuSkuDO>().eq("spu_id", item.getId()));
+            if (spuSkuDOList != null && !spuSkuDOList.isEmpty()) {
+                List<SpuSkuDTO> spuSkuDTOList = copyListProperties(spuSkuDOList, SpuSkuDTO.class);
+                item.setSkuList(spuSkuDTOList);
+            }
+        });
+
+        return toAjax(spuDTOList);
     }
 
     @Override
@@ -68,18 +78,33 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
                         .eq("spu_id", spuId));
 
         if (spuSkuDOList != null && !spuSkuDOList.isEmpty()) {
-            List<SpuSkuDTO> spuSkuDTOList = new ArrayList<>();
-            for (SpuSkuDO spuSkuDO : spuSkuDOList) {
-                SpuSkuDTO spuSkuDTO = copyProperties(spuSkuDO, SpuSkuDTO.class);
-                spuSkuDTOList.add(spuSkuDTO);
-            }
+            List<SpuSkuDTO> spuSkuDTOList = copyListProperties(spuSkuDOList, SpuSkuDTO.class);
+            int sum = spuSkuDTOList.stream().mapToInt(item -> item.getStock()).sum();
             spuDTO.setSkuList(spuSkuDTOList);
-
-            int sum = spuSkuDOList.stream().mapToInt(item -> item.getStock()).sum();
             spuDTO.setStock(sum);
         }
 
 
         return success(spuDTO);
+    }
+
+    @Override
+    public AjaxResult getByIds(Long[] ids) {
+        List<SpuDO> spuDOS = spuMapper.selectBatchIds(Arrays.asList(ids));
+        if (spuDOS != null) {
+            List<SpuDTO> spuDTOList = copyListProperties(spuDOS, SpuDTO.class);
+            spuDTOList.forEach(item -> {
+                item.setDetail(null);
+                List<SpuSkuDO> spuSkuDOList = spuSkuMapper.selectList(
+                        new EntityWrapper<SpuSkuDO>()
+                                .eq("spu_id", item.getId()));
+                if (spuSkuDOList != null && !spuSkuDOList.isEmpty()) {
+                    List<SpuSkuDTO> spuSkuDTOList = copyListProperties(spuSkuDOList, SpuSkuDTO.class);
+                    item.setSkuList(spuSkuDTOList);
+                }
+            });
+            return toAjax(spuDTOList);
+        }
+        return error("查询失败");
     }
 }

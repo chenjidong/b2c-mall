@@ -23,4 +23,7 @@ public interface GoodsFeignClient {
     @RequestMapping(value = "/api/goods/get", method = RequestMethod.GET)
     public AjaxResult get(@RequestParam("id") Long id);
 
+    @RequestMapping(value = "/api/goods/getByIds", method = RequestMethod.GET)
+    public AjaxResult getByIds(@RequestParam("ids")Long[] ids);
+
 }

@@ -9,4 +9,6 @@ import com.ppepper.common.model.AjaxResult;
 public interface AccountService {
 
     public AjaxResult getByPhone(String phone);
+
+    public AjaxResult get(Long id);
 }

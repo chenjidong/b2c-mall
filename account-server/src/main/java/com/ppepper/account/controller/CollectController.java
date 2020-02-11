@@ -25,6 +25,13 @@ public class CollectController {
         return collectService.get(JwtTokenUtils.getCurrentAccountIdByToken(), id);
     }
 
+    @RequestMapping("/list")
+    public AjaxResult list(@RequestParam("pageNo") Integer pageNo,
+                           @RequestParam("pageSize") Integer pageSize,
+                           @RequestParam("type") Integer type) {
+        return collectService.list(JwtTokenUtils.getCurrentAccountIdByToken(), pageNo, pageSize, type);
+    }
+
     @RequestMapping("/save")
     public AjaxResult save(@RequestParam("id") Long id, @RequestParam("type") Integer type, @RequestParam("isDel") Boolean isDel) {
         if (isDel == null)

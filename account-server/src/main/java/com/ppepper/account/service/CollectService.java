@@ -11,7 +11,7 @@ public interface CollectService {
 
     public AjaxResult get(Long accountId, Long id);
 
-    public AjaxResult list(Long account, Integer pageNo, Integer pageSize, Integer type);
+    public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Integer type);
 
 
     public AjaxResult save(Long accountId, Long id, Integer type, Boolean isDel);

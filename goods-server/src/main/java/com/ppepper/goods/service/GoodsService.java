@@ -26,4 +26,6 @@ public interface GoodsService {
     public AjaxResult get(
             Long spuId);
 
+
+    public AjaxResult getByIds(Long[] ids);
 }
