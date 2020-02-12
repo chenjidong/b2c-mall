@@ -37,4 +37,11 @@ public interface GoodsFeignClient {
     @RequestMapping(value = "/api/goods/getBySkuIds", method = RequestMethod.GET)
     public AjaxResult getBySkuIds(@RequestParam("skuIds") Long[] skuIds);
 
+
+    @RequestMapping(value = "/api/goods/stock")
+    public AjaxResult stock(@RequestParam("id") Long id, @RequestParam("num") Integer num);
+
+    @RequestMapping(value = "/api/goods/freezeStock")
+    public AjaxResult freezeStock(@RequestParam("id") Long id, @RequestParam("num") Integer num);
+
 }

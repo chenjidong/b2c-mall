@@ -15,6 +15,9 @@ eureka:
     ip-address: 127.0.0.1
 zuul:
   sensitive-headers:  # 设置敏感参数 cookie,set-Cookie,authorization
+  host:
+    socket-timeout-millis: 10000
+    connect-timeout-millis: 10000
   routes:
    goods-service:
          path: /api/goods/**
@@ -40,3 +43,4 @@ zuul:
          path: /api/notice/**
          serviceId: notice-service
          strip-prefix: false
+

@@ -56,13 +56,15 @@ public class CartServiceImpl extends BaseServiceImpl implements CartService {
             });
 
             List<SpuDTO> spuDTO = goodsFeignService.getBySkuIds(skuIds.toArray(new Long[]{}));
+
             if (spuDTO != null && !spuDTO.isEmpty()) {
                 spuDTO.forEach(item -> cartDTOS.forEach(item1 -> {
                     if (item1.getSkuId().equals(item.getSkuList().get(0).getId())) {
                         item1.setSpuDTO(item);
                     }
                 }));
-            }
+            } else
+                return error("无法商品信息");
             return toAjax(cartDTOS);
         }
         return error("查询失败");
@@ -104,9 +106,16 @@ public class CartServiceImpl extends BaseServiceImpl implements CartService {
 
         cartDO = cartMapper.selectOne(cartDO);
         if (cartDO == null)
-            return error("商品不存在！");
+            return error("购物车不存在！");
 
         int count = cartMapper.delete(new EntityWrapper<CartDO>().eq("sku_id", skuId).eq("account_id", accountId));
+        return toAjax(count);
+    }
+
+    @Override
+    public AjaxResult clean(Long accountId) {
+        int count = cartMapper.delete(new EntityWrapper<CartDO>().eq("account_id", accountId));
+
         return toAjax(count);
     }
 }

@@ -29,7 +29,7 @@ public class GoodsController extends BaseController {
     }
 
     @RequestMapping(value = "/getBySkuIds")
-    public AjaxResult getBySkuIds(@RequestParam("skuId") Long[] skuIds) {
+    public AjaxResult getBySkuIds(@RequestParam("skuIds") Long[] skuIds) {
         return goodsService.getBySkuIds(skuIds);
     }
 
@@ -47,4 +47,16 @@ public class GoodsController extends BaseController {
     public AjaxResult getByIds(@RequestParam("ids") Long[] ids) {
         return goodsService.getByIds(ids);
     }
+
+
+    @RequestMapping(value = "/stock")
+    public AjaxResult stock(@RequestParam("id") Long id, @RequestParam("num") Integer num) {
+        return goodsService.stock(id, num);
+    }
+
+    @RequestMapping(value = "/freezeStock")
+    public AjaxResult freezeStock(Long id, Integer num) {
+        return goodsService.freezeStock(id, num);
+    }
+
 }

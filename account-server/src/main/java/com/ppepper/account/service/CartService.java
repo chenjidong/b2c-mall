@@ -17,4 +17,7 @@ public interface CartService {
 
     public AjaxResult del(Long accountId, Long skuId);
 
+    public AjaxResult clean(Long accountId);
+
+
 }

@@ -2,7 +2,7 @@ server:
   port: 8500
 spring:
   application:
-    name: notice-service #Ö¸¶¨·şÎñÃû³Æ
+    name: notice-service #æŒ‡å®šæœåŠ¡åç§°
   druid:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/b2c-mall?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
@@ -18,13 +18,21 @@ spring:
     port: 6379
 eureka:
   client:
-    register-with-eureka: true #ÊÇ·ñ×¢²áµ½Eureka·şÎñÖĞ
-    fetch-registry: true #ÊÇ·ñ´ÓEureka·şÎñÖĞ»ñÈ¡×¢²áĞÅÏ¢
-    service-url:  #Eureka¿Í»§¶ËÓë·şÎñ¶Ë½øĞĞ½»»¥µÄµØÖ·
+    register-with-eureka: true #æ˜¯å¦æ³¨å†Œåˆ°EurekaæœåŠ¡ä¸­
+    fetch-registry: true #æ˜¯å¦ä»EurekaæœåŠ¡ä¸­è·å–æ³¨å†Œä¿¡æ¯
+    service-url:  #Eurekaå®¢æˆ·ç«¯ä¸æœåŠ¡ç«¯è¿›è¡Œäº¤äº’çš„åœ°å€
      defaultZone: http://ppepper:123456@127.0.0.1:7000/eureka/
   instance:
-    prefer-ip-address: true #°ÑipµØÖ·×¢²áµ½Eureka·şÎñÖĞ
-    lease-renewal-interval-in-seconds: 1  #Ä¬ÈÏ30s Ã¿¼ä¸ô1s£¬Ïò·şÎñ¶Ë·¢ËÍÒ»´ÎĞÄÌø£¬Ö¤Ã÷×Ô¼ºÒÀÈ»¡±´æ»î¡° ²âÊÔÓÃ
-    lease-expiration-duration-in-seconds: 2 #Ä¬ÈÏ90s ¸æËß·şÎñ¶Ë£¬Èç¹ûÎÒ2sÖ®ÄÚÃ»ÓĞ¸øÄã·¢ĞÄÌø ÔòÌß³ö ×¢²áÖĞĞÄ ²âÊÔÓÃ
+    prefer-ip-address: true #æŠŠipåœ°å€æ³¨å†Œåˆ°EurekaæœåŠ¡ä¸­
+    lease-renewal-interval-in-seconds: 1  #é»˜è®¤30s æ¯é—´éš”1sï¼Œå‘æœåŠ¡ç«¯å‘é€ä¸€æ¬¡å¿ƒè·³ï¼Œè¯æ˜è‡ªå·±ä¾ç„¶â€å­˜æ´»â€œ æµ‹è¯•ç”¨
+    lease-expiration-duration-in-seconds: 2 #é»˜è®¤90s å‘Šè¯‰æœåŠ¡ç«¯ï¼Œå¦‚æœæˆ‘2sä¹‹å†…æ²¡æœ‰ç»™ä½ å‘å¿ƒè·³ åˆ™è¸¢å‡º æ³¨å†Œä¸­å¿ƒ æµ‹è¯•ç”¨
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE  #åŠ ä¸Šè¿™ä¸ªå°±å¯ä»¥è·å–åˆ°HttpServletRequest
+          thread:
+            timeoutInMilliseconds: 10000
 

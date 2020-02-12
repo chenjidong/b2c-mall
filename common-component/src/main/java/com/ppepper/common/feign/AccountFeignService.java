@@ -23,7 +23,20 @@ public class AccountFeignService extends BaseFeignService {
         return convert(accountFeignClient.getByUsername(username), AccountDTO.class);
     }
 
+
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public AccountDTO get(Long id) {
+        if (StringUtils.isEmpty(id))
+            return null;
+        return convert(accountFeignClient.get(id), AccountDTO.class);
+    }
+
+    public AccountDTO serviceOffline(Long id) {
+        return null;
+    }
+
     public AccountDTO serviceOffline(String username) {
         return null;
     }
+
 }

@@ -3,6 +3,7 @@ package com.ppepper.common.feign;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,18 @@ public class GoodsFeignService extends BaseFeignService {
         return list == null ? null : list.get(0);
     }
 
+    @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
+    public Boolean stock(Long id, Integer num) {
+        AjaxResult ajaxResult = goodsFeignClient.stock(id, num);
+        return ajaxResult.getCode() == AjaxResult.Type.SUCCESS.value();
+    }
+
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public Boolean freezeStock(Long id, Integer num) {
+        AjaxResult ajaxResult = goodsFeignClient.freezeStock(id, num);
+        return ajaxResult.getCode() == AjaxResult.Type.SUCCESS.value();
+    }
+
 
     public SpuDTO serviceOffline(Long id) {
         return null;
@@ -61,6 +74,10 @@ public class GoodsFeignService extends BaseFeignService {
 
     public List<SpuDTO> serviceOffline(Long[] ids) {
         return null;
+    }
+
+    public Boolean serviceOffline(Long id, Integer num) {
+        return false;
     }
 
 }

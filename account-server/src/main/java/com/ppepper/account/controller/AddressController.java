@@ -1,8 +1,9 @@
 package com.ppepper.account.controller;
 
-import com.ppepper.account.service.AccountService;
+import com.ppepper.account.service.AddressService;
 import com.ppepper.common.controller.BaseController;
 import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,19 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-08
  */
 @RestController
-@RequestMapping("/api/account")
-public class AccountController extends BaseController {
+@RequestMapping("/api/account/address")
+public class AddressController extends BaseController {
 
     @Autowired
-    private AccountService accountService;
+    private AddressService addressService;
 
-    @RequestMapping("/getByUsername")
-    public AjaxResult getByUsername(@RequestParam("phone") String phone) {
-        return accountService.getByPhone(phone);
-    }
 
     @RequestMapping("/get")
     public AjaxResult get(@RequestParam("id") Long id) {
-        return accountService.get(id);
+        return addressService.get(JwtTokenUtils.getCurrentAccountIdByToken(), id);
     }
 }

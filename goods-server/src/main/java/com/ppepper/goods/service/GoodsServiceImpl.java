@@ -128,4 +128,38 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
         }
         return toAjax(spuDTOList);
     }
+
+    @Override
+    public AjaxResult stock(Long id, Integer num) {
+        SpuSkuDO spuSkuDO = spuSkuMapper.selectById(id);
+        if (spuSkuDO == null)
+            return error("商品不存在 或库存为0");
+        if (spuSkuDO.getFreezeStock() < num)
+            return error("商品冻结库存不符");
+        Integer freezeStock = spuSkuDO.getFreezeStock() - num;
+
+        SpuSkuDO spuSkuDO1 = new SpuSkuDO();
+        spuSkuDO1.setId(spuSkuDO.getId());
+        spuSkuDO1.setFreezeStock(freezeStock);
+        int count = spuSkuMapper.updateById(spuSkuDO1);
+        return toAjax(count);
+    }
+
+    @Override
+    public AjaxResult freezeStock(Long id, Integer num) {
+        SpuSkuDO spuSkuDO = spuSkuMapper.selectById(id);
+        if (spuSkuDO == null || spuSkuDO.getStock() <= 0)
+            return error("商品不存在 或库存为0");
+        if (spuSkuDO.getStock() < num)
+            return error("商品库存不足");
+        Integer stock = spuSkuDO.getStock() - num;
+        Integer freezeStock = spuSkuDO.getFreezeStock() + num;
+
+        SpuSkuDO spuSkuDO1 = new SpuSkuDO();
+        spuSkuDO1.setId(spuSkuDO.getId());
+        spuSkuDO1.setStock(stock);
+        spuSkuDO1.setFreezeStock(freezeStock);
+        int count = spuSkuMapper.updateById(spuSkuDO1);
+        return toAjax(count);
+    }
 }

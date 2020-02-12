@@ -38,4 +38,9 @@ public class CartController {
     public AjaxResult del(Long skuId) {
         return cartService.del(JwtTokenUtils.getCurrentAccountIdByToken(), skuId);
     }
+
+    @RequestMapping("/clean")
+    public AjaxResult clean() {
+        return cartService.clean(JwtTokenUtils.getCurrentAccountIdByToken());
+    }
 }

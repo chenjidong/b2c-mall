@@ -22,9 +22,6 @@ public class OrderDO extends SuperDO {
     @TableField("order_no")
     private String orderNo;
 
-    @TableField("user_id")
-    private Long userId;
-
     private Integer status;
 
     @TableField("sku_original_total_price")
