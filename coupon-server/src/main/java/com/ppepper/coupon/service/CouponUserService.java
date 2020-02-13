@@ -12,4 +12,9 @@ public interface CouponUserService {
             Long id);
 
     public AjaxResult list(Long accountId, Integer pageNo, Integer pageSize, Long categoryId, Integer status, Integer type, String orderBy, Boolean isAsc, String title);
+
+
+    public AjaxResult used(
+            Long accountId,
+            Long id);
 }

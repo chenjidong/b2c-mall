@@ -30,4 +30,8 @@ public interface CouponFeignClient {
      */
     @RequestMapping(value = "/api/coupon/user/get", method = RequestMethod.GET)
     public AjaxResult getByUserId(@RequestParam("id") Long id);
+
+
+    @RequestMapping(value = "/api/coupon/used", method = RequestMethod.GET)
+    public AjaxResult used(@RequestParam("id") Long id);
 }

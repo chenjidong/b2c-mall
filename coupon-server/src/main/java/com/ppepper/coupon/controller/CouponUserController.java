@@ -35,4 +35,10 @@ public class CouponUserController {
                            @RequestParam("title") String title) {
         return couponUserService.list(JwtTokenUtils.getCurrentAccountIdByToken(), pageNo, pageSize, categoryId, status, type, orderBy, isAsc, title);
     }
+
+
+    @RequestMapping("/used")
+    public AjaxResult used(@RequestParam("id") Long id) {
+        return couponUserService.get(JwtTokenUtils.getCurrentAccountIdByToken(), id);
+    }
 }

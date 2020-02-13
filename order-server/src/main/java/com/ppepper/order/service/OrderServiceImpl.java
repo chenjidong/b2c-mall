@@ -3,11 +3,10 @@ package com.ppepper.order.service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.ppepper.common.dto.*;
+import com.ppepper.common.enums.CouponStatusType;
+import com.ppepper.common.enums.CouponType;
 import com.ppepper.common.enums.OrderStatusType;
-import com.ppepper.common.feign.AccountFeignService;
-import com.ppepper.common.feign.AddressFeignService;
-import com.ppepper.common.feign.CartFeignService;
-import com.ppepper.common.feign.GoodsFeignService;
+import com.ppepper.common.feign.*;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.service.BaseServiceImpl;
 import com.ppepper.order.domain.OrderDO;
@@ -48,6 +47,9 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
 
     @Autowired
     private AddressFeignService addressFeignService;
+
+    @Autowired
+    private CouponUserFeignService couponUserFeignService;
 
 
     @Override
@@ -119,6 +121,18 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
 //        addressDTO.setAddress("地址");
 //        addressDTO.setPhone("电话");
 //        addressDTO.setConsignee("收货人");
+        CouponUserDTO couponUserDTO = null;
+        if (couponId != null) {
+            couponUserDTO = couponUserFeignService.get(couponId);
+            if (couponUserDTO == null || couponUserDTO.getGmtUsed() != null || new Date().before(couponUserDTO.getGmtEnd()) || couponUserDTO.getCouponDTO().getStatus() != CouponStatusType.LOCK.getCode())
+                return error("优惠券不存在/已使用");
+
+            for (CartDTO dto : cartDTOList) {
+                if (dto.getSpuDTO().getCategoryId() != couponUserDTO.getCouponDTO().getCategoryId()) {
+                    return error(dto.getSpuDTO().getTitle() + " 不支持该优惠券");
+                }
+            }
+        }
 
         Object point = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
         Integer totalSkuPrice = 0;//不包含运费
@@ -140,6 +154,14 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
             actualSkuPrice = totalSkuPrice;
 
             // TODO: 2020-02-12 计算优惠券
+            if (couponUserDTO != null) {
+                if (couponUserDTO.getCouponDTO().getType() == CouponType.COMMON.getCode()) {//普通优惠券
+                    if (actualSkuPrice >= couponUserDTO.getCouponDTO().getMin()) {
+                        totalCoupon = couponUserDTO.getCouponDTO().getDiscount();
+                        actualSkuPrice = actualSkuPrice - totalCoupon;
+                    }
+                }
+            }
 
             // TODO: 2020-02-12 计算运费
 
@@ -204,6 +226,11 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
                 }
             }
 
+            if (couponUserDTO != null) {
+                Boolean setUsedCoupon = couponUserFeignService.used(couponId);
+                if (!setUsedCoupon)
+                    throw new RuntimeException();
+            }
 
             return success("构建订单成功", orderDO);
 

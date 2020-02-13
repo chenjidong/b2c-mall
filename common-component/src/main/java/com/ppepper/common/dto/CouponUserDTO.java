@@ -13,16 +13,6 @@ import java.util.Date;
 @Data
 public class CouponUserDTO extends SuperDTO {
 
-    private String title;
-
-    private String categoryTitle;
-
-    private Long categoryId;
-
-    private Integer min;
-
-    private Integer discount;
-
     private Long accountId;
 
     private Long couponId;
@@ -35,4 +25,5 @@ public class CouponUserDTO extends SuperDTO {
 
     private Date gmtEnd;
 
+    private CouponDTO couponDTO;
 }

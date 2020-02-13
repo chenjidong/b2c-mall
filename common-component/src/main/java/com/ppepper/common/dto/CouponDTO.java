@@ -43,4 +43,7 @@ public class CouponDTO extends SuperDTO {
 
     private Date gmtEnd;
 
+    private Long spuId; //指定商品能领取优惠券
+
+    private Long shopId; //指定商铺能领取优惠券
 }

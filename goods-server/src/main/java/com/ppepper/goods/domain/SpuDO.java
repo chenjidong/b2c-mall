@@ -78,4 +78,7 @@ public class SpuDO extends SuperDO {
      */
     private Integer status;
 
+
+    @TableField("shop_id")
+    private Integer shopId;
 }
