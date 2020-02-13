@@ -59,7 +59,8 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
         orderDO.setAccountId(accountId);
         orderDO = orderMapper.selectOne(orderDO);
         OrderDTO orderDTO = copyProperties(orderDO, OrderDTO.class);
-
+        if (orderDTO == null)
+            return error("订单不存在");
         List<OrderSkuDO> orderSkuDOList = orderSkuMapper.selectList(new EntityWrapper<OrderSkuDO>().eq("order_id", orderDTO.getId()));
         if (orderSkuDOList != null && !orderSkuDOList.isEmpty()) {
             List<OrderSkuDTO> orderSkuDTOList = new ArrayList<>();
@@ -72,7 +73,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
             orderDTO.setSkuList(orderSkuDTOList);
         }
 
-        return success(orderDTO);
+        return toAjax(orderDTO);
     }
 
     @Override
@@ -240,5 +241,46 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
 
 
         return error("构建订单失败！");
+    }
+
+    @Override
+    public AjaxResult getByOrderNo(Long accountId, String orderNo) {
+        OrderDO orderDO = new OrderDO();
+        orderDO.setOrderNo(orderNo);
+        orderDO.setAccountId(accountId);
+        orderDO = orderMapper.selectOne(orderDO);
+        OrderDTO orderDTO = copyProperties(orderDO, OrderDTO.class);
+        if (orderDTO == null)
+            return error("订单不存在");
+
+        List<OrderSkuDO> orderSkuDOList = orderSkuMapper.selectList(new EntityWrapper<OrderSkuDO>().eq("order_id", orderDTO.getId()));
+        if (orderSkuDOList != null && !orderSkuDOList.isEmpty()) {
+            List<OrderSkuDTO> orderSkuDTOList = new ArrayList<>();
+            for (OrderSkuDO orderSkuDO : orderSkuDOList) {
+                OrderSkuDTO orderSkuDTO = copyProperties(orderSkuDO, OrderSkuDTO.class);
+
+                orderSkuDTO.setSpuDTO(goodsFeignService.get(orderSkuDTO.getSpuId()));
+                orderSkuDTOList.add(orderSkuDTO);
+            }
+            orderDTO.setSkuList(orderSkuDTOList);
+        }
+        return toAjax(orderDTO);
+    }
+
+    @Override
+    public AjaxResult setStatus(Long accountId, String orderNo, Integer status) {
+        OrderDO orderDO = new OrderDO();
+        orderDO.setOrderNo(orderNo);
+        orderDO.setAccountId(accountId);
+        orderDO = orderMapper.selectOne(orderDO);
+        OrderDTO orderDTO = copyProperties(orderDO, OrderDTO.class);
+        if (orderDTO == null)
+            return error("订单不存在");
+        if (orderDTO.getStatus() == OrderStatusType.COMPLETE.getCode())
+            return error("订单已完成");
+
+        orderDO.setStatus(status);
+        orderDO.setGmtUpdate(new Date());
+        return toAjax(orderMapper.updateById(orderDO));
     }
 }

@@ -43,6 +43,7 @@
         <module>coupon-server</module>
         <module>account-server</module>
         <module>notice-server</module>
+        <module>payment-server</module>
         <module>common-component</module>
     </modules>
 

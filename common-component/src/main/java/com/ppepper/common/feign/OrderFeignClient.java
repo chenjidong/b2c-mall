@@ -21,4 +21,11 @@ public interface OrderFeignClient {
      */
     @RequestMapping(value = "/api/order/get", method = RequestMethod.GET)
     public AjaxResult get(@RequestParam("id") Long id);
+
+
+    @RequestMapping(value = "/api/order/getByOrderNo", method = RequestMethod.GET)
+    public AjaxResult getByOrderNo(@RequestParam("orderNo") String orderNo);
+
+    @RequestMapping(value = "/api/order/setStatus", method = RequestMethod.GET)
+    public AjaxResult setStatus(@RequestParam("orderNo") String orderNo, @RequestParam("status") Integer status);
 }

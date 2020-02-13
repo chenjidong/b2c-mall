@@ -39,9 +39,20 @@ public class OrderController {
 
     @RequestMapping(value = "/createByCart")
     public AjaxResult createByCart(@RequestParam("addressId") Long addressId,
-                           @RequestParam("couponId") Long couponId,
-                           @RequestParam("channel") String channel) {
+                                   @RequestParam("couponId") Long couponId,
+                                   @RequestParam("channel") String channel) {
 
-        return orderService.createByCart(JwtTokenUtils.getCurrentAccountIdByToken(),addressId,couponId,channel);
+        return orderService.createByCart(JwtTokenUtils.getCurrentAccountIdByToken(), addressId, couponId, channel);
+    }
+
+
+    @RequestMapping(value = "/getByOrderNo")
+    public AjaxResult getByOrderNo(@RequestParam("orderNo") String orderNo) {
+        return orderService.getByOrderNo(JwtTokenUtils.getCurrentAccountIdByToken(), orderNo);
+    }
+
+    @RequestMapping(value = "/setStatus")
+    public AjaxResult setStatus(@RequestParam("orderNo") String orderNo, Integer status) {
+        return orderService.setStatus(JwtTokenUtils.getCurrentAccountIdByToken(), orderNo, status);
     }
 }

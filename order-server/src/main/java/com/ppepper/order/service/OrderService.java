@@ -14,5 +14,11 @@ public interface OrderService {
     public AjaxResult list(Integer pageNo, Integer pageSize, Integer status, Long accountId, String orderBy, Boolean isAsc);
 
 
-    public AjaxResult createByCart(Long accountId,Long addressId,Long couponId,String channel);
+    public AjaxResult createByCart(Long accountId, Long addressId, Long couponId, String channel);
+
+
+    public AjaxResult getByOrderNo(Long accountId, String orderNo);
+
+    public AjaxResult setStatus(Long accountId, String orderNo, Integer status);
+
 }

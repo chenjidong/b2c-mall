@@ -25,8 +25,9 @@ public class SecurityUtils {
         put(NO_PREFIX_ROLE_USER, new ArrayList<String>() {{
             add("/api/sso/user/**");
             add("/api/order/**");
-            add("/api/coupon/**");
-            add("/api/notice/**");
+            add("/api/coupon/user/**");
+            add("/api/notice/user/**");
+            add("/api/payment/user/**");
         }});
         put(NO_PREFIX_ROLE_ADMIN, new ArrayList<String>() {{
             add("/admin/**");
