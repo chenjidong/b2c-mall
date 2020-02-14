@@ -1,0 +1,40 @@
+server:
+  port: 8700
+spring:
+  application:
+    name: admin-service #指定服务名称
+  druid:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/b2c-mall?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: 1234
+    maxActive: 30
+    minIdle: 5
+    maxWait: 10000
+    validationQuery: "SELECT X"
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+eureka:
+  client:
+    register-with-eureka: false #是否注册到Eureka服务中 admin不注册到服务中心
+    fetch-registry: true #是否从Eureka服务中获取注册信息
+    service-url:  #Eureka客户端与服务端进行交互的地址
+     defaultZone: http://ppepper:123456@127.0.0.1:7000/eureka/
+  instance:
+    prefer-ip-address: true #把ip地址注册到Eureka服务中
+    lease-renewal-interval-in-seconds: 1  #默认30s 每间隔1s，向服务端发送一次心跳，证明自己依然”存活“ 测试用
+    lease-expiration-duration-in-seconds: 2 #默认90s 告诉服务端，如果我2s之内没有给你发心跳 则踢出 注册中心 测试用
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE  #加上这个就可以获取到HttpServletRequest
+          thread:
+            timeoutInMilliseconds: 10000
+
+
+

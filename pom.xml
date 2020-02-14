@@ -44,6 +44,7 @@
         <module>account-server</module>
         <module>notice-server</module>
         <module>payment-server</module>
+        <module>admin-server</module>
         <module>common-component</module>
     </modules>
 

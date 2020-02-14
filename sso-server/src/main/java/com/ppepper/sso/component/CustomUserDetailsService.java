@@ -1,6 +1,7 @@
 package com.ppepper.sso.component;
 
 import com.ppepper.common.dto.AccountDTO;
+import com.ppepper.common.enums.AccountLoginType;
 import com.ppepper.common.feign.AccountFeignService;
 import com.ppepper.common.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.ppepper.common.security.SecurityUtils.ROLE_ADMIN;
 import static com.ppepper.common.security.SecurityUtils.ROLE_USER;
 
 /**
@@ -29,13 +31,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-
-        AccountDTO accountDTO = accountFeignService.getByUsername(s);
-        if (accountDTO == null)
-            return null;
-
-        List<GrantedAuthority> grantedAuth = AuthorityUtils.createAuthorityList(ROLE_USER);
-        String username = JwtTokenUtils.generateSubject(accountDTO.getPhone(), accountDTO.getId(), ROLE_USER);
-        return new User(username, accountDTO.getPassword(), grantedAuth);
+        AccountDTO accountDTO = accountFeignService.getByPhone(s);
+        if (accountDTO == null) {
+            accountDTO = accountFeignService.getByUsername(s);
+            if (accountDTO == null)
+                return null;
+        }
+        String role = accountDTO.getLoginType() == AccountLoginType.ADMIN.getCode() ? ROLE_ADMIN : ROLE_USER;
+        String username = JwtTokenUtils.generateSubject(accountDTO.getUsername(), accountDTO.getId(), role);
+        return new User(username, accountDTO.getPassword(), AuthorityUtils.createAuthorityList(role));
     }
 }

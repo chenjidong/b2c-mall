@@ -40,6 +40,7 @@ For further reference, please consider the following sections:
 * account-server   账户服务          端口：8400
 * notice-server    通知服务          端口：8500
 * payment-server   支付服务          端口：8600
+* admin-server     后台管理服务      端口：8700
 * common-component 公共组件（集成数据库配置，redis配置 mybatis 分页配置 数据库实体类配置）
 
 ### 数据库

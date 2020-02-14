@@ -10,5 +10,7 @@ public interface AccountService {
 
     public AjaxResult getByPhone(String phone);
 
+    public AjaxResult getByUsername(String username);
+
     public AjaxResult get(Long id);
 }

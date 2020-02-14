@@ -20,7 +20,12 @@ public class AccountController extends BaseController {
     private AccountService accountService;
 
     @RequestMapping("/getByUsername")
-    public AjaxResult getByUsername(@RequestParam("phone") String phone) {
+    public AjaxResult getByUsername(@RequestParam("username") String username) {
+        return accountService.getByUsername(username);
+    }
+
+    @RequestMapping("/getByPhone")
+    public AjaxResult getByPhone(@RequestParam("phone") String phone) {
         return accountService.getByPhone(phone);
     }
 

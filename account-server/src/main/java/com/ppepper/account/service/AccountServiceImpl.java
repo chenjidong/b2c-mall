@@ -28,6 +28,15 @@ public class AccountServiceImpl extends BaseServiceImpl implements AccountServic
     }
 
     @Override
+    public AjaxResult getByUsername(String username) {
+        AccountDO accountDO = new AccountDO();
+        accountDO.setUsername(username);
+
+        AccountDTO accountDTO = copyProperties(accountMapper.selectOne(accountDO), AccountDTO.class);
+        return toAjax(accountDTO);
+    }
+
+    @Override
     public AjaxResult get(Long id) {
         return toAjax(copyProperties(accountMapper.selectById(id), AccountDTO.class));
     }

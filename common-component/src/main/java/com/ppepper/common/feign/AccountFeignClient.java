@@ -1,11 +1,7 @@
 package com.ppepper.common.feign;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.ppepper.common.model.AjaxResult;
-import com.ppepper.common.utils.JwtTokenUtils;
-import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,14 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "account-service")
 public interface AccountFeignClient {
 
-    /**
-     * 根据手机号获取用户信息
-     *
-     * @param phone 登录手机号
-     * @return json
-     */
+
     @RequestMapping("/api/account/getByUsername")
-    public AjaxResult getByUsername(@RequestParam("phone") String phone);
+    public AjaxResult getByUsername(@RequestParam("username") String username);
+
+    @RequestMapping("/api/account/getByPhone")
+    public AjaxResult getByPhone(@RequestParam("phone") String phone);
 
     @RequestMapping("/api/account/get")
     public AjaxResult get(@RequestParam("id") Long id);
