@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class AjaxResult extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
-    public static final String CODE_TAG = "status";
+    public static final String CODE_TAG = "code";
 
     public static final String MSG_TAG = "message";
 

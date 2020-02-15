@@ -16,10 +16,12 @@ import lombok.EqualsAndHashCode;
 public class RolePermissionDO extends SuperDO {
 
     @TableField("role_id")
-    private Long roleId;
+    private Long roleId;//0 表示系统内置
 
     private String permission;
 
     private Integer deleted;
+
+    private String label;
 
 }

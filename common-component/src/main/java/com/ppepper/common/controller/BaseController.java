@@ -18,6 +18,9 @@ public class BaseController {
         return rows > 0 ? success() : error();
     }
 
+    protected AjaxResult toAjax(Object data) {
+        return data != null ? success(data) : error();
+    }
     /**
      * 响应返回结果
      *

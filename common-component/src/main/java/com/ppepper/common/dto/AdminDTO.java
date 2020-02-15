@@ -1,8 +1,9 @@
 package com.ppepper.common.dto;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * Created with ChenJiDong
@@ -14,10 +15,25 @@ public class AdminDTO extends SuperDTO {
 
     private String username;
     private String avatarUrl;
-    @TableField("role_ids")
-    private String roleIds;
 
     private Integer status;
 
     private Long accountId;
+
+    /**
+     * 管理员登录密码
+     */
+    private String password;
+
+    private String phone;
+
+    private String lastLoginIp;
+
+    private String gmtLastLogin;
+
+    private List<String> roles;
+
+    private List<Long> roleIds;
+
+    private List<String> perms;
 }

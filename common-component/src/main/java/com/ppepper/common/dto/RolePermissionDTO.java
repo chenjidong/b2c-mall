@@ -3,6 +3,9 @@ package com.ppepper.common.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with ChenJiDong
  * Created By 2020-02-14
@@ -10,11 +13,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RolePermissionDTO extends SuperDTO {
-
-    private Long roleId;
-
+    private String label;
     private String permission;
-
-    private Integer deleted;
-
+    private List<RolePermissionDTO> children = new ArrayList<>();
 }

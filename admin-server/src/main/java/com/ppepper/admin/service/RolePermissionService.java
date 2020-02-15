@@ -1,5 +1,6 @@
 package com.ppepper.admin.service;
 
+import com.ppepper.common.dto.RoleSetPermissionDTO;
 import com.ppepper.common.model.AjaxResult;
 
 /**
@@ -11,5 +12,9 @@ public interface RolePermissionService {
     AjaxResult get(Long id);
 
     AjaxResult getByRoleId(Long roleId);
+
+    AjaxResult list(Long roleId);
+
+    AjaxResult update(RoleSetPermissionDTO roleSetPermissionDTO);
 
 }
