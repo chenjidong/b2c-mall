@@ -18,7 +18,7 @@ import java.util.Map;
  * tips: username 表示 security 中的username 非逻辑
  */
 public class JwtTokenUtils {
-    private static final String secret = "secret";
+    private static final String secret = "qwertyuiopasdfghjklzxcvbnm1234567890";
     private static final Long expiration = 1000 * 60 * 60 * 24 * 7L;//7天
     public static final String HEADER = "Authorization";
 
@@ -30,6 +30,26 @@ public class JwtTokenUtils {
      */
     private static String generateToken(Map<String, Object> claims) {
         Date expirationDate = new Date(System.currentTimeMillis() + expiration);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    /**
+     * 生成令牌
+     *
+     * @param subject 声明数据
+     * @param millis  毫秒值
+     * @return
+     */
+    public static String generateToken(String subject, Long millis) {
+        Map<String, Object> claims = new HashMap<>(2);
+        claims.put(Claims.SUBJECT, subject);
+        claims.put(Claims.ISSUED_AT, new Date());
+
+        Date expirationDate = new Date(System.currentTimeMillis() + millis);
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(expirationDate)

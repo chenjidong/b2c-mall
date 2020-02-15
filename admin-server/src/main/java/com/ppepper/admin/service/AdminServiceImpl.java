@@ -45,6 +45,8 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
     @Autowired
     private RolePermissionMapper rolePermissionMapper;
 
+    private static final Long expiration = 1000 * 60 * 30L;
+
     @Override
     public AjaxResult loginByUsername(String username, String password, String verifyCode) {
         AdminDO adminDO = new AdminDO();
@@ -53,7 +55,8 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
         if (adminDO == null || adminDO.getStatus() == AdminStatusType.LOCK.getCode())
             return error("用户不存在或已冻结");
         if (MD5Util.verify(username, password, adminDO.getPassword())) {
-            String token = JwtTokenUtils.generateToken(JwtTokenUtils.generateSubject(adminDO.getUsername(), adminDO.getId(), SecurityUtils.ROLE_ADMIN));
+            String subject = JwtTokenUtils.generateSubject(adminDO.getUsername(), adminDO.getId(), SecurityUtils.ROLE_ADMIN);
+            String token = JwtTokenUtils.generateToken(subject, expiration);
             return toAjax(token);
         }
         return error("登录失败");
