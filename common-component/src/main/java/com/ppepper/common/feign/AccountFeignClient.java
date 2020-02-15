@@ -43,4 +43,11 @@ public interface AccountFeignClient {
 
     @RequestMapping("/api/account/cart/clean")
     public AjaxResult cleanCart();
+
+
+    @RequestMapping("/api/account/sendCode")
+    public AjaxResult sendCode(@RequestParam("phone") String phone);
+
+    @RequestMapping("/api/account/create")
+    public AjaxResult create(@RequestParam("phone") String phone, @RequestParam("password") String password, @RequestParam("code") String code);
 }

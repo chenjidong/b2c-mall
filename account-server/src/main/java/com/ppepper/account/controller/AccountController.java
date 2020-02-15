@@ -33,4 +33,16 @@ public class AccountController extends BaseController {
     public AjaxResult get(@RequestParam("id") Long id) {
         return accountService.get(id);
     }
+
+
+    @RequestMapping("/sendCode")
+    public AjaxResult sendCode(@RequestParam("phone") String phone) {
+        return accountService.sendCode(phone);
+    }
+
+    @RequestMapping("/create")
+    public AjaxResult create(@RequestParam("phone") String phone, String password, String code) {
+        return accountService.create(phone, password, code);
+    }
+
 }

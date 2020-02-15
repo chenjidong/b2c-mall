@@ -6,6 +6,10 @@
 #### 软件架构
 软件架构说明
 
+### 环境配置
+nodejs 8.5+
+npm 6.13+
+
 ### npm 依赖安装失败问题 使用淘宝镜像
 * npm install -g cnpm --registry=https://registry.npm.taobao.org
 * cnpm install

@@ -1,6 +1,7 @@
 package com.ppepper.sso.controller;
 
 import com.ppepper.common.controller.BaseController;
+import com.ppepper.common.feign.AccountFeignService;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class LoginController extends BaseController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private AccountFeignService accountFeignService;
+
     @RequestMapping("/login")
     public AjaxResult login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
 
@@ -34,5 +38,15 @@ public class LoginController extends BaseController {
             return success("登录成功", token);
         }
         return error("账号或密码不正确！");
+    }
+
+    @RequestMapping("/sendCode")
+    public AjaxResult sendCode(String phone) {
+        return accountFeignService.sendCode(phone);
+    }
+
+    @RequestMapping("/create")
+    public AjaxResult create(String phone, String password, String code) {
+        return accountFeignService.create(phone, password, code);
     }
 }

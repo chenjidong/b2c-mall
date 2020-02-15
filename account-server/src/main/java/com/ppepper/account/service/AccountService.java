@@ -13,4 +13,8 @@ public interface AccountService {
     public AjaxResult getByUsername(String username);
 
     public AjaxResult get(Long id);
+
+    public AjaxResult sendCode(String phone);
+
+    public AjaxResult create(String phone, String password, String code);
 }
