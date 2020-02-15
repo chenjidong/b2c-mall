@@ -10,6 +10,8 @@ import com.ppepper.common.model.Page;
  */
 public interface AdminService {
 
+    public AjaxResult loginByUsername(String username, String password, String verifyCode);
+
     AjaxResult get(Long id);
 
     AjaxResult delete(Long id);

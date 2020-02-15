@@ -17,8 +17,10 @@ public class SecurityUtils {
     public static final String PREFIX_ROLE = "ROLE_";//前缀 由 security 配置 更改时需 同步
     public static final String NO_PREFIX_ROLE_USER = "USER";
     public static final String NO_PREFIX_ROLE_ADMIN = "ADMIN";
+    public static final String NO_PREFIX_ROLE_SHOP = "SHOP";
     public static final String ROLE_USER = PREFIX_ROLE + NO_PREFIX_ROLE_USER;
     public static final String ROLE_ADMIN = PREFIX_ROLE + NO_PREFIX_ROLE_ADMIN;
+    public static final String ROLE_SHOP = PREFIX_ROLE + NO_PREFIX_ROLE_SHOP;
 
 
     public static final HashMap<String, List<String>> PERMISSION_PATTERN_MAP = new HashMap<String, List<String>>() {{
@@ -31,6 +33,9 @@ public class SecurityUtils {
         }});
         put(NO_PREFIX_ROLE_ADMIN, new ArrayList<String>() {{
             add("/admin/**");
+        }});
+        put(NO_PREFIX_ROLE_SHOP, new ArrayList<String>() {{
+            add("/api/shop/**");
         }});
     }};
 

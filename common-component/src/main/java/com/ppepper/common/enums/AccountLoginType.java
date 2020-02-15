@@ -6,7 +6,7 @@ package com.ppepper.common.enums;
  */
 public enum AccountLoginType {
     USER(0, "普通用户登录"),
-    ADMIN(1, "后台管理员登录");
+    SHOP(1, "商铺用户");
 
     AccountLoginType(int code, String msg) {
         this.code = code;

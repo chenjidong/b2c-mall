@@ -15,7 +15,10 @@ import com.ppepper.common.enums.AdminStatusType;
 import com.ppepper.common.enums.RoleStatusType;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.model.Page;
+import com.ppepper.common.security.SecurityUtils;
 import com.ppepper.common.service.BaseServiceImpl;
+import com.ppepper.common.utils.JwtTokenUtils;
+import com.ppepper.common.utils.MD5Util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,20 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
 
     @Autowired
     private RolePermissionMapper rolePermissionMapper;
+
+    @Override
+    public AjaxResult loginByUsername(String username, String password, String verifyCode) {
+        AdminDO adminDO = new AdminDO();
+        adminDO.setUsername(username);
+        adminDO = adminMapper.selectOne(adminDO);
+        if (adminDO == null || adminDO.getStatus() == AdminStatusType.LOCK.getCode())
+            return error("用户不存在或已冻结");
+        if (MD5Util.verify(username, password, adminDO.getPassword())) {
+            String token = JwtTokenUtils.generateToken(JwtTokenUtils.generateSubject(adminDO.getUsername(), adminDO.getId(), SecurityUtils.ROLE_ADMIN));
+            return toAjax(token);
+        }
+        return error("登录失败");
+    }
 
     @Override
     public AjaxResult get(Long id) {
@@ -102,7 +119,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
             adminDO.setPhone(adminDTO.getPhone());
             adminDO.setRoleIds(JSON.toJSONString(adminDTO.getRoleIds()));
             adminDO.setStatus(AdminStatusType.ACTIVE.getCode());
-            adminDO.setPassword(adminDTO.getPassword());
+            adminDO.setPassword(MD5Util.md5(adminDTO.getPassword(), adminDTO.getUsername()));
             adminDO.setGmtUpdate(new Date());
             adminDO.setGmtCreate(new Date());
             int count = adminMapper.insert(adminDO);
@@ -188,7 +205,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
         if (!StringUtils.equals(adminDO.getPassword(), oldPassword)) {
             return error("密码错误");
         }
-        adminDO.setPassword(newPassword);
+        adminDO.setPassword(MD5Util.md5(newPassword, adminDO.getUsername()));
         adminDO.setGmtUpdate(new Date());
         return toAjax(adminMapper.updateById(adminDO));
     }

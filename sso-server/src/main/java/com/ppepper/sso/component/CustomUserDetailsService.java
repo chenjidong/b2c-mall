@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import static com.ppepper.common.security.SecurityUtils.ROLE_ADMIN;
+import static com.ppepper.common.security.SecurityUtils.ROLE_SHOP;
 import static com.ppepper.common.security.SecurityUtils.ROLE_USER;
 
 /**
@@ -37,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             if (accountDTO == null)
                 return null;
         }
-        String role = accountDTO.getLoginType() == AccountLoginType.ADMIN.getCode() ? ROLE_ADMIN : ROLE_USER;
+        String role = accountDTO.getLoginType() == AccountLoginType.SHOP.getCode() ? ROLE_SHOP : ROLE_USER;
         String username = JwtTokenUtils.generateSubject(accountDTO.getUsername(), accountDTO.getId(), role);
         return new User(username, accountDTO.getPassword(), AuthorityUtils.createAuthorityList(role));
     }
