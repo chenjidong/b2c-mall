@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (accountDTO == null) {
             accountDTO = accountFeignService.getByUsername(s);
             if (accountDTO == null)
-                return null;
+                throw new UsernameNotFoundException("账户不存在！");
         }
         String role = accountDTO.getLoginType() == AccountLoginType.SHOP.getCode() ? ROLE_SHOP : ROLE_USER;
         String username = JwtTokenUtils.generateSubject(accountDTO.getUsername(), accountDTO.getId(), role);

@@ -41,7 +41,7 @@ public class MD5Util {
     }
 
     public static void main(String[] args) {
-        String value = md5("1234567", "admin");
+        String value = md5("123456", "18661482845");
         System.out.println(value);
     }
 }

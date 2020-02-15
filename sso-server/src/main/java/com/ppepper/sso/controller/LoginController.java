@@ -29,14 +29,18 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/login")
     public AjaxResult login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, pwd);
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        User userDetails = (User) authentication.getPrincipal();
-        if (userDetails != null) {
-            String token = JwtTokenUtils.generateToken(userDetails.getUsername());
-            return success("登录成功", token);
+        try {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, pwd);
+            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            User userDetails = (User) authentication.getPrincipal();
+            if (userDetails != null) {
+                String token = JwtTokenUtils.generateToken(userDetails.getUsername());
+                return success("登录成功", token);
+            }
+        }catch (Exception e){
+           return error(e.getMessage());
         }
+
         return error("账号或密码不正确！");
     }
 
