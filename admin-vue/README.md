@@ -20,3 +20,7 @@ npm 6.13+
 1. 执行 npm install
 2. debug npm run dev
 
+### 打包
+* 域名修改在 config 目录下 对应各个环境
+* npm run build:prod
+

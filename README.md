@@ -1,7 +1,8 @@
 # b2c 商城
 
 ### 基于springcloud 架构设计 
-For further reference, please consider the following sections:
+* 本项目可分多个微服务打包允许，也可以 合并打包运行
+* admin-server 服务的账户体系 为独立，合并打包需 在sso-server 中过滤 /admin 路径
 
 * **-server 结尾项目可直接运行
 * **-component 结尾属于依赖组件
@@ -42,8 +43,10 @@ For further reference, please consider the following sections:
 * payment-server   支付服务          端口：8600
 * admin-server     后台管理服务      端口：8700
 * common-component 公共组件（集成数据库配置，redis配置 mybatis 分页配置 数据库实体类配置）
+* admin-vue        后台管理界面 基于vue 搭建 环境配置及打包 看README.md
 
 ### 数据库
+* Mybatis 
 * alibaba druid 连接
 * **DO(数据库实体模型)
 * **DTO(数据传输模型) 
@@ -97,6 +100,10 @@ For further reference, please consider the following sections:
           </mirror>
     </mirrors>
 ```
+
+
+感谢[unimall](https://gitee.com/iotechn/unimall)提供开源后台
+项目搭建思路 [新手入门教程](https://www.jianshu.com/p/cfaba3e46234)
 
 
 
