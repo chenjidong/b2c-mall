@@ -1,13 +1,19 @@
 package com.ppepper.order.service;
 
 
+import com.ppepper.common.dto.OrderDTO;
 import com.ppepper.common.model.AjaxResult;
+import com.ppepper.order.domain.OrderDO;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created with ChenJiDong
  * Created By 2020-02-05
  */
 public interface OrderService {
+    static final String ORDER_STATUS_LOCK = "ORDER_STATUS_LOCK_";
 
     public AjaxResult get(Long id, Long accountId);
 
@@ -20,5 +26,11 @@ public interface OrderService {
     public AjaxResult getByOrderNo(Long accountId, String orderNo);
 
     public AjaxResult setStatus(Long accountId, String orderNo, Integer status);
+
+
+    public List<OrderDTO> selectExpireOrderNos(Integer status, Date time);
+
+
+    public int update(OrderDO orderDO);
 
 }

@@ -17,4 +17,9 @@ public interface CouponUserService {
     public AjaxResult used(
             Long accountId,
             Long id);
+
+
+    public AjaxResult rollbackUnused(
+            Long accountId,
+            Long id);
 }

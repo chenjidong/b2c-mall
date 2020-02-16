@@ -32,6 +32,9 @@ public interface GoodsService {
     public AjaxResult getBySkuIds(Long[] skuIds);
 
 
-    public AjaxResult stock(Long id,Integer num);
-    public AjaxResult freezeStock(Long id,Integer num);
+    public AjaxResult stock(Long id, Integer num);
+
+    public AjaxResult freezeStock(Long id, Integer num);
+
+    public AjaxResult rollbackStock(Long skuId, Integer num);
 }

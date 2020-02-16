@@ -34,4 +34,7 @@ public interface CouponFeignClient {
 
     @RequestMapping(value = "/api/coupon/used", method = RequestMethod.GET)
     public AjaxResult used(@RequestParam("id") Long id);
+
+    @RequestMapping(value = "/api/coupon/rollbackUnused", method = RequestMethod.GET)
+    public AjaxResult rollbackUnused(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id);
 }

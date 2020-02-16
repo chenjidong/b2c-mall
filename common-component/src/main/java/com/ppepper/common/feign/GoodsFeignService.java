@@ -67,6 +67,12 @@ public class GoodsFeignService extends BaseFeignService {
         return ajaxResult.getCode() == AjaxResult.Type.SUCCESS.value();
     }
 
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public Boolean rollbackStock(Long skuId, Integer num) {
+        AjaxResult ajaxResult = goodsFeignClient.rollbackStock(skuId, num);
+        return ajaxResult.getCode() == AjaxResult.Type.SUCCESS.value();
+    }
+
 
     public SpuDTO serviceOffline(Long id) {
         return null;
@@ -76,7 +82,7 @@ public class GoodsFeignService extends BaseFeignService {
         return null;
     }
 
-    public Boolean serviceOffline(Long id, Integer num) {
+    public Boolean serviceOffline(Long skuId, Integer num) {
         return false;
     }
 

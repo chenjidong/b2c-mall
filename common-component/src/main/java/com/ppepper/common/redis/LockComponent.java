@@ -28,7 +28,7 @@ public class LockComponent {
      * 获取乐观锁
      *
      * @param key
-     * @param timeoutSec 锁过期时间
+     * @param timeoutSec 锁过期时间 秒
      * @return
      */
     public boolean tryLock(String key, Integer timeoutSec) {

@@ -3,42 +3,17 @@
 <mapper namespace="com.ppepper.order.mapper.OrderMapper">
 
 
-    <select id="selectOrderPage" resultType="com.ppepper.common.dto.OrderDTO">
+    <select id="selectExpireOrderNos" resultType="com.ppepper.common.dto.OrderDTO">
         SELECT
             id,
             order_no AS orderNo,
             `status`,
-            actual_price AS actualPrice,
+            coupon_id as couponId,
+            account_id as accountId,
+            pay_id as payId,
             gmt_create AS gmtCreate
         FROM
             b2c_order
-        WHERE
-            account_id = #{accountId}
-            <if test="status != null and status != 0">
-                AND `status` = #{status}
-            </if>
-        ORDER BY id DESC
-            LIMIT #{offset}, #{limit}
-
-    </select>
-
-    <select id="countOrder" resultType="java.lang.Long">
-        SELECT
-            count(1)
-        FROM
-            b2c_order
-        WHERE
-            account_id = #{accountId}
-        <if test="status != null and status != 0">
-            AND `status` = #{status}
-        </if>
-    </select>
-
-    <select id="selectExpireOrderNos" resultType="java.lang.String">
-        SELECT
-           order_no
-        FROM
-            taoban_order
         WHERE
             `status` = #{status}
             AND gmt_update &lt; #{time}

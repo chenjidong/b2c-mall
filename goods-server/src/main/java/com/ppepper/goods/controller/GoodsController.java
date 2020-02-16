@@ -59,4 +59,9 @@ public class GoodsController extends BaseController {
         return goodsService.freezeStock(id, num);
     }
 
+    @RequestMapping(value = "/api/goods/rollbackStock")
+    public AjaxResult rollbackStock(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
+        return goodsService.rollbackStock(skuId, num);
+    }
+
 }

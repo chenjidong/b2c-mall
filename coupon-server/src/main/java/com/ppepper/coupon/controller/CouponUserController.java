@@ -5,6 +5,7 @@ import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.coupon.service.CouponUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,5 +41,11 @@ public class CouponUserController {
     @RequestMapping("/used")
     public AjaxResult used(@RequestParam("id") Long id) {
         return couponUserService.get(JwtTokenUtils.getCurrentAccountIdByToken(), id);
+    }
+
+
+    @RequestMapping(value = "/rollbackUnused", method = RequestMethod.GET)
+    public AjaxResult rollbackUnused(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id) {
+        return couponUserService.rollbackUnused(accountId, id);
     }
 }

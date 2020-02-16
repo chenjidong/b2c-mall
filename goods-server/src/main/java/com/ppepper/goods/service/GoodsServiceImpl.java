@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -161,5 +162,18 @@ public class GoodsServiceImpl extends BaseServiceImpl implements GoodsService {
         spuSkuDO1.setFreezeStock(freezeStock);
         int count = spuSkuMapper.updateById(spuSkuDO1);
         return toAjax(count);
+    }
+
+    @Override
+    public AjaxResult rollbackStock(Long skuId, Integer num) {
+        SpuSkuDO spuSkuDO = spuSkuMapper.selectById(skuId);
+        if (spuSkuDO == null)
+            return error("优惠券不存在");
+        if (spuSkuDO.getFreezeStock() == null || spuSkuDO.getFreezeStock() < num)
+            return error("冻结库存与回滚库存不匹配");
+        spuSkuDO.setFreezeStock(spuSkuDO.getFreezeStock() - num);
+        spuSkuDO.setStock(spuSkuDO.getStock() + num);
+        spuSkuDO.setGmtUpdate(new Date());
+        return toAjax(spuSkuMapper.updateById(spuSkuDO));
     }
 }

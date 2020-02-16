@@ -80,4 +80,18 @@ public class CouponUserServiceImpl extends BaseServiceImpl implements CouponUser
         }
         return error("操作失败");
     }
+
+    @Override
+    public AjaxResult rollbackUnused(Long accountId, Long id) {
+        CouponUserDO couponUserDO = new CouponUserDO();
+        couponUserDO.setAccountId(accountId);
+        couponUserDO.setId(id);
+        couponUserDO = couponUserMapper.selectOne(couponUserDO);
+        if (couponUserDO == null || couponUserDO.getGmtUsed() == null) {
+            return error("优惠券不存在/未使用");
+        }
+        couponUserDO.setGmtUsed(null);
+        couponUserDO.setGmtUpdate(new Date());
+        return toAjax(couponUserMapper.updateById(couponUserDO));
+    }
 }

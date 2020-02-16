@@ -44,4 +44,7 @@ public interface GoodsFeignClient {
     @RequestMapping(value = "/api/goods/freezeStock")
     public AjaxResult freezeStock(@RequestParam("id") Long id, @RequestParam("num") Integer num);
 
+    @RequestMapping(value = "/api/goods/rollbackStock")
+    public AjaxResult rollbackStock(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num);
+
 }

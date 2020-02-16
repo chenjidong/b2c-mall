@@ -283,4 +283,32 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
         orderDO.setGmtUpdate(new Date());
         return toAjax(orderMapper.updateById(orderDO));
     }
+
+    @Override
+    public List<OrderDTO> selectExpireOrderNos(Integer status, Date time) {
+        List<OrderDTO> list = orderMapper.selectExpireOrderNos(status, time);
+        if (list != null) {
+            list.forEach(item ->{
+                List<OrderSkuDO> orderSkuDOList = orderSkuMapper.selectList(new EntityWrapper<OrderSkuDO>().eq("order_id", item.getId()));
+
+                List<OrderSkuDTO> orderSkuDTOList = new ArrayList<>();
+                for (OrderSkuDO orderSkuDO : orderSkuDOList) {
+                    OrderSkuDTO orderSkuDTO = copyProperties(orderSkuDO, OrderSkuDTO.class);
+
+                    orderSkuDTO.setSpuDTO(goodsFeignService.get(orderSkuDTO.getSpuId()));
+                    orderSkuDTOList.add(orderSkuDTO);
+                }
+                item.setSkuList(orderSkuDTOList);
+            });
+        }
+        return list;
+    }
+
+    @Override
+    public int update(OrderDO orderDO) {
+        Wrapper<OrderDO> wrapper = new EntityWrapper<>();
+        wrapper.eq("order_no", orderDO.getOrderNo());
+        return orderMapper.update(orderDO, wrapper);
+    }
+
 }
