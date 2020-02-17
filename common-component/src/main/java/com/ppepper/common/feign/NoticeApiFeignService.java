@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
  * Created By 2020-02-10
  */
 @Service
-public class NoticeUserFeignService extends BaseFeignService {
+public class NoticeApiFeignService extends BaseFeignService {
 
     @Autowired
     private NoticeFeignClient noticeFeignClient;
 
     @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
     public NoticeDTO get(Long id) {
-        return convert(noticeFeignClient.getByUserId(id), NoticeDTO.class);
+        return convert(noticeFeignClient.getByAccountId(id), NoticeDTO.class);
     }
 
     public NoticeDTO serviceOffline(Long id) {

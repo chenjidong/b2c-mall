@@ -14,7 +14,7 @@ import java.util.List;
  * Created By 2020-02-09
  */
 @Service
-public class CartFeignService extends BaseFeignService {
+public class CartApiFeignService extends BaseFeignService {
 
     @Autowired
     private AccountFeignClient accountFeignClient;

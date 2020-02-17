@@ -15,32 +15,18 @@ import java.util.List;
  * Created By 2020-02-05
  */
 @Service
-public class GoodsFeignService extends BaseFeignService {
+public class GoodsSysFeignService extends BaseFeignService {
 
     @Autowired
     private GoodsFeignClient goodsFeignClient;
 
 
-    @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
+    @HystrixCommand(fallbackMethod = "serviceOffline")
     public SpuDTO get(Long id) {
-        //eureka 调度
-//        String service = "goods-service";
-//        String url = "http://" + service + "/goods/" + id;
-
-        //获取第一个服务
-//        List<ServiceInstance> instances = discoveryClient.getInstances(service);
-//        if (instances.isEmpty()){
-//            return null;
-//        }
-//        String url = "http://" + instances.get(0).getHost()+":"+instances.get(0).getPort() + "/goods/" + id;
-
-
-//        return restTemplate.getForObject(url, GoodsDTO.class);
-
         return convert(goodsFeignClient.get(id), SpuDTO.class);
     }
 
-    @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
+    @HystrixCommand(fallbackMethod = "serviceOffline")
     public List<SpuDTO> getByIds(Long[] ids) {
         return convertList(goodsFeignClient.getByIds(ids), SpuDTO.class);
     }
@@ -56,7 +42,7 @@ public class GoodsFeignService extends BaseFeignService {
         return list == null ? null : list.get(0);
     }
 
-    @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
+    @HystrixCommand(fallbackMethod = "serviceOffline")
     public Boolean stock(Long id, Integer num) {
         AjaxResult ajaxResult = goodsFeignClient.stock(id, num);
         return ajaxResult.getCode() == AjaxResult.Type.SUCCESS.value();

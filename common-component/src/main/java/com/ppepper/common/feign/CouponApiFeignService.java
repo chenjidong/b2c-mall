@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
  * Created By 2020-02-10
  */
 @Service
-public class CouponUserFeignService extends BaseFeignService {
+public class CouponApiFeignService extends BaseFeignService {
 
     @Autowired
     private CouponFeignClient couponFeignClient;
 
-    @HystrixCommand(fallbackMethod = "serviceOffline")//服务不可用时  hystrix 自动调用指定函数返回
-    public CouponUserDTO getByAccountId(Long id) {
-        return convert(couponFeignClient.getByAccountId(id), CouponUserDTO.class);
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public CouponUserDTO getUserCoupon(Long id) {
+        return convert(couponFeignClient.getUserCoupon(id), CouponUserDTO.class);
     }
 
     public CouponUserDTO serviceOffline(Long id) {

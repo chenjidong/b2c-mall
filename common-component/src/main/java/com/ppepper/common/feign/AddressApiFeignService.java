@@ -1,30 +1,28 @@
 package com.ppepper.common.feign;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.ppepper.common.dto.CollectDTO;
+import com.ppepper.common.dto.AddressDTO;
 import com.ppepper.common.feign.client.AccountFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 /**
  * Created with ChenJiDong
  * Created By 2020-02-09
  */
 @Service
-public class CollectFeignService extends BaseFeignService {
+public class AddressApiFeignService extends BaseFeignService {
 
     @Autowired
     private AccountFeignClient accountFeignClient;
 
     @HystrixCommand(fallbackMethod = "serviceOffline")
-    public CollectDTO getCollect(Long id) {
-        if (StringUtils.isEmpty(id))
-            return null;
-        return convert(accountFeignClient.getCollect(id), CollectDTO.class);
+    public AddressDTO getAddress(Long id) {
+
+        return convert(accountFeignClient.getAddress(id), AddressDTO.class);
     }
 
-    public CollectDTO serviceOffline(Long id) {
+    public AddressDTO serviceOffline(Long id) {
         return null;
     }
 }

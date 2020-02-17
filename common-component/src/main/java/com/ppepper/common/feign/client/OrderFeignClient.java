@@ -13,19 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "order-service")
 public interface OrderFeignClient {
 
-    /**
-     * 订单详情 【需登录】
-     *
-     * @param id 订单id
-     * @return
-     */
-    @RequestMapping(value = "/api/order/user/get", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/api/order/get", method = RequestMethod.GET)
     public AjaxResult get(@RequestParam("id") Long id);
 
 
-    @RequestMapping(value = "/api/order/getByOrderNo", method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/order/getByOrderNo", method = RequestMethod.GET)
     public AjaxResult getByOrderNo(@RequestParam("orderNo") String orderNo);
 
-    @RequestMapping(value = "/api/order/setStatus", method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/order/setStatus", method = RequestMethod.GET)
     public AjaxResult setStatus(@RequestParam("orderNo") String orderNo, @RequestParam("status") Integer status);
 }

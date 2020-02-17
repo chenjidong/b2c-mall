@@ -25,12 +25,11 @@ public class SecurityUtils {
 
     public static final HashMap<String, List<String>> PERMISSION_PATTERN_MAP = new HashMap<String, List<String>>() {{
         put(NO_PREFIX_ROLE_USER, new ArrayList<String>() {{
-            add("/api/sso/user/**");
-            add("/api/account/user/**");
-            add("/api/order/user/**");
-            add("/api/coupon/user/**");
-            add("/api/notice/user/**");
-            add("/api/payment/user/**");
+            add("/api/account/**");
+            add("/api/order/**");
+            add("/api/coupon/**");
+            add("/api/notice/**");
+            add("/api/payment/**");
         }});
         put(NO_PREFIX_ROLE_ADMIN, new ArrayList<String>() {{
             add("/admin/**");

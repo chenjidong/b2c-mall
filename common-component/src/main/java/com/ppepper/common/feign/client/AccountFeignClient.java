@@ -14,40 +14,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AccountFeignClient {
 
 
-    @RequestMapping("/api/account/getByUsername")
+    @RequestMapping("/sys/account/getByUsername")
     public AjaxResult getByUsername(@RequestParam("username") String username);
 
-    @RequestMapping("/api/account/getByPhone")
+    @RequestMapping("/sys/account/getByPhone")
     public AjaxResult getByPhone(@RequestParam("phone") String phone);
 
-    @RequestMapping("/api/account/get")
+    @RequestMapping("/sys/account/get")
     public AjaxResult get(@RequestParam("id") Long id);
 
 
-    @RequestMapping("/api/account/sendCode")
+    @RequestMapping("/sys/account/sendCode")
     public AjaxResult sendCode(@RequestParam("phone") String phone);
 
-    @RequestMapping("/api/account/create")
+    @RequestMapping("/sys/account/create")
     public AjaxResult create(@RequestParam("phone") String phone, @RequestParam("password") String password, @RequestParam("code") String code);
 
-    /**
-     * 获取收藏详情
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping("/api/account/user/collect/get")
+
+    @RequestMapping("/api/account/collect/get")
     public AjaxResult getCollect(@RequestParam("id") Long id);
 
 
-    @RequestMapping("/api/account/user/cart/list")
+    @RequestMapping("/api/account/cart/list")
     public AjaxResult getCartList(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
 
 
-    @RequestMapping("/api/account/user/address/get")
+    @RequestMapping("/api/account/address/get")
     public AjaxResult getAddress(@RequestParam("id") Long id);
 
-    @RequestMapping("/api/account/user/cart/clean")
+    @RequestMapping("/api/account/cart/clean")
     public AjaxResult cleanCart();
 
 }

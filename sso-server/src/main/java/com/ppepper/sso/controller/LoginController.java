@@ -1,7 +1,7 @@
 package com.ppepper.sso.controller;
 
 import com.ppepper.common.controller.BaseController;
-import com.ppepper.common.feign.AccountFeignService;
+import com.ppepper.common.feign.AccountSysFeignService;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class LoginController extends BaseController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private AccountFeignService accountFeignService;
+    private AccountSysFeignService accountSysFeignService;
 
     @RequestMapping("/login")
     public AjaxResult login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
@@ -46,11 +46,11 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/sendCode")
     public AjaxResult sendCode(String phone) {
-        return accountFeignService.sendCode(phone);
+        return accountSysFeignService.sendCode(phone);
     }
 
     @RequestMapping("/create")
     public AjaxResult create(String phone, String password, String code) {
-        return accountFeignService.create(phone, password, code);
+        return accountSysFeignService.create(phone, password, code);
     }
 }

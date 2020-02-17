@@ -20,5 +20,5 @@ public interface NoticeFeignClient {
      * @return
      */
     @RequestMapping(value = "/api/notice/user/get", method = RequestMethod.GET)
-    public AjaxResult getByUserId(@RequestParam("id") Long id);
+    public AjaxResult getByAccountId(@RequestParam("id") Long id);
 }

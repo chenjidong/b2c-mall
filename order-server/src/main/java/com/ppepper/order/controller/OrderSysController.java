@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/order")
-public class OrderController {
+public class OrderSysController {
 
     @Autowired
     private OrderService orderService;

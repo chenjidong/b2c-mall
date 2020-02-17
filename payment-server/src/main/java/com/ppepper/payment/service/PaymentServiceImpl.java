@@ -7,8 +7,8 @@ import com.ppepper.common.enums.AccountStatusType;
 import com.ppepper.common.enums.OrderStatusType;
 import com.ppepper.common.enums.PaymentStatusType;
 import com.ppepper.common.enums.PaymentType;
-import com.ppepper.common.feign.AccountFeignService;
-import com.ppepper.common.feign.OrderFeignService;
+import com.ppepper.common.feign.AccountSysFeignService;
+import com.ppepper.common.feign.OrderSysFeignService;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.service.BaseServiceImpl;
 import com.ppepper.payment.domain.PaymentDO;
@@ -30,10 +30,10 @@ public class PaymentServiceImpl extends BaseServiceImpl implements PaymentServic
     private PaymentMapper paymentMapper;
 
     @Autowired
-    private AccountFeignService accountFeignService;
+    private AccountSysFeignService accountSysFeignService;
 
     @Autowired
-    private OrderFeignService orderFeignService;
+    private OrderSysFeignService orderSysFeignService;
 
     @Override
     public AjaxResult getByPayNo(Long accountId, String payNo) {
@@ -54,7 +54,7 @@ public class PaymentServiceImpl extends BaseServiceImpl implements PaymentServic
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public AjaxResult create(Long accountId, String orderNo, String channel, Integer payType) {
-        AccountDTO accountDTO = accountFeignService.get(accountId);
+        AccountDTO accountDTO = accountSysFeignService.get(accountId);
         if (accountDTO.getStatus() != AccountStatusType.ENABLE.getCode())
             return error("账号已被冻结  无法支付");
 
@@ -72,7 +72,7 @@ public class PaymentServiceImpl extends BaseServiceImpl implements PaymentServic
                 return error("订单已支付或退款中,无需重复支付");
         }
 
-        OrderDTO orderDTO = orderFeignService.getByOrderNo(orderNo);
+        OrderDTO orderDTO = orderSysFeignService.getByOrderNo(orderNo);
 
 
         if (payType == null)
@@ -99,7 +99,7 @@ public class PaymentServiceImpl extends BaseServiceImpl implements PaymentServic
                 }
                 if (count > 0) {
 
-                    Boolean success = orderFeignService.setStatus(orderNo, OrderStatusType.MANUAL_PAYING.getCode());
+                    Boolean success = orderSysFeignService.setStatus(orderNo, OrderStatusType.MANUAL_PAYING.getCode());
                     if (!success)
                         throw new RuntimeException();
                     return success("线下支付完成！");

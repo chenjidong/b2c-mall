@@ -9,7 +9,7 @@ import com.ppepper.account.mapper.CollectMapper;
 import com.ppepper.common.dto.CollectDTO;
 import com.ppepper.common.dto.SpuDTO;
 import com.ppepper.common.enums.CollectType;
-import com.ppepper.common.feign.GoodsFeignService;
+import com.ppepper.common.feign.GoodsSysFeignService;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.service.BaseServiceImpl;
 import org.apache.ibatis.session.RowBounds;
@@ -30,7 +30,7 @@ public class CollectServiceImpl extends BaseServiceImpl implements CollectServic
     private CollectMapper collectMapper;
 
     @Autowired
-    private GoodsFeignService goodsFeignService;
+    private GoodsSysFeignService goodsSysFeignService;
     @Autowired
     private AccountMapper accountMapper;
 
@@ -44,7 +44,7 @@ public class CollectServiceImpl extends BaseServiceImpl implements CollectServic
             return error();
         CollectDTO collectDTO = copyProperties(collectDO, CollectDTO.class);
         if (collectDO.getType() == CollectType.SPU.getCode()) {
-            SpuDTO spuDTO = goodsFeignService.get(collectDTO.getCollectId());
+            SpuDTO spuDTO = goodsSysFeignService.get(collectDTO.getCollectId());
             collectDTO.setSpuDTO(spuDTO);
         }
         return toAjax(collectDTO);
@@ -62,7 +62,7 @@ public class CollectServiceImpl extends BaseServiceImpl implements CollectServic
             collectDTOList.forEach(item -> {
                 longList.add(item.getCollectId());
             });
-            List<SpuDTO> spuDTOList = goodsFeignService.getByIds(longList.toArray(new Long[]{}));
+            List<SpuDTO> spuDTOList = goodsSysFeignService.getByIds(longList.toArray(new Long[]{}));
             if (spuDTOList != null) {
                 collectDTOList.forEach(item -> spuDTOList.forEach(item1 -> {
                     if (item1.getId().equals(item.getCollectId())) {
@@ -82,7 +82,7 @@ public class CollectServiceImpl extends BaseServiceImpl implements CollectServic
         if (accountDO == null)
             error("用户不存在");
         if (type == CollectType.SPU.getCode()) {
-            SpuDTO spuDTO = goodsFeignService.get(id);
+            SpuDTO spuDTO = goodsSysFeignService.get(id);
             if (spuDTO == null)
                 return error("商品不存在");
         } else if (type == CollectType.SHOP.getCode()) {

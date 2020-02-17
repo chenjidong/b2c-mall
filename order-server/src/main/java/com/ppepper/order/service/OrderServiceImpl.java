@@ -36,23 +36,23 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
     private OrderSkuMapper orderSkuMapper;
 
     @Autowired
-    private GoodsFeignService goodsFeignService;
+    private GoodsSysFeignService goodsSysFeignService;
 
     @Autowired
-    private AccountFeignService accountFeignService;
+    private AccountSysFeignService accountSysFeignService;
 
     @Autowired
-    private CartFeignService cartFeignService;
+    private CartApiFeignService cartApiFeignService;
 
 
     @Autowired
-    private AddressFeignService addressFeignService;
+    private AddressApiFeignService addressApiFeignService;
 
     @Autowired
-    private CouponUserFeignService couponUserFeignService;
+    private CouponApiFeignService couponApiFeignService;
 
     @Autowired
-    private CouponFeignService couponFeignService;
+    private CouponSysFeignService couponSysFeignService;
 
 
     @Override
@@ -70,7 +70,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
             for (OrderSkuDO orderSkuDO : orderSkuDOList) {
                 OrderSkuDTO orderSkuDTO = copyProperties(orderSkuDO, OrderSkuDTO.class);
 
-                orderSkuDTO.setSpuDTO(goodsFeignService.get(orderSkuDTO.getSpuId()));
+                orderSkuDTO.setSpuDTO(goodsSysFeignService.get(orderSkuDTO.getSpuId()));
                 orderSkuDTOList.add(orderSkuDTO);
             }
             orderDTO.setSkuList(orderSkuDTOList);
@@ -108,14 +108,14 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult createByCart(Long accountId, Long addressId, Long couponId, String channel) {
-        AccountDTO accountDTO = accountFeignService.get(accountId);
+        AccountDTO accountDTO = accountSysFeignService.get(accountId);
         if (accountDTO == null)
             return error("无效的用户");
 
-        List<CartDTO> cartDTOList = cartFeignService.getCartList(1, 999);
+        List<CartDTO> cartDTOList = cartApiFeignService.getCartList(1, 999);
         if (cartDTOList == null || cartDTOList.isEmpty())
             return error("购物车是空的");
-        AddressDTO addressDTO = addressFeignService.getAddress(addressId);
+        AddressDTO addressDTO = addressApiFeignService.getAddress(addressId);
         if (addressDTO == null)
             return error("无效的地址");
 //            addressDTO = new AddressDTO();
@@ -127,7 +127,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
 //        addressDTO.setConsignee("收货人");
         CouponUserDTO couponUserDTO = null;
         if (couponId != null) {
-            couponUserDTO = couponUserFeignService.getByAccountId(couponId);
+            couponUserDTO = couponApiFeignService.getUserCoupon(couponId);
             if (couponUserDTO == null || couponUserDTO.getGmtUsed() != null || new Date().before(couponUserDTO.getGmtEnd()) || couponUserDTO.getCouponDTO().getStatus() != CouponStatusType.LOCK.getCode())
                 return error("优惠券不存在/已使用");
 
@@ -222,16 +222,16 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
 
                 orderSkuMapper.insert(orderSkuDO);
 
-                Boolean isStock = goodsFeignService.freezeStock(spuSkuDTO.getId(), cartDTO.getNum()); //冻结库存不成功直接抛异常回滚
+                Boolean isStock = goodsSysFeignService.freezeStock(spuSkuDTO.getId(), cartDTO.getNum()); //冻结库存不成功直接抛异常回滚
 
-                Boolean finished = cartFeignService.cleanCart();
+                Boolean finished = cartApiFeignService.cleanCart();
                 if (!isStock || !finished) {
                     throw new RuntimeException();
                 }
             }
 
             if (couponUserDTO != null) {
-                Boolean setUsedCoupon = couponFeignService.used(orderDO.getAccountId(), couponId);
+                Boolean setUsedCoupon = couponSysFeignService.used(orderDO.getAccountId(), couponId);
                 if (!setUsedCoupon)
                     throw new RuntimeException();
             }
@@ -262,7 +262,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
             for (OrderSkuDO orderSkuDO : orderSkuDOList) {
                 OrderSkuDTO orderSkuDTO = copyProperties(orderSkuDO, OrderSkuDTO.class);
 
-                orderSkuDTO.setSpuDTO(goodsFeignService.get(orderSkuDTO.getSpuId()));
+                orderSkuDTO.setSpuDTO(goodsSysFeignService.get(orderSkuDTO.getSpuId()));
                 orderSkuDTOList.add(orderSkuDTO);
             }
             orderDTO.setSkuList(orderSkuDTOList);
@@ -298,7 +298,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
                 for (OrderSkuDO orderSkuDO : orderSkuDOList) {
                     OrderSkuDTO orderSkuDTO = copyProperties(orderSkuDO, OrderSkuDTO.class);
 
-                    orderSkuDTO.setSpuDTO(goodsFeignService.get(orderSkuDTO.getSpuId()));
+                    orderSkuDTO.setSpuDTO(goodsSysFeignService.get(orderSkuDTO.getSpuId()));
                     orderSkuDTOList.add(orderSkuDTO);
                 }
                 item.setSkuList(orderSkuDTOList);

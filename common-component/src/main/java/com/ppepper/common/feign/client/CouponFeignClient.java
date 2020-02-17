@@ -13,28 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "coupon-service")
 public interface CouponFeignClient {
 
-    /**
-     * 获取优惠券
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/api/coupon/get", method = RequestMethod.GET)
-    public AjaxResult get(@RequestParam("id") Long id);
-
-    @RequestMapping(value = "/api/coupon/used", method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/coupon/used", method = RequestMethod.GET)
     public AjaxResult used(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id);
 
-    @RequestMapping(value = "/api/coupon/rollbackUnused", method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/coupon/rollbackUnused", method = RequestMethod.GET)
     public AjaxResult rollbackUnused(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id);
 
-    /**
-     * 获取用户优惠券 【需登录】
-     *
-     * @param id
-     * @return
-     */
+
     @RequestMapping(value = "/api/coupon/user/get", method = RequestMethod.GET)
-    public AjaxResult getByAccountId(@RequestParam("id") Long id);
+    public AjaxResult getUserCoupon(@RequestParam("id") Long id);
+
 
 }

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-08
  */
 @RestController
-@RequestMapping("/api/account")
-public class AccountController extends BaseController {
+@RequestMapping("/sys/account")
+public class AccountSysController extends BaseController {
 
     @Autowired
     private AccountService accountService;

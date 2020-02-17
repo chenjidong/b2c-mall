@@ -2,8 +2,8 @@ package com.ppepper.order.quartz;
 
 import com.ppepper.common.dto.OrderDTO;
 import com.ppepper.common.enums.OrderStatusType;
-import com.ppepper.common.feign.CouponFeignService;
-import com.ppepper.common.feign.GoodsFeignService;
+import com.ppepper.common.feign.CouponSysFeignService;
+import com.ppepper.common.feign.GoodsSysFeignService;
 import com.ppepper.common.redis.LockComponent;
 import com.ppepper.order.domain.OrderDO;
 import com.ppepper.order.service.OrderService;
@@ -36,10 +36,10 @@ public class CheckQuartz {
     private LockComponent lockComponent;
 
     @Autowired
-    private GoodsFeignService goodsFeignService;
+    private GoodsSysFeignService goodsSysFeignService;
 
     @Autowired
-    private CouponFeignService couponFeignService;
+    private CouponSysFeignService couponSysFeignService;
 
     /**
      * 5分钟执行一次
@@ -69,7 +69,7 @@ public class CheckQuartz {
 
                             //回滚优惠券
                             if (item.getCouponId() != null) {
-                                Boolean rollbackCoupon = couponFeignService.rollbackUnused(item.getAccountId(), item.getCouponId());
+                                Boolean rollbackCoupon = couponSysFeignService.rollbackUnused(item.getAccountId(), item.getCouponId());
                                 if (!rollbackCoupon)
                                     throw new RuntimeException();
                             }
@@ -77,7 +77,7 @@ public class CheckQuartz {
                             //回滚商品库存
                             if (!CollectionUtils.isEmpty(item.getSkuList())) {
                                 item.getSkuList().forEach(item1 -> {
-                                    Boolean rollbackStock = goodsFeignService.rollbackStock(item1.getSkuId(), item1.getNum());
+                                    Boolean rollbackStock = goodsSysFeignService.rollbackStock(item1.getSkuId(), item1.getNum());
                                     if (!rollbackStock)
                                         throw new RuntimeException();
                                 });

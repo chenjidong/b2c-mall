@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-08
  */
 @RestController
-@RequestMapping("/api/coupon")
-public class CouponController extends BaseController {
+@RequestMapping("/sys/coupon")
+public class CouponSysController extends BaseController {
 
     @Autowired
     private CouponService couponService;

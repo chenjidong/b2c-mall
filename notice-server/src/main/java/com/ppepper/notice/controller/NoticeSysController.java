@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-09
  */
 @RestController
-@RequestMapping("/api/notice")
-public class NoticeController extends BaseController {
+@RequestMapping("/sys/notice")
+public class NoticeSysController extends BaseController {
 
 }

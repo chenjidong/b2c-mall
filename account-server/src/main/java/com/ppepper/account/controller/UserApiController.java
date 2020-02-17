@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-07
  */
 @RestController
-@RequestMapping("/api/account/user")
-public class UserController {
+@RequestMapping("/api/user")
+public class UserApiController {
 
     @Autowired
     private UserService userService;

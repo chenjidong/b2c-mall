@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/goods")
-public class GoodsController extends BaseController {
+public class GoodsApiController extends BaseController {
 
     @Autowired
     private GoodsService goodsService;
@@ -28,11 +28,6 @@ public class GoodsController extends BaseController {
         return goodsService.get(id);
     }
 
-    @RequestMapping(value = "/getBySkuIds")
-    public AjaxResult getBySkuIds(@RequestParam("skuIds") Long[] skuIds) {
-        return goodsService.getBySkuIds(skuIds);
-    }
-
     @RequestMapping(value = "/list")
     public AjaxResult list(@RequestParam("pageNo") Integer pageNo,
                            @RequestParam("pageSize") Integer pageSize,
@@ -42,26 +37,4 @@ public class GoodsController extends BaseController {
                            @RequestParam("title") String title) {
         return goodsService.list(pageNo, pageSize, categoryId, orderBy, isAsc, title);
     }
-
-    @RequestMapping(value = "/getByIds")
-    public AjaxResult getByIds(@RequestParam("ids") Long[] ids) {
-        return goodsService.getByIds(ids);
-    }
-
-
-    @RequestMapping(value = "/stock")
-    public AjaxResult stock(@RequestParam("id") Long id, @RequestParam("num") Integer num) {
-        return goodsService.stock(id, num);
-    }
-
-    @RequestMapping(value = "/freezeStock")
-    public AjaxResult freezeStock(Long id, Integer num) {
-        return goodsService.freezeStock(id, num);
-    }
-
-    @RequestMapping(value = "/rollbackStock")
-    public AjaxResult rollbackStock(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
-        return goodsService.rollbackStock(skuId, num);
-    }
-
 }

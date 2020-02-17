@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
  * Created By 2020-02-09
  */
 @Service
-public class AccountFeignService extends BaseFeignService {
+public class AccountSysFeignService extends BaseFeignService {
 
     @Autowired
     private AccountFeignClient accountFeignClient;

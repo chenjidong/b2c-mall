@@ -23,13 +23,17 @@
 * springcloud 组件（eureka(服务调度),zuul(网关),hystrix(熔断机制),openfeign(ribbon升级版),ribbon(负载均衡)）
 
 ### 运行错误说明
-* 1.common jar引入失败 详情看 common-component README.md 进行操作
-* 2. redis connect failed  检查redis 是否安装或已启动、密码配置
+* common jar引入失败 详情看 common-component README.md 进行操作
+* redis connect failed  检查redis 是否安装或已启动、密码配置
 
 ### 打包测试
 * mvn clean package/install
 * linux  nohup java -jar **-server.jar (可选：--server.port=8080) & 
 * window cmd shell ./**-server.jar
+
+### 路由规范
+* /api/** 对外提供 (zuul 转发时会自动注入 authorization )
+* /sys/** 内部微服务调用
 
 ### 微服务
 * eureka-server    服务控制中心      端口：7000

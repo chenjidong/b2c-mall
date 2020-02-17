@@ -6,7 +6,7 @@ import com.ppepper.account.mapper.CartMapper;
 import com.ppepper.common.dto.CartDTO;
 import com.ppepper.common.dto.SpuDTO;
 import com.ppepper.common.enums.SpuStatusType;
-import com.ppepper.common.feign.GoodsFeignService;
+import com.ppepper.common.feign.GoodsSysFeignService;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.service.BaseServiceImpl;
 import org.apache.ibatis.session.RowBounds;
@@ -26,7 +26,7 @@ public class CartServiceImpl extends BaseServiceImpl implements CartService {
     private CartMapper cartMapper;
 
     @Autowired
-    private GoodsFeignService goodsFeignService;
+    private GoodsSysFeignService goodsSysFeignService;
 
     @Override
     public AjaxResult get(Long accountId, Long id) {
@@ -38,7 +38,7 @@ public class CartServiceImpl extends BaseServiceImpl implements CartService {
         if (cartDO == null)
             return error("商品不存在！");
         CartDTO cartDTO = copyProperties(cartDO, CartDTO.class);
-        SpuDTO spuDTO = goodsFeignService.getBySkuIds(cartDO.getSkuId());
+        SpuDTO spuDTO = goodsSysFeignService.getBySkuIds(cartDO.getSkuId());
         if (spuDTO != null) {
             cartDTO.setSpuDTO(spuDTO);
         }
@@ -55,7 +55,7 @@ public class CartServiceImpl extends BaseServiceImpl implements CartService {
                 skuIds.add(item.getSkuId());
             });
 
-            List<SpuDTO> spuDTO = goodsFeignService.getBySkuIds(skuIds.toArray(new Long[]{}));
+            List<SpuDTO> spuDTO = goodsSysFeignService.getBySkuIds(skuIds.toArray(new Long[]{}));
 
             if (spuDTO != null && !spuDTO.isEmpty()) {
                 spuDTO.forEach(item -> cartDTOS.forEach(item1 -> {
@@ -74,7 +74,7 @@ public class CartServiceImpl extends BaseServiceImpl implements CartService {
     public AjaxResult add(Long accountId, Long skuId, Integer num) {
         if (num <= 0)
             num = 1;
-        SpuDTO spuDTO = goodsFeignService.getBySkuIds(skuId);
+        SpuDTO spuDTO = goodsSysFeignService.getBySkuIds(skuId);
         if (spuDTO == null || spuDTO.getStatus() != SpuStatusType.SELLING.getCode())
             return error("商品不存在/或已下架");
 
