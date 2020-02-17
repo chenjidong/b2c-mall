@@ -1,4 +1,4 @@
-package com.ppepper.common.feign;
+package com.ppepper.common.feign.client;
 
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.cloud.openfeign.FeignClient;

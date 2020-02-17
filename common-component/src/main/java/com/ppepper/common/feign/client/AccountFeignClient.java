@@ -1,4 +1,4 @@
-package com.ppepper.common.feign;
+package com.ppepper.common.feign.client;
 
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -24,30 +24,30 @@ public interface AccountFeignClient {
     public AjaxResult get(@RequestParam("id") Long id);
 
 
+    @RequestMapping("/api/account/sendCode")
+    public AjaxResult sendCode(@RequestParam("phone") String phone);
+
+    @RequestMapping("/api/account/create")
+    public AjaxResult create(@RequestParam("phone") String phone, @RequestParam("password") String password, @RequestParam("code") String code);
+
     /**
      * 获取收藏详情
      *
      * @param id
      * @return
      */
-    @RequestMapping("/api/account/collect/get")
+    @RequestMapping("/api/account/user/collect/get")
     public AjaxResult getCollect(@RequestParam("id") Long id);
 
 
-    @RequestMapping("/api/account/cart/list")
+    @RequestMapping("/api/account/user/cart/list")
     public AjaxResult getCartList(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize);
 
 
-    @RequestMapping("/api/account/address/get")
+    @RequestMapping("/api/account/user/address/get")
     public AjaxResult getAddress(@RequestParam("id") Long id);
 
-    @RequestMapping("/api/account/cart/clean")
+    @RequestMapping("/api/account/user/cart/clean")
     public AjaxResult cleanCart();
 
-
-    @RequestMapping("/api/account/sendCode")
-    public AjaxResult sendCode(@RequestParam("phone") String phone);
-
-    @RequestMapping("/api/account/create")
-    public AjaxResult create(@RequestParam("phone") String phone, @RequestParam("password") String password, @RequestParam("code") String code);
 }

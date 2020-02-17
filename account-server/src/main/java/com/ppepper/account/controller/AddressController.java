@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-08
  */
 @RestController
-@RequestMapping("/api/account/address")
+@RequestMapping("/api/account/user/address")
 public class AddressController extends BaseController {
 
     @Autowired

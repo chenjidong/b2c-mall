@@ -51,6 +51,9 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
     @Autowired
     private CouponUserFeignService couponUserFeignService;
 
+    @Autowired
+    private CouponFeignService couponFeignService;
+
 
     @Override
     public AjaxResult get(Long id, Long accountId) {
@@ -124,7 +127,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
 //        addressDTO.setConsignee("收货人");
         CouponUserDTO couponUserDTO = null;
         if (couponId != null) {
-            couponUserDTO = couponUserFeignService.get(couponId);
+            couponUserDTO = couponUserFeignService.getByAccountId(couponId);
             if (couponUserDTO == null || couponUserDTO.getGmtUsed() != null || new Date().before(couponUserDTO.getGmtEnd()) || couponUserDTO.getCouponDTO().getStatus() != CouponStatusType.LOCK.getCode())
                 return error("优惠券不存在/已使用");
 
@@ -228,7 +231,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
             }
 
             if (couponUserDTO != null) {
-                Boolean setUsedCoupon = couponUserFeignService.used(couponId);
+                Boolean setUsedCoupon = couponFeignService.used(orderDO.getAccountId(), couponId);
                 if (!setUsedCoupon)
                     throw new RuntimeException();
             }
@@ -288,7 +291,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements OrderService {
     public List<OrderDTO> selectExpireOrderNos(Integer status, Date time) {
         List<OrderDTO> list = orderMapper.selectExpireOrderNos(status, time);
         if (list != null) {
-            list.forEach(item ->{
+            list.forEach(item -> {
                 List<OrderSkuDO> orderSkuDOList = orderSkuMapper.selectList(new EntityWrapper<OrderSkuDO>().eq("order_id", item.getId()));
 
                 List<OrderSkuDTO> orderSkuDTOList = new ArrayList<>();

@@ -3,6 +3,7 @@ package com.ppepper.common.feign;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ppepper.common.dto.SpuDTO;
+import com.ppepper.common.feign.client.GoodsFeignClient;
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

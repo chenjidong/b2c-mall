@@ -1,4 +1,4 @@
-package com.ppepper.common.feign;
+package com.ppepper.common.feign.client;
 
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,7 +19,7 @@ public interface OrderFeignClient {
      * @param id 订单id
      * @return
      */
-    @RequestMapping(value = "/api/order/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/order/user/get", method = RequestMethod.GET)
     public AjaxResult get(@RequestParam("id") Long id);
 
 

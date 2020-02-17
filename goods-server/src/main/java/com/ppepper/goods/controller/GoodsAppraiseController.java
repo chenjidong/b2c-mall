@@ -1,6 +1,5 @@
 package com.ppepper.goods.controller;
 
-import com.netflix.client.ClientException;
 import com.ppepper.common.model.AjaxResult;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.goods.service.GoodsAppraiseService;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-07
  */
 @RestController
-@RequestMapping("/api/goods/appraise")
+@RequestMapping("/api/goods/user/appraise")
 public class GoodsAppraiseController {
 
     @Autowired
@@ -29,7 +28,7 @@ public class GoodsAppraiseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public AjaxResult list(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize,
                            @RequestParam("orderBy") String orderBy, @RequestParam("isAsc") Boolean isAsc,
-                           @RequestParam("keyword") String keyword, @RequestParam("score") Integer score) throws ClientException {
+                           @RequestParam("keyword") String keyword, @RequestParam("score") Integer score) {
 
         return goodsAppraiseService.list(JwtTokenUtils.getCurrentAccountIdByToken(), pageNo, pageSize, orderBy, isAsc, keyword, score);
     }

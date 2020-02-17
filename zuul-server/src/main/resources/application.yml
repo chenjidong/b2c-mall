@@ -24,11 +24,11 @@ zuul:
          serviceId: goods-service
          strip-prefix: false
    order-service:
-         path: /api/order/**
+         path: /api/order/user/**
          serviceId: order-service
          strip-prefix: false
    coupon-service:
-         path: /api/coupon/**
+         path: /api/coupon/user/**
          serviceId: coupon-service
          strip-prefix: false
    sso-service:
@@ -36,11 +36,15 @@ zuul:
          serviceId: sso-service
          strip-prefix: false
    account-service:
-         path: /api/account/**
+         path: /api/account/user/**
          serviceId: account-service
          strip-prefix: false
    notice-service:
-         path: /api/notice/**
+         path: /api/notice/user/**
          serviceId: notice-service
+         strip-prefix: false
+   payment-service:
+         path: /api/payment/user/**
+         serviceId: payment-service
          strip-prefix: false
 

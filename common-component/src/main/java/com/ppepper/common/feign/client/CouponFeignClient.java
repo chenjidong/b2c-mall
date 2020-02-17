@@ -1,4 +1,4 @@
-package com.ppepper.common.feign;
+package com.ppepper.common.feign.client;
 
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,6 +22,12 @@ public interface CouponFeignClient {
     @RequestMapping(value = "/api/coupon/get", method = RequestMethod.GET)
     public AjaxResult get(@RequestParam("id") Long id);
 
+    @RequestMapping(value = "/api/coupon/used", method = RequestMethod.GET)
+    public AjaxResult used(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id);
+
+    @RequestMapping(value = "/api/coupon/rollbackUnused", method = RequestMethod.GET)
+    public AjaxResult rollbackUnused(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id);
+
     /**
      * 获取用户优惠券 【需登录】
      *
@@ -29,12 +35,6 @@ public interface CouponFeignClient {
      * @return
      */
     @RequestMapping(value = "/api/coupon/user/get", method = RequestMethod.GET)
-    public AjaxResult getByUserId(@RequestParam("id") Long id);
+    public AjaxResult getByAccountId(@RequestParam("id") Long id);
 
-
-    @RequestMapping(value = "/api/coupon/used", method = RequestMethod.GET)
-    public AjaxResult used(@RequestParam("id") Long id);
-
-    @RequestMapping(value = "/api/coupon/rollbackUnused", method = RequestMethod.GET)
-    public AjaxResult rollbackUnused(@RequestParam("accountId") Long accountId, @RequestParam("id") Long id);
 }

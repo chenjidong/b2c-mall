@@ -2,6 +2,7 @@ package com.ppepper.common.feign;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ppepper.common.dto.CouponDTO;
+import com.ppepper.common.feign.client.CouponFeignClient;
 import com.ppepper.common.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,11 @@ public class CouponFeignService extends BaseFeignService {
     @HystrixCommand(fallbackMethod = "rollbackUnusedOffline")
     public Boolean rollbackUnused(Long accountId, Long id) {
         return couponFeignClient.rollbackUnused(accountId, id).getCode() == AjaxResult.Type.SUCCESS.value();
+    }
+
+    @HystrixCommand(fallbackMethod = "rollbackUnusedOffline")
+    public Boolean used(Long accountId, Long id) {
+        return couponFeignClient.used(accountId, id).getCode() == AjaxResult.Type.SUCCESS.value();
     }
 
     public CouponDTO serviceOffline(Long id) {

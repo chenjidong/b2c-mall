@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-11
  */
 @RestController
-@RequestMapping(value = "/api/account/cart")
+@RequestMapping(value = "/api/account/user/cart")
 public class CartController {
 
     @Autowired
