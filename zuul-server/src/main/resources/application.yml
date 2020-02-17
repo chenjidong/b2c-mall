@@ -31,10 +31,10 @@ zuul:
          path: /api/coupon/**
          serviceId: coupon-service
          strip-prefix: false
-   sso-service:
-         path: /api/sso/**
-         serviceId: sso-service
-         strip-prefix: false
+#   sso-service: # 独立运行才需要跳转
+#         path: /api/sso/**
+#         serviceId: sso-service
+#         strip-prefix: false
    account-service:
          path: /api/account/**
          serviceId: account-service
@@ -47,4 +47,13 @@ zuul:
          path: /api/payment/**
          serviceId: payment-service
          strip-prefix: false
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE  #加上这个就可以获取到HttpServletRequest
+          thread:
+            timeoutInMilliseconds: 10000
 

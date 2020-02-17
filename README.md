@@ -39,7 +39,7 @@
 * eureka-server    服务控制中心      端口：7000
 * goods-server     商品服务          端口：8000
 * order-server     订单服务          端口：8100
-* sso-server       登录服务          端口：8200
+* sso-server       登录服务          端口：8200 已合并到zuul服务
 * zuul-server      网关服务          端口：9000
 * coupon-server    优惠券服务        端口：8300
 * account-server   账户服务          端口：8400

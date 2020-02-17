@@ -82,12 +82,24 @@
     </dependencyManagement>
 
     <build>
-        <plugins>
+        <!--独立运行 去掉即可-->
+        <!--<plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-        </plugins>
+        </plugins>-->
+        <!--非独立打包时需要过滤掉 resources 中的配置文件-->
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>*.yml</exclude>
+                    <exclude>*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
 
 </project>

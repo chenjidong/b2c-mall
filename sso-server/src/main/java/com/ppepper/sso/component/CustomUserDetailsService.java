@@ -35,7 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 throw new UsernameNotFoundException("账户不存在！");
         }
         String role = accountDTO.getLoginType() == AccountLoginType.SHOP.getCode() ? ROLE_SHOP : ROLE_USER;
-        String username = JwtTokenUtils.generateSubject(accountDTO.getUsername(), accountDTO.getId(), role);
+        String name = accountDTO.getUsername();
+        if (name == null)
+            name = accountDTO.getPhone();
+
+        String username = JwtTokenUtils.generateSubject(name, accountDTO.getId(), role);
         return new User(username, accountDTO.getPassword(), AuthorityUtils.createAuthorityList(role));
     }
 }

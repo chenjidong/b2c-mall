@@ -49,6 +49,12 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>com.ppepper</groupId>
+            <artifactId>sso</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--公共组件 未导入common-component module 时需要手动加入本地仓库 详情看 README.md-->
         <dependency>
             <groupId>com.ppepper</groupId>
@@ -71,10 +77,36 @@
     </dependencyManagement>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**.*</include>
+                    <include>**/*.*</include><!-- i18n能读取到 -->
+                    <include>**/*/*.*</include>
+                </includes>
+            </resource>
+
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中-->
+                        </goals>
+                        <!--可以生成不含依赖包的不可执行Jar包-->
+                        <!-- configuration>
+                          <classifier>exec</classifier>
+                        </configuration> -->
+                    </execution>
+                </executions>
+                <!--sso 集成时 避免多个启动类 无法识别-->
+                <configuration>
+                    <mainClass>com.ppepper.zuul.ZuulApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
