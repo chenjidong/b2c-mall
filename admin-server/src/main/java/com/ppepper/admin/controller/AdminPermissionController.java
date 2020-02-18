@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  * Created By 2020-02-15
  */
 @RestController
-@CrossOrigin
 @RequestMapping("/admin/permission")
 public class AdminPermissionController {
 

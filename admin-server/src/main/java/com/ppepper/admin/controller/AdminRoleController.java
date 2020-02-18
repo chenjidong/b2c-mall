@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
  * Created By 2020-02-15
  */
 @RestController
-@CrossOrigin
 @RequestMapping("/admin/role")
 public class AdminRoleController {
 

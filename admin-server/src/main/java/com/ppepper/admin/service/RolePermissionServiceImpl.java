@@ -44,7 +44,7 @@ public class RolePermissionServiceImpl extends BaseServiceImpl implements RolePe
 
         List<RolePermissionDO> allPermission =
                 permissionMapper.selectList(
-                        new EntityWrapper<RolePermissionDO>().eq("role_id",0));//默认权限
+                        new EntityWrapper<RolePermissionDO>().eq("role_id",0).notIn("permission","*"));//默认权限
 
         List<RolePermissionDTO> rolePermissionDTOS = copyListProperties(allPermission,RolePermissionDTO.class);
         List<String> allPermissions = new ArrayList<>();

@@ -54,7 +54,7 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
         adminDO = adminMapper.selectOne(adminDO);
         if (adminDO == null || adminDO.getStatus() == AdminStatusType.LOCK.getCode())
             return error("用户不存在或已冻结");
-        if (MD5Util.verify(username, password, adminDO.getPassword())) {
+        if (MD5Util.verify(password, username, adminDO.getPassword())) {
             String subject = JwtTokenUtils.generateSubject(adminDO.getUsername(), adminDO.getId(), SecurityUtils.ROLE_ADMIN);
             String token = JwtTokenUtils.generateToken(subject, expiration);
             return toAjax(token);

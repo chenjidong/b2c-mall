@@ -32,7 +32,7 @@ export function logout() {
   })
 }
 
-export function getUserInfo() {
+export function getUserInfo(token) {
   return request({
     url: '/admin/getInfo',
     method: 'post'
