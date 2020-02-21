@@ -212,4 +212,60 @@ public class AdminServiceImpl extends BaseServiceImpl implements AdminService {
         adminDO.setGmtUpdate(new Date());
         return toAjax(adminMapper.updateById(adminDO));
     }
+
+    @Override
+    public AdminDTO getByUsername(String username) {
+        AdminDO adminDO = new AdminDO();
+        adminDO.setUsername(username);
+        adminDO = adminMapper.selectOne(adminDO);
+        AdminDTO adminDTO = copyProperties(adminDO, AdminDTO.class);
+
+        if (adminDTO == null || adminDTO.getStatus() == AdminStatusType.LOCK.getCode())
+            return null;
+
+        //获取角色
+        List<Long> ids = JSONObject.parseArray(adminDO.getRoleIds(), Long.class);
+        List<RoleDO> roleDOList = roleMapper.selectList(
+                new EntityWrapper<RoleDO>()
+                        .in("id", ids)
+                        .eq("status", RoleStatusType.ACTIVE.getCode()));
+
+        List<String> roleNames = new LinkedList<>();
+        roleDOList.forEach(item -> {
+            roleNames.add(item.getName());
+        });
+
+        adminDTO.setRoles(roleNames);
+
+        //获取权限
+        List<RolePermissionDO> rolePermissionDOList = rolePermissionMapper.selectList(
+                new EntityWrapper<RolePermissionDO>()
+                        .in("role_id", ids)
+                        .eq("deleted", 0));
+        List<String> permissionNames = new LinkedList<>();
+        Boolean isSuperAdmin = false;
+        for (RolePermissionDO item : rolePermissionDOList) {
+            if ("*".equals(item.getPermission())) {
+                isSuperAdmin = true;
+                break;
+            }
+            permissionNames.add(item.getPermission());
+        }
+        if (isSuperAdmin) {
+            List<RolePermissionDO> allPermission =
+                    rolePermissionMapper.selectList(
+                            new EntityWrapper<RolePermissionDO>().eq("role_id", 0).notIn("permission", "*"));//默认权限
+
+            permissionNames.clear();
+            allPermission.forEach(item -> {
+                permissionNames.add(item.getPermission());
+            });
+        }
+
+        adminDTO.setPerms(permissionNames);
+
+        return adminDTO;
+    }
+
+
 }

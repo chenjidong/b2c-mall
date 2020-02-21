@@ -21,7 +21,7 @@ import static com.ppepper.common.security.SecurityUtils.ROLE_USER;
  * tips：需要拆分时  使用 feign 获取即可
  */
 @Component
-public class CustomUserDetailsService implements UserDetailsService {
+public class AccountUserDetailsService implements UserDetailsService {
 
     @Autowired
     private AccountSysFeignService accountSysFeignService;

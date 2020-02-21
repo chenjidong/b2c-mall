@@ -4,6 +4,7 @@ import com.ppepper.common.controller.BaseController;
 import com.ppepper.common.feign.AccountSysFeignService;
 import com.ppepper.common.utils.JwtTokenUtils;
 import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,15 +31,16 @@ public class LoginController extends BaseController {
     @RequestMapping("/login")
     public AjaxResult login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
         try {
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, pwd);
+            String password = MD5Util.md5(pwd, phone);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             User userDetails = (User) authentication.getPrincipal();
             if (userDetails != null) {
                 String token = JwtTokenUtils.generateToken(userDetails.getUsername());
                 return success("登录成功", token);
             }
-        }catch (Exception e){
-           return error(e.getMessage());
+        } catch (Exception e) {
+            return error(e.getMessage());
         }
 
         return error("账号或密码不正确！");

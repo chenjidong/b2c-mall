@@ -7,6 +7,8 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,10 +20,10 @@ import org.springframework.stereotype.Component;
 public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    private CustomPasswordEncoder customPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     /**
      * setup.2
@@ -38,7 +40,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
 
         String presentedPassword = authentication.getCredentials().toString();
 
-        if (!customPasswordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+        if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
             logger.debug("Authentication failed: password does not match stored value");
 
             throw new BadCredentialsException(messages.getMessage(
@@ -52,7 +54,7 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
      */
     @Override
     protected UserDetails retrieveUser(String s, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
-        return customUserDetailsService.loadUserByUsername(s);
+        return userDetailsService.loadUserByUsername(s);
     }
 
     /**

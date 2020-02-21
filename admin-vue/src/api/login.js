@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
-export function loginByUsername(username, password, verifyCode) {
+export function loginByUsername(phone, pwd, verifyCode) {
   const data = {
-    username,
-    password,
+    phone,
+    pwd,
     verifyCode
   }
   return request({
-    url: '/login/loginByUsername',
+    url: process.env.HOST + '/api/sso/login',
     method: 'post',
     params: {
       ...data

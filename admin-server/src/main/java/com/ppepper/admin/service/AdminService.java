@@ -25,4 +25,7 @@ public interface AdminService {
 
     public AjaxResult changePassword(Long id, String oldPassword, String newPassword, String newPassword2);
 
+    public AdminDTO getByUsername(String username);
+
+
 }
