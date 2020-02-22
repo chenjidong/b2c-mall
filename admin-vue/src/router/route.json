@@ -73,5 +73,32 @@
 		"redirect":"/404",
 		"path":"*",
 		"hidden":true
-	}
+	},
+  {
+    "redirect":"noredirect",
+    "path":"/account",
+    "children":[
+      {
+        "path":"account",
+        "meta":{
+          "noCache":true,
+          "perms":[
+            "system:account:query",
+            "system:account:delete",
+            "system:account:create",
+            "system:account:update"
+          ],
+          "title":"会员管理"
+        },
+        "name":"account",
+        "page":"/account/list"
+      }
+    ],
+    "meta":{
+      "icon":"chart",
+      "title":"会员管理"
+    },
+    "name":"sysAccount",
+    "alwaysShow":true
+  }
 ]
