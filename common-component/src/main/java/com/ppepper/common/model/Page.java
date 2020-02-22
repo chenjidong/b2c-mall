@@ -29,6 +29,8 @@ public class Page<T> implements Serializable {
     }
 
     public long getTotalPageNo() {
+        if (count <= 0)
+            return 0;
         return count / pageSize + (count % pageSize == 0 ? 0 : 1);
     }
 

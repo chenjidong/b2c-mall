@@ -4,6 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ppepper.common.dto.AccountDTO;
 import com.ppepper.common.feign.client.AccountFeignClient;
 import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -50,6 +51,37 @@ public class AccountSysFeignService extends BaseFeignService {
         return accountFeignClient.create(phone, password, code);
     }
 
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public Page<AccountDTO> list(Integer page,
+                                 Integer limit,
+                                 String nickname,
+                                 String orderBy,
+                                 Boolean isAsc,
+                                 Long id,
+                                 Integer status) {
+        return accountFeignClient.list(page, limit, nickname, orderBy, isAsc, id, status);
+    }
+
+    @HystrixCommand(fallbackMethod = "serviceOffline")
+    public AjaxResult updateStatus(Long id, Integer status) {
+        if (StringUtils.isEmpty(id))
+            return null;
+        AjaxResult ajaxResult = accountFeignClient.updateStatus(id, status);
+        return ajaxResult;
+    }
+
+    @HystrixCommand(fallbackMethod = "serviceOffline1")
+    public AjaxResult createByAdmin(AccountDTO accountDTO) {
+        AjaxResult ajaxResult = accountFeignClient.createByAdmin(accountDTO.getId() == null ? 0L : accountDTO.getId(), accountDTO.getPhone(), accountDTO.getPassword(), accountDTO.getStatus(), accountDTO.getNickname());
+        return ajaxResult;
+    }
+
+    @HystrixCommand(fallbackMethod = "serviceOffline1")
+    public AjaxResult delete(Long id) {
+        AjaxResult ajaxResult = accountFeignClient.delete(id);
+        return ajaxResult;
+    }
+
     public AccountDTO serviceOffline(Long id) {
         return null;
     }
@@ -65,5 +97,29 @@ public class AccountSysFeignService extends BaseFeignService {
     public AjaxResult serviceOffline(String phone, String password, String code) {
         return AjaxResult.error("注册异常");
     }
+
+
+    public Page<AccountDTO> serviceOffline(Integer page,
+                                           Integer limit,
+                                           String nickname,
+                                           String orderBy,
+                                           Boolean isAsc,
+                                           Long id,
+                                           Integer status) {
+        return new Page<>();
+    }
+
+    public AjaxResult serviceOffline(Long id, Integer status) {
+        return AjaxResult.error("获取异常");
+    }
+
+    public AjaxResult serviceOffline1(AccountDTO accountDTO) {
+        return AjaxResult.error("获取异常");
+    }
+
+    public AjaxResult serviceOffline1(Long id) {
+        return AjaxResult.error("获取异常");
+    }
+
 
 }

@@ -200,6 +200,11 @@ public class AjaxResult extends HashMap<String, Object> {
         return code;
     }
 
+
+    public boolean isSuccess(){
+        return code == Type.SUCCESS.value;
+    }
+
     public void setCode(int code) {
         this.code = code;
     }

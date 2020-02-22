@@ -2,8 +2,11 @@ package com.ppepper.account.controller;
 
 import com.ppepper.account.service.AccountService;
 import com.ppepper.common.controller.BaseController;
+import com.ppepper.common.dto.AccountDTO;
 import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,4 +48,35 @@ public class AccountSysController extends BaseController {
         return accountService.create(phone, password, code);
     }
 
+    @RequestMapping("/list")
+    public Page<AccountDTO> list(Integer page,
+                                 Integer limit,
+                                 String nickname,
+                                 String orderBy,
+                                 Boolean isAsc,
+                                 Long id,
+                                 Integer status) {
+        return accountService.list(page, limit, nickname, orderBy, isAsc, id, status);
+    }
+
+
+    @RequestMapping("/updateStatus")
+    public AjaxResult updateStatus(@RequestParam("id") Long id, Integer status) {
+        return accountService.updateStatus(id, status);
+    }
+
+    @RequestMapping("/createByAdmin")
+    public AjaxResult createByAdmin(@RequestParam("id") Long id,
+                                    @RequestParam("phone") String phone,
+                                    @RequestParam("password") String password,
+                                    @RequestParam("status") Integer status,
+                                    @RequestParam("nickname") String nickname
+    ) {
+        return accountService.createByAdmin(id, phone, password, status, nickname);
+    }
+
+    @RequestMapping("/delete")
+    public AjaxResult delete(@RequestParam("id") Long id) {
+        return accountService.delete(id);
+    }
 }

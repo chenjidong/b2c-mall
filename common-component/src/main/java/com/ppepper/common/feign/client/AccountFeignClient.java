@@ -1,8 +1,12 @@
 package com.ppepper.common.feign.client;
 
+import com.ppepper.common.dto.AccountDTO;
 import com.ppepper.common.model.AjaxResult;
+import com.ppepper.common.model.Page;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -29,6 +33,31 @@ public interface AccountFeignClient {
 
     @RequestMapping("/sys/account/create")
     public AjaxResult create(@RequestParam("phone") String phone, @RequestParam("password") String password, @RequestParam("code") String code);
+
+
+    @RequestMapping("/sys/account/list")
+    public Page<AccountDTO> list(@RequestParam("page") Integer page,
+                                 @RequestParam("limit") Integer limit,
+                                 @RequestParam("nickname") String nickname,
+                                 @RequestParam("orderBy") String orderBy,
+                                 @RequestParam("isAsc") Boolean isAsc,
+                                 @RequestParam("id") Long id,
+                                 @RequestParam("status") Integer status);
+
+    @RequestMapping("/sys/account/updateStatus")
+    public AjaxResult updateStatus(@RequestParam("id") Long id, @RequestParam("status") Integer status);
+
+    @RequestMapping(value = "/sys/account/createByAdmin",method = RequestMethod.POST)
+    public AjaxResult createByAdmin(@RequestParam("id") Long id,
+                                    @RequestParam("phone") String phone,
+                                    @RequestParam("password") String password,
+                                    @RequestParam("status") Integer status,
+                                    @RequestParam("nickname") String nickname
+    );
+
+
+    @RequestMapping("/sys/account/delete")
+    public AjaxResult delete(@RequestParam("id")Long id);
 
 
     @RequestMapping("/api/account/collect/get")
