@@ -1,10 +1,6 @@
 package com.ppepper.sso.config;
 
-import com.ppepper.common.security.SecurityUtils;
-import com.ppepper.sso.component.CustomUserDetailsAuthenticationProvider;
-import com.ppepper.sso.component.JwtBeforeAuthenticationTokenFilter;
-import com.ppepper.sso.component.NoAuthenticationEntryPoint;
-import com.ppepper.sso.component.NoAuthorityAccessDeniedHandler;
+import com.ppepper.sso.component.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +37,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsAuthenticationProvider customUserDetailsAuthenticationProvider;
 
+    @Autowired
+    private HttpSecurityUrlMatchersService httpSecurityUrlMatchersService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //使用自己的前置拦截器 拦截 用户名密码登录filter
@@ -50,9 +49,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = http.authorizeRequests();
-        for (String role : SecurityUtils.PERMISSION_PATTERN_MAP.keySet()) {
-            authorizeRequests.antMatchers(SecurityUtils.PERMISSION_PATTERN_MAP.get(role).toArray(new String[]{})).hasRole(role);
-        }
+
+        setupAuthorizes(authorizeRequests);
 
         // 请求进行拦截 验证 accessToken
         authorizeRequests
@@ -74,6 +72,17 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 // 关闭csrf防护
                 .csrf()
                 .disable();
+    }
+
+    private void setupAuthorizes(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests) {
+
+        for (String role : httpSecurityUrlMatchersService.onLoadPermission().keySet()) {
+            if (httpSecurityUrlMatchersService.type() == 0) {
+                authorizeRequests.antMatchers(httpSecurityUrlMatchersService.onLoadPermission().get(role).toArray(new String[]{})).hasRole(role);
+            } else if (httpSecurityUrlMatchersService.type() == 1) {
+                authorizeRequests.antMatchers(httpSecurityUrlMatchersService.onLoadPermission().get(role).toArray(new String[]{})).hasAuthority(role);
+            }
+        }
     }
 
     @Override

@@ -24,4 +24,8 @@ public class RolePermissionDO extends SuperDO {
 
     private String label;
 
+    /**
+     * 路径规则参照 spring security 语法 /admin/**
+     */
+    private String url;
 }

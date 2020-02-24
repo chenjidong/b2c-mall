@@ -44,9 +44,9 @@ public class RolePermissionServiceImpl extends BaseServiceImpl implements RolePe
 
         List<RolePermissionDO> allPermission =
                 permissionMapper.selectList(
-                        new EntityWrapper<RolePermissionDO>().eq("role_id",0).notIn("permission","*"));//默认权限
+                        new EntityWrapper<RolePermissionDO>().eq("role_id", 0).notIn("permission", "*"));//默认权限
 
-        List<RolePermissionDTO> rolePermissionDTOS = copyListProperties(allPermission,RolePermissionDTO.class);
+        List<RolePermissionDTO> rolePermissionDTOS = copyListProperties(allPermission, RolePermissionDTO.class);
         List<String> allPermissions = new ArrayList<>();
         allPermission.forEach(item -> {
             if (!"*".equalsIgnoreCase(item.getPermission()))
@@ -106,5 +106,10 @@ public class RolePermissionServiceImpl extends BaseServiceImpl implements RolePe
         }
 
         return error("修改失败");
+    }
+
+    @Override
+    public List<RolePermissionDO> list() {
+        return permissionMapper.selectList(new EntityWrapper<RolePermissionDO>().eq("role_id", 0).notIn("permission", "*"));
     }
 }
